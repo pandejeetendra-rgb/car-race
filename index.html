@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Checkpoint Race — Cyber Security Initiatives (GBL)</title>
+  <title>Lap Race — Cyber Security Initiatives in India (GBL)</title>
   <style>
     :root{
       --bg:#070A12;
@@ -21,10 +21,11 @@
     *{box-sizing:border-box}
     body{
       margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1200px 800px at 20% 10%, rgba(90,228,255,0.18), transparent 55%),
-                  radial-gradient(900px 600px at 80% 30%, rgba(53,242,140,0.10), transparent 60%),
-                  radial-gradient(1200px 800px at 50% 100%, rgba(255,209,102,0.07), transparent 55%),
-                  var(--bg);
+      background:
+        radial-gradient(1200px 800px at 20% 10%, rgba(90,228,255,0.18), transparent 55%),
+        radial-gradient(900px 600px at 80% 30%, rgba(53,242,140,0.10), transparent 60%),
+        radial-gradient(1200px 800px at 50% 100%, rgba(255,209,102,0.07), transparent 55%),
+        var(--bg);
       color: var(--ink);
       overflow-x:hidden;
     }
@@ -151,7 +152,7 @@
     }
     .overlay.show{ display:flex; }
     .qcard{
-      width: min(820px, 100%);
+      width: min(860px, 100%);
       border-radius: 18px;
       border: 1px solid rgba(255,255,255,0.16);
       background: linear-gradient(180deg, rgba(10,14,26,0.88), rgba(10,14,26,0.72));
@@ -224,7 +225,7 @@
     }
     .feedback{
       font-size: 12px; color: var(--muted);
-      max-width: 64ch;
+      max-width: 70ch;
       line-height: 1.35;
     }
 
@@ -243,7 +244,7 @@
       pointer-events:none;
       transition: opacity .18s ease, transform .18s ease;
       display:flex; gap:10px; align-items:center;
-      max-width: min(720px, calc(100% - 24px));
+      max-width: min(760px, calc(100% - 24px));
     }
     .toast.show{ opacity:1; transform: translateX(-50%) translateY(0px); }
     .toast .chip{
@@ -276,15 +277,15 @@
         <div class="brand">
           <span class="dot"></span>
           <div>
-            <div>Checkpoint Race</div>
+            <div>Lap Race</div>
             <div class="meta" style="justify-content:flex-start; gap:8px;">
               <span class="pill"><span class="k"></span><span>Cyber Security Initiatives in India</span></span>
-              <span class="pill"><span class="k" style="background:var(--good)"></span><span>Learning controls progress</span></span>
+              <span class="pill"><span class="k" style="background:var(--good)"></span><span>1 Lap = 1 MCQ</span></span>
             </div>
           </div>
         </div>
         <div class="meta">
-          <span class="pill"><b id="cpText">Checkpoint 0/12</b></span>
+          <span class="pill"><b id="lapText">Lap 0/12</b></span>
           <span class="pill"><b id="statusText">Ready</b></span>
         </div>
       </div>
@@ -304,10 +305,10 @@
           <div class="qcard">
             <div class="qhead">
               <div style="min-width:0">
-                <div class="qtitle" id="qTitle">Checkpoint Question</div>
-                <div class="qmeta" id="qMeta">Read and answer. No timer.</div>
+                <div class="qtitle" id="qTitle">Lap Question</div>
+                <div class="qmeta" id="qMeta">Answer to start the next lap.</div>
               </div>
-              <div class="pill"><b id="qCP">CP 1/12</b></div>
+              <div class="pill"><b id="qLap">Lap 1/12</b></div>
             </div>
 
             <div class="qbody">
@@ -329,15 +330,16 @@
 
     <div class="card">
       <div class="side">
-        <div class="h2">How to play (simple)</div>
+        <div class="h2">How to play</div>
         <div class="small">
-          Drive the route by clearing checkpoints. At each checkpoint, the game pauses and shows one MCQ.
+          Drive laps automatically. At the end of each lap, a finish-line banner appears.
+          When you cross it, the game pauses and shows one MCQ.
           <br/><br/>
-          <b>Correct:</b> the car accelerates to the next checkpoint.
+          <b>Correct:</b> start the next lap with a speed boost.
           <br/>
-          <b>Incorrect:</b> the car stalls briefly, then you retry the same checkpoint.
+          <b>Incorrect:</b> brief stall, then retry the same question.
           <br/><br/>
-          No steering, no timer.
+          No steering. No timer.
         </div>
 
         <div class="btnrow">
@@ -348,28 +350,28 @@
 
         <div class="legend">
           <div class="row">
-            <div class="icon" title="Checkpoint">
+            <div class="icon" title="Finish line">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M6 3v18" stroke="rgba(234,240,255,0.9)" stroke-width="2" stroke-linecap="round"/>
-                <path d="M6 4h12l-2.5 4L18 12H6V4z" fill="rgba(90,228,255,0.55)"/>
+                <path d="M5 3v18" stroke="rgba(234,240,255,0.9)" stroke-width="2" stroke-linecap="round"/>
+                <path d="M5 4h14l-3 4 3 4H5V4z" fill="rgba(255,209,102,0.55)"/>
               </svg>
             </div>
             <div>
-              <b>Checkpoints</b>
-              <span>Each gate triggers one question. Movement is locked until you answer.</span>
+              <b>Finish line per lap</b>
+              <span>Cross it to unlock the MCQ for that lap.</span>
             </div>
           </div>
 
           <div class="row">
-            <div class="icon" title="Feedback">
+            <div class="icon" title="Learning-first">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                 <path d="M12 2l2.8 6.2L21.5 9l-5 4.3 1.5 6.7L12 16.8 6 20l1.5-6.7-5-4.3 6.7-.8L12 2z"
                       fill="rgba(53,242,140,0.55)"/>
               </svg>
             </div>
             <div>
-              <b>Learning-first rewards</b>
-              <span>Correct answers give glow + speed burst + smooth forward motion.</span>
+              <b>Reward = momentum</b>
+              <span>Correct answers give glow, sparks, and a smooth speed burst.</span>
             </div>
           </div>
 
@@ -382,14 +384,14 @@
             </div>
             <div>
               <b>Mobile-friendly</b>
-              <span>Large buttons, no small controls, smooth transitions.</span>
+              <span>Big buttons and a clean “game → question” flow.</span>
             </div>
           </div>
         </div>
 
-        <div class="h2" style="margin-top:14px;">Data you can log (optional)</div>
+        <div class="h2" style="margin-top:14px;">Notes</div>
         <div class="small">
-          Checkpoint reached, attempts per checkpoint, time spent per question, completion.
+          This version is corrected to use <b>exactly 12 laps and exactly 12 questions</b>.
         </div>
       </div>
     </div>
@@ -397,184 +399,161 @@
 
 <script>
 (() => {
-  // =============================
-  // Question bank (chapter-based)
-  // =============================
+  // ===========================================
+  // 12-question bank (from "Cyber Security Initiatives in India")
+  // ===========================================
   const QUESTIONS = [
     {
-      q: "CERT-In was created in 2004 primarily to do what?",
+      q: "CERT-In (Computer Emergency Response Team–India) is primarily responsible for:",
       options: [
-        "Respond to computer security incidents, report vulnerabilities, and promote IT security practices",
-        "Run railway passenger reservation systems securely",
-        "Maintain a unified database for all police stations",
-        "Certify only private-sector cyber security products"
+        "Responding to cyber incidents, reporting vulnerabilities, and promoting IT security practices",
+        "Running state police station crime databases",
+        "Issuing visas for cyber professionals",
+        "Maintaining only a national email directory"
       ],
       answerIndex: 0,
-      feedback: "CERT-In was created to respond to incidents, report vulnerabilities, and promote effective IT security practices.",
+      feedback: "CERT-In is the national agency for incident response, vulnerability reporting, and promoting IT security practices.",
       hint: "Think: national incident response team."
     },
     {
-      q: "Which initiative by CERT-In focuses on awareness and implementing information security policy based on ISO/IEC 27001?",
+      q: "NISAP (National Information Security Assurance Programme) focuses mainly on:",
       options: [
-        "Natgrid",
-        "National Information Security Assurance Programme (NISAP)",
-        "NCTC",
-        "CCTNS"
-      ],
-      answerIndex: 1,
-      feedback: "NISAP is an initiative by CERT-In referencing ISO/IEC 27001 for information security policy and best practices.",
-      hint: "It is a programme, not a centre."
-    },
-    {
-      q: "NCTC (proposed after the 26/11 attack) was intended mainly to:",
-      options: [
-        "Coordinate counter-terrorism measures across state and central agencies",
-        "Create a national email system for all ministries",
-        "Detect botnets on citizen devices",
-        "Publish open standards for IT products"
+        "ISO/IEC 27001-based security policy awareness and implementation support",
+        "Border management and disaster response",
+        "Tax intelligence database integration",
+        "Replacing all security tools with open-source tools"
       ],
       answerIndex: 0,
-      feedback: "NCTC was proposed to coordinate among agencies and serve as a central point for counter-terrorism measures.",
-      hint: "Think: coordination for counter-terrorism."
+      feedback: "NISAP supports information security policy awareness and implementation aligned with ISO/IEC 27001 / ISMS practices.",
+      hint: "It is a programme tied to ISMS ideas."
     },
     {
-      q: "NCIIPC (Critical Information Infrastructure Protection Centre) is primarily responsible for:",
+      q: "NCTC (National Counter Terrorism Center) was proposed mainly to:",
       options: [
-        "Only issuing email policies for government employees",
-        "Protection of critical information infrastructure, including alerts, malware analysis, and CII guidance",
-        "Running national crime statistics publications",
-        "Managing university cyber labs"
+        "Coordinate counter-terrorism measures among state and central agencies",
+        "Certify mobile phones for secure use",
+        "Run cyber forensics labs in every district",
+        "Issue email usage rules for universities"
       ],
-      answerIndex: 1,
-      feedback: "NCIIPC is the nodal agency for protecting critical information infrastructure (CII).",
-      hint: "Think: CII protection."
+      answerIndex: 0,
+      feedback: "NCTC was proposed as a centralized mechanism to coordinate counter-terrorism efforts across agencies.",
+      hint: "Think: counter-terrorism coordination."
     },
     {
-      q: "Natgrid is best described as:",
+      q: "NCIIPC is associated with protecting:",
       options: [
-        "A cybersecurity certification scheme for private companies",
-        "A proposed cyber-surveillance agency screening communication metadata",
+        "Critical Information Infrastructure (CII)",
+        "Only private-sector banking passwords",
+        "Only educational portals (LMS)",
+        "Only social media accounts"
+      ],
+      answerIndex: 0,
+      feedback: "NCIIPC is the nodal body for protecting Critical Information Infrastructure (CII).",
+      hint: "CII protection is the keyword."
+    },
+    {
+      q: "Which activity is listed among NCIIPC functions?",
+      options: [
+        "Malware analysis and tracking malware-spreading IPs",
+        "Issuing driving licenses for cyber vehicles",
+        "Only publishing cyber news articles",
+        "Only doing annual university rankings"
+      ],
+      answerIndex: 0,
+      feedback: "NCIIPC functions include malware analysis and tracking malware/zombie spreading IPs, alerts/advisories, forensics, etc.",
+      hint: "Look for technical operations and alerts."
+    },
+    {
+      q: "Natgrid (National Intelligence Grid) is best described as:",
+      options: [
         "An integrated intelligence grid connecting databases of core security agencies",
-        "A botnet removal tool for smartphones"
+        "A cyber awareness course for students",
+        "A state-wise cybersecurity scholarship scheme",
+        "A VPN service for government staff"
       ],
-      answerIndex: 2,
-      feedback: "Natgrid connects databases of core security agencies as an integrated intelligence grid.",
+      answerIndex: 0,
+      feedback: "Natgrid connects multiple databases of core agencies to support intelligence and investigation.",
       hint: "Think: integrated grid + databases."
     },
     {
       q: "CCTNS (Crime and Criminal Tracking Network & Systems) mainly aims to:",
       options: [
-        "Create a nationwide networking infrastructure for crime and criminal tracking across police stations",
-        "Provide a national malware analysis lab only",
-        "Manage defense-sector CERTs",
-        "Replace CERT-In operations"
+        "Network police stations and enable crime/criminal tracking across locations",
+        "Replace CERT-In operations",
+        "Provide only cyber awareness posters",
+        "Publish ISO standards for networks"
       ],
       answerIndex: 0,
-      feedback: "CCTNS supports investigation/detection via a networked database across police stations and states.",
-      hint: "Think: police stations + crime/criminal database."
+      feedback: "CCTNS links police stations and supports tracking of crime and criminals across regions.",
+      hint: "Think: police network + crime tracking."
     },
     {
-      q: "The proposed National Cyber Coordination Centre (NCCC) is intended to:",
+      q: "NCCC (National Cyber Coordination Centre) is intended primarily for:",
       options: [
-        "Screen communication metadata and coordinate intelligence gathering related to cyber security",
-        "Act as a university research centre for cyber forensics",
-        "Replace national PKI for e-governance",
-        "Only conduct annual security audits for ministries"
+        "Cyber coordination and monitoring, including metadata screening and intelligence support",
+        "Only academic curriculum approval",
+        "Only software licensing management",
+        "Only online examination scheduling"
       ],
       answerIndex: 0,
-      feedback: "NCCC is described as a cyber security and e-surveillance coordination agency.",
-      hint: "Think: coordination + metadata screening."
+      feedback: "NCCC is described as a cyber coordination/monitoring setup for cyber security and e-surveillance style functions.",
+      hint: "Think: coordination + monitoring."
     },
     {
-      q: "A Botnet Cleaning Center is set up mainly to:",
+      q: "A Botnet Cleaning Center is meant to:",
       options: [
-        "Issue daily cyber advisories to critical sectors only",
-        "Detect botnets/malware and help users remove them from devices",
-        "Train only judiciary officials on cyber laws",
-        "Maintain internal security and border management"
-      ],
-      answerIndex: 1,
-      feedback: "The botnet cleaning centre helps detect and remove botnets/malware from devices.",
-      hint: "Think: citizen device cleanup."
-    },
-    {
-      q: "Which objective is emphasized in India’s approach to secure cyberspace?",
-      options: [
-        "Maximize internet usage growth",
-        "Prevent cyber attacks against critical infrastructures",
-        "Eliminate all cybersecurity incidents permanently",
-        "Replace proprietary products with only open-source software"
-      ],
-      answerIndex: 1,
-      feedback: "Preventing attacks on critical infrastructure is a key stated objective.",
-      hint: "Most realistic national objective."
-    },
-    {
-      q: "Under ‘Actions to secure cyberspace’, which item is explicitly mentioned?",
-      options: [
-        "Mandatory leaderboard-based cyber drills",
-        "Forensics and attack attribution",
-        "Only encryption of emails",
-        "A ban on vulnerability assessments"
-      ],
-      answerIndex: 1,
-      feedback: "The actions include forensics and attack attribution.",
-      hint: "Think: investigation + attribution."
-    },
-    {
-      q: "The Cyber Security Assurance Framework supports Government and CII through:",
-      options: [
-        "Enabling and Endorsing actions",
-        "Only punitive actions for non-compliance",
-        "Only international law enforcement collaboration",
-        "Only hardware procurement and replacement"
+        "Detect botnets/malware and help users remove them from infected devices",
+        "Provide email accounts to all citizens",
+        "Replace police investigation systems",
+        "Issue passports for IT professionals"
       ],
       answerIndex: 0,
-      feedback: "The chapter differentiates enabling actions and endorsing actions in the assurance framework.",
-      hint: "Two-part structure."
+      feedback: "The Botnet Cleaning Center supports detection and removal of botnets/malware from devices.",
+      hint: "Think: cleaning infected devices."
     },
     {
-      q: "Which is an example of an ‘endorsing action’ in the assurance framework?",
+      q: "Indo–US Cyber Security Forum (IUSCSF) was created mainly to:",
       options: [
-        "Publishing national security policy compliance requirements",
-        "Issuing general guidelines to facilitate IT security implementation",
-        "Assessment and certification of compliance to standards like ISO 27001 / ISMS audits",
-        "Publicity campaigns about safe password practices only"
+        "Support India–US cooperation and dialogue on cyber security issues",
+        "Maintain India’s national crime records",
+        "Operate CCTNS networks",
+        "Issue ISO certificates for companies"
       ],
-      answerIndex: 2,
-      feedback: "Endorsing actions include assessment and certification such as ISO 27001/ISMS audits.",
-      hint: "Think: third-party certification."
+      answerIndex: 0,
+      feedback: "IUSCSF is intended to strengthen cooperation and dialogue between India and the US on cyber security.",
+      hint: "Think: bilateral cooperation forum."
     },
     {
-      q: "The National Cyber Alert System (NCAS) concept emphasizes:",
+      q: "The Government of India e-mail policy is mainly about:",
       options: [
-        "Only government teams without industry involvement",
-        "A partnership between government and industry for analysis, warnings, and response",
-        "A single private company to issue all alerts",
-        "Only annual awareness workshops"
+        "Guidelines and safe practices for official e-mail usage",
+        "Replacing all internet connections with intranet",
+        "Banning password use in government",
+        "Forcing only one email provider for the private sector"
       ],
-      answerIndex: 1,
-      feedback: "NCAS highlights public-private partnership for analysis, warnings, coordinated response and restoration.",
-      hint: "Think: partnership."
+      answerIndex: 0,
+      feedback: "Email policy focuses on secure and appropriate usage guidelines for official communication.",
+      hint: "Think: usage policy and safe practice."
     },
     {
-      q: "Which activity is mentioned as part of periodic testing and evaluation of security controls?",
+      q: "DSCI (Data Security Council of India) is best described as:",
       options: [
-        "Only awareness posters",
-        "Penetration testing (announced and unannounced)",
-        "Only purchasing new routers",
-        "Only changing usernames"
+        "An industry body promoting data security and privacy culture in India",
+        "A police station networking project",
+        "A counter-terrorism intelligence grid",
+        "A malware cleaning tool"
       ],
-      answerIndex: 1,
-      feedback: "Penetration testing (announced/unannounced) is explicitly listed, along with vulnerability assessment.",
-      hint: "Think: practical testing."
+      answerIndex: 0,
+      feedback: "DSCI is an industry-led body that works to strengthen data security and privacy practices.",
+      hint: "Think: industry body + data security."
     }
   ];
 
   // =============================
   // Config
   // =============================
-  const TOTAL_CHECKPOINTS = 12;
+  const TOTAL_LAPS = 12;
+  const FINISH_AHEAD = 640; // how far the finish line spawns in front of the car (world units)
 
   const canvas = document.getElementById('c');
   const stage = document.getElementById('stage');
@@ -595,10 +574,10 @@
   const qText = document.getElementById('qText');
   const qTitle = document.getElementById('qTitle');
   const qMeta = document.getElementById('qMeta');
-  const qCP = document.getElementById('qCP');
+  const qLap = document.getElementById('qLap');
   const fbText = document.getElementById('fbText');
   const hintText = document.getElementById('hintText');
-  const cpText = document.getElementById('cpText');
+  const lapText = document.getElementById('lapText');
   const statusText = document.getElementById('statusText');
   const startBtn = document.getElementById('startBtn');
   const resetBtn = document.getElementById('resetBtn');
@@ -628,14 +607,13 @@
   function lerp(a,b,t){ return a + (b-a)*t; }
   function clamp(x,a,b){ return Math.max(a, Math.min(b, x)); }
 
-  function sampleUnique(arr, n){
+  function shuffle(arr){
     const a = arr.slice();
     for(let i=a.length-1;i>0;i--){
       const j = Math.floor(Math.random()*(i+1));
       [a[i], a[j]] = [a[j], a[i]];
     }
-    while(a.length < n) a.push(arr[Math.floor(Math.random()*arr.length)]);
-    return a.slice(0, n);
+    return a;
   }
 
   // =============================
@@ -643,7 +621,7 @@
   // =============================
   const path = [];
   const world = { y: 0 };
-  const road = { width: 260 };
+  const road = { width: 270 };
 
   function buildPath(){
     path.length = 0;
@@ -651,16 +629,16 @@
     const h = stage.getBoundingClientRect().height;
 
     const centerX = w * 0.5;
-    const startY = h + 260;
-    const endY = -1400;
+    const startY = h + 280;
+    const endY = -1600;
 
-    const segments = 90;
+    const segments = 100;
     for(let i=0;i<=segments;i++){
       const t = i / segments;
       const x = centerX
-        + Math.sin(t* Math.PI * 2.0) * 120
-        + Math.sin(t* Math.PI * 4.6) * 36
-        + (t - 0.5) * 50;
+        + Math.sin(t* Math.PI * 2.2) * 128
+        + Math.sin(t* Math.PI * 5.1) * 34
+        + (t - 0.5) * 52;
       const y = startY + (endY - startY)*t;
       path.push({x,y});
     }
@@ -675,38 +653,17 @@
     return bestI;
   }
 
-  // ✅ FIX: checkpoints are placed AHEAD of the car (above it),
-  // so they scroll down towards the car as world.y increases.
-  let checkpoints = [];
-  function buildCheckpoints(){
-    checkpoints = [];
-
-    const h = stage.getBoundingClientRect().height;
-    const carScreenY = h * 0.72;
-    const carWorldY0 = carScreenY - world.y;
-
-    const firstAhead = 220;      // first checkpoint appears soon
-    const spacing = 240;         // distance between checkpoints
-
-    for(let i=0;i<TOTAL_CHECKPOINTS;i++){
-      const targetWorldY = carWorldY0 - firstAhead - i*spacing;
-      const idx = nearestPathIndexForY(targetWorldY);
-      const p = path[idx];
-      checkpoints.push({ x: p.x, y: p.y, passed: false, idx });
-    }
-  }
-
   // =============================
-  // Particles
+  // Particles + roadside
   // =============================
   const particles = [];
   function spawnParticles(x,y, count, kind){
     for(let i=0;i<count;i++){
       const a = Math.random()*Math.PI*2;
-      const sp = (kind==='confetti' ? 60 : 90) + Math.random()*120;
-      const vx = Math.cos(a)*sp + (Math.random()-0.5)*30;
-      const vy = Math.sin(a)*sp - (kind==='dust' ? 50 : 0);
-      particles.push({ x,y, vx,vy, life:(kind==='confetti'?1.2:0.65)+Math.random()*0.4, t:0, kind, rot:Math.random()*6.28, vr:(Math.random()-0.5)*8, s:(kind==='confetti'?5:3)+Math.random()*4 });
+      const sp = (kind==='confetti' ? 70 : 110) + Math.random()*140;
+      const vx = Math.cos(a)*sp + (Math.random()-0.5)*28;
+      const vy = Math.sin(a)*sp - (kind==='dust' ? 60 : 0);
+      particles.push({ x,y, vx,vy, life:(kind==='confetti'?1.35:0.70)+Math.random()*0.45, t:0, kind, rot:Math.random()*6.28, vr:(Math.random()-0.5)*9, s:(kind==='confetti'?6:3)+Math.random()*5 });
     }
   }
   function updateParticles(dt){
@@ -714,14 +671,19 @@
       const p = particles[i];
       p.t += dt;
       const k = Math.max(0, 1 - p.t/p.life);
-      p.vy += (p.kind==='confetti' ? 120 : 170) * dt;
+      p.vy += (p.kind==='confetti' ? 120 : 180) * dt;
       p.x += p.vx * dt;
       p.y += p.vy * dt;
       p.rot += p.vr * dt;
-      p.vx *= 0.98;
+      p.vx *= 0.985;
       if(k<=0) particles.splice(i,1);
     }
   }
+
+  const roadsideLabels = [
+    "CERT-In", "NISAP", "NCIIPC", "Natgrid", "CCTNS", "NCCC",
+    "IUSCSF", "Email Policy", "Botnet Cleaning", "NCTC", "DSCI", "NCRB"
+  ];
 
   // =============================
   // State
@@ -730,16 +692,17 @@
 
   const game = {
     state: STATE.READY,
-    cpIndex: 0,
+    lapIndex: 0,
     questionsRun: [],
     currentQ: null,
-    attemptsAtCP: 0,
+    attemptsAtLap: 0,
     timeInState: 0,
     shake: 0,
     speed: 0,
     targetSpeed: 0,
     car: { x:0, y:0, tilt:0, glow:0, trail:[] },
-    tuning: { cruise: 220, burst: 320, stallTime: 1.2, preQuestionPause: 0.55, postAnswerHold: 0.85, gateRadius: 34 }
+    finish: { x:0, y:0, active:false }, // one finish line per lap
+    tuning: { cruise: 235, burst: 340, stallTime: 1.2, preQuestionPause: 0.55, postAnswerHold: 0.95, triggerRadius: 36 }
   };
 
   function setState(s){
@@ -763,17 +726,36 @@
     toastTitle.textContent = title;
     toastMsg.textContent = msg;
     toast.classList.add('show');
-    toastTimer = 2.0;
+    toastTimer = 2.2;
   }
 
-  // Questions
-  function openQuestion(cpIdx){
-    game.currentQ = game.questionsRun[cpIdx];
-    game.attemptsAtCP = 0;
+  // =============================
+  // Finish line (lap gate) logic
+  // =============================
+  function spawnFinishLineAhead(){
+    const h = stage.getBoundingClientRect().height;
+    const carScreenY = h * 0.72;
+    const carWorldY = carScreenY - world.y;
 
-    qTitle.textContent = "Checkpoint Question";
-    qMeta.textContent = "No timer. Answer to proceed.";
-    qCP.textContent = `CP ${cpIdx+1}/${TOTAL_CHECKPOINTS}`;
+    const targetWorldY = carWorldY - FINISH_AHEAD; // ahead of the car (above)
+    const idx = nearestPathIndexForY(targetWorldY);
+    const p = path[idx];
+
+    game.finish.x = p.x;
+    game.finish.y = p.y;
+    game.finish.active = true;
+  }
+
+  // =============================
+  // Questions
+  // =============================
+  function openQuestion(lapIdx){
+    game.currentQ = game.questionsRun[lapIdx];
+    game.attemptsAtLap = 0;
+
+    qTitle.textContent = "Lap Question";
+    qMeta.textContent = "No timer. Answer to start the next lap.";
+    qLap.textContent = `Lap ${lapIdx+1}/${TOTAL_LAPS}`;
     qText.textContent = game.currentQ.q;
     fbText.textContent = "";
     hintText.textContent = `Tip: ${game.currentQ.hint || "Choose the best answer."}`;
@@ -811,24 +793,24 @@
   function chooseOption(idx){
     if(game.state !== STATE.QUESTION) return;
     lockOptions(true);
-    game.attemptsAtCP += 1;
+    game.attemptsAtLap += 1;
 
     const correctIdx = game.currentQ.answerIndex;
     const correct = idx === correctIdx;
 
     if(correct){
       markOption(idx,'good');
-      fbText.textContent = "Correct. Moving ahead.";
-      beep(740, 0.08, 'sine', 0.03);
+      fbText.textContent = "Correct. Starting the next lap.";
+      beep(760, 0.08, 'sine', 0.03);
       game.car.glow = 1.0;
-      spawnParticles(game.car.x, game.car.y+20, 18, 'dust');
+      spawnParticles(game.car.x, game.car.y+20, 20, 'dust');
       setState(STATE.FEEDBACK);
       game._feedbackNext = 'advance';
     } else {
       markOption(idx,'bad');
       markOption(correctIdx,'good');
-      game.shake = 0.35;
-      fbText.textContent = (game.currentQ.feedback || "Incorrect. Review and try again.") + (game.attemptsAtCP>=2 ? " Hint: focus on the keyword (agency / initiative / objective)." : "");
+      game.shake = 0.38;
+      fbText.textContent = (game.currentQ.feedback || "Incorrect. Review and try again.");
       beep(220, 0.10, 'sawtooth', 0.015);
       setState(STATE.FEEDBACK);
       game._feedbackNext = 'retry';
@@ -842,40 +824,42 @@
     if(map[k] !== undefined){ e.preventDefault(); chooseOption(map[k]); }
   });
 
+  // =============================
   // Start/reset
+  // =============================
   function resetGame(){
     closeQuestion();
     particles.length = 0;
     game.car.trail = [];
-    game.cpIndex = 0;
+    game.lapIndex = 0;
     game.speed = 0;
     game.targetSpeed = 0;
     world.y = 0;
     game.shake = 0;
     game.car.glow = 0;
+    game.finish.active = false;
 
-    game.questionsRun = sampleUnique(QUESTIONS, TOTAL_CHECKPOINTS);
-    cpText.textContent = `Checkpoint 0/${TOTAL_CHECKPOINTS}`;
+    // exactly 12 questions for 12 laps
+    game.questionsRun = shuffle(QUESTIONS).slice(0, TOTAL_LAPS);
 
-    // rebuild checkpoints with world reset (important)
-    buildCheckpoints();
-    checkpoints.forEach(cp => cp.passed = false);
+    lapText.textContent = `Lap 0/${TOTAL_LAPS}`;
+    spawnFinishLineAhead();
 
-    showToast('good', 'Ready', 'Press Start. The first checkpoint will appear ahead.');
+    showToast('good', 'Ready', 'Press Start. Finish line will unlock the first MCQ at lap end.');
     setState(STATE.READY);
   }
 
   function startGame(){
     if(game.state === STATE.FINISHED) resetGame();
     if(game.state === STATE.RUNNING) return;
-    showToast('good', 'Go', 'Reach the checkpoint gate to unlock the MCQ.');
+    showToast('good', 'Go', 'Complete the lap. Cross the finish line to unlock the MCQ.');
     setState(STATE.RUNNING);
     game.targetSpeed = game.tuning.cruise;
   }
 
-  startBtn.addEventListener('click', startGame);
-  resetBtn.addEventListener('click', resetGame);
-  soundBtn.addEventListener('click', async () => {
+  document.getElementById('startBtn').addEventListener('click', startGame);
+  document.getElementById('resetBtn').addEventListener('click', resetGame);
+  document.getElementById('soundBtn').addEventListener('click', async () => {
     soundOn = !soundOn;
     soundBtn.textContent = `Sound: ${soundOn ? "On" : "Off"}`;
     soundBtn.setAttribute('aria-pressed', soundOn ? "true" : "false");
@@ -888,7 +872,9 @@
     }
   });
 
+  // =============================
   // Drawing helpers
+  // =============================
   function roundRect(ctx, x, y, w, h, r){
     const rr = Math.min(r, w/2, h/2);
     ctx.beginPath();
@@ -911,26 +897,38 @@
     ctx.restore();
   }
 
-  // Road
+  // =============================
+  // Road + visuals
+  // =============================
   let perfTime = 0;
+
+  function drawBackgroundStreaks(w,h){
+    // subtle speed streaks, low distraction
+    ctx.save();
+    const n = 18;
+    ctx.globalAlpha = 0.10;
+    for(let i=0;i<n;i++){
+      const x = (i*71 % Math.floor(w)) + (Math.sin(perfTime*0.7+i)*18);
+      const y = (i*121 % Math.floor(h)) + ((world.y*0.12) % 80);
+      ctx.strokeStyle = 'rgba(90,228,255,0.25)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x+10, y+30);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
   function drawRoad(){
     const w = stage.getBoundingClientRect().width;
     const h = stage.getBoundingClientRect().height;
 
-    // subtle "stars"
-    ctx.save();
-    ctx.globalAlpha = 0.22;
-    for(let i=0;i<40;i++){
-      const x = (i*73 % Math.floor(w)) + ((world.y*0.02) % 13);
-      const y = (i*151 % Math.floor(h)) + ((world.y*0.03) % 17);
-      ctx.fillStyle = 'rgba(255,255,255,0.10)';
-      ctx.fillRect(x, y, 2, 2);
-    }
-    ctx.restore();
+    drawBackgroundStreaks(w,h);
 
     const left = [];
     const right = [];
-    const margin = 240;
+    const margin = 260;
     const yMin = -margin;
     const yMax = h + margin;
 
@@ -960,14 +958,14 @@
       ctx.closePath();
 
       const g = ctx.createLinearGradient(0,0,0,h);
-      g.addColorStop(0, 'rgba(14,18,33,0.92)');
-      g.addColorStop(0.5, 'rgba(10,14,26,0.92)');
+      g.addColorStop(0, 'rgba(18,22,40,0.92)');
+      g.addColorStop(0.55, 'rgba(10,14,26,0.94)');
       g.addColorStop(1, 'rgba(8,10,18,0.98)');
       ctx.fillStyle = g;
       ctx.fill();
 
-      // edges glow
-      ctx.globalAlpha = 0.55;
+      // road edges glow
+      ctx.globalAlpha = 0.58;
       ctx.strokeStyle = 'rgba(90,228,255,0.20)';
       ctx.lineWidth = 5;
       ctx.beginPath(); ctx.moveTo(left[0].x, left[0].y);
@@ -981,100 +979,95 @@
       ctx.stroke();
 
       // center dashed line
-      ctx.globalAlpha = 0.65;
-      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+      ctx.globalAlpha = 0.60;
+      ctx.strokeStyle = 'rgba(255,255,255,0.22)';
       ctx.lineWidth = 2;
-      let lastDraw = 0;
       for(let i=1;i<path.length;i++){
         const a = {x:path[i-1].x, y:path[i-1].y + world.y};
         const b = {x:path[i].x, y:path[i].y + world.y};
         if(a.y < yMin || a.y > yMax) continue;
-        const toggle = Math.floor((a.y + world.y*0.02) / 26) % 2;
+        const toggle = Math.floor((a.y + world.y*0.03) / 26) % 2;
         if(toggle===0){
           ctx.beginPath();
           ctx.moveTo(a.x,a.y);
           ctx.lineTo(b.x,b.y);
           ctx.stroke();
-          lastDraw++;
         }
       }
+
       ctx.restore();
     }
-  }
 
-  function drawCheckpointGate(cp, idx){
-    const h = stage.getBoundingClientRect().height;
-    const x = cp.x;
-    const y = cp.y + world.y;
-    if(y < -140 || y > h + 140) return;
-
-    const passed = cp.passed;
-    const pulse = 0.5 + 0.5*Math.sin(perfTime*2.2 + idx*0.8);
-
+    // roadside micro signs (purely visual)
     ctx.save();
-    if(!passed){
-      drawGlowCircle(x, y, 110, 'rgba(90,228,255,0.25)', 0.65 * pulse);
-      drawGlowCircle(x, y, 80, 'rgba(255,209,102,0.14)', 0.45 * pulse);
+    const labelEvery = 160;
+    for(let i=0;i<12;i++){
+      const yy = (h + 140) - ((world.y*0.8 + i*labelEvery) % (h + 280));
+      const side = (i%2===0) ? -1 : 1;
+      const x = (w*0.5) + side*(road.width*0.62 + 55);
+      const pulse = 0.55 + 0.45*Math.sin(perfTime*1.6 + i);
+
+      drawGlowCircle(x, yy, 26, 'rgba(90,228,255,0.14)', 0.55*pulse);
+
+      ctx.globalAlpha = 0.9;
+      ctx.fillStyle = 'rgba(255,255,255,0.07)';
+      roundRect(ctx, x-50, yy-16, 100, 32, 10);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      ctx.fillStyle = 'rgba(234,240,255,0.84)';
+      ctx.font = '800 11px system-ui, -apple-system, Segoe UI, Roboto, Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(roadsideLabels[i], x, yy+0.5);
     }
-
-    const gateW = road.width * 0.72;
-    const postH = 46;
-    const postW = 10;
-
-    ctx.fillStyle = passed ? 'rgba(255,255,255,0.10)' : 'rgba(255,255,255,0.18)';
-    ctx.fillRect(x - gateW/2, y - postH/2, postW, postH);
-    ctx.fillRect(x + gateW/2 - postW, y - postH/2, postW, postH);
-
-    ctx.fillStyle = passed ? 'rgba(255,255,255,0.08)' : 'rgba(90,228,255,0.22)';
-    ctx.fillRect(x - gateW/2, y - postH/2, gateW, 6);
-
-    const r = 14;
-    const bx = x;
-    const by = y - postH/2 - 10;
-    drawGlowCircle(bx, by, 30, passed ? 'rgba(255,255,255,0.12)' : 'rgba(90,228,255,0.32)', passed ? 0.35 : 0.65);
-
-    ctx.beginPath(); ctx.arc(bx, by, r, 0, Math.PI*2);
-    ctx.fillStyle = passed ? 'rgba(255,255,255,0.10)' : 'rgba(10,14,26,0.65)';
-    ctx.fill();
-    ctx.strokeStyle = passed ? 'rgba(255,255,255,0.14)' : 'rgba(90,228,255,0.42)';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    ctx.fillStyle = passed ? 'rgba(234,240,255,0.55)' : 'rgba(234,240,255,0.92)';
-    ctx.font = '800 12px system-ui, -apple-system, Segoe UI, Roboto, Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(String(idx+1), bx, by+0.5);
     ctx.restore();
   }
 
-  function drawFinishLine(cp){
+  function drawFinishLine(){
+    if(!game.finish.active) return;
+
     const h = stage.getBoundingClientRect().height;
-    const x = cp.x;
-    const y = cp.y + world.y;
-    if(y < -200 || y > h + 200) return;
+    const x = game.finish.x;
+    const y = game.finish.y + world.y;
+
+    if(y < -220 || y > h + 220) return;
 
     const w = road.width * 0.90;
-    ctx.save();
-    drawGlowCircle(x, y, 140, 'rgba(53,242,140,0.18)', 0.85);
-    ctx.globalAlpha = 0.95;
 
+    ctx.save();
+    const pulse = 0.55 + 0.45*Math.sin(perfTime*2.0);
+    drawGlowCircle(x, y, 150, 'rgba(255,209,102,0.18)', 0.85*pulse);
+    drawGlowCircle(x, y, 110, 'rgba(90,228,255,0.12)', 0.75*pulse);
+
+    // stripes
     const stripes = 14;
     const stripeW = w / stripes;
-    const y0 = y - 10, hh = 20;
+    const y0 = y - 12, hh = 24;
     for(let i=0;i<stripes;i++){
-      ctx.fillStyle = (i%2===0) ? 'rgba(255,255,255,0.75)' : 'rgba(10,14,26,0.85)';
+      ctx.fillStyle = (i%2===0) ? 'rgba(255,255,255,0.78)' : 'rgba(10,14,26,0.88)';
       ctx.fillRect(x - w/2 + i*stripeW, y0, stripeW, hh);
     }
     ctx.strokeStyle = 'rgba(255,255,255,0.22)';
     ctx.lineWidth = 2;
     ctx.strokeRect(x - w/2, y0, w, hh);
 
-    ctx.fillStyle = 'rgba(234,240,255,0.9)';
-    ctx.font = '800 12px system-ui, -apple-system, Segoe UI, Roboto, Arial';
+    // banner
+    ctx.globalAlpha = 0.95;
+    ctx.fillStyle = 'rgba(255,255,255,0.08)';
+    roundRect(ctx, x - 82, y0 - 34, 164, 22, 10);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,209,102,0.28)';
+    ctx.stroke();
+
+    ctx.fillStyle = 'rgba(234,240,255,0.92)';
+    ctx.font = '900 12px system-ui, -apple-system, Segoe UI, Roboto, Arial';
     ctx.textAlign='center';
-    ctx.textBaseline='bottom';
-    ctx.fillText('FINISH', x, y0 - 8);
+    ctx.textBaseline='middle';
+    ctx.fillText('FINISH LINE', x, y0 - 23);
+
     ctx.restore();
   }
 
@@ -1083,7 +1076,9 @@
     return { p: path[idx], idx };
   }
 
-  // Car
+  // =============================
+  // Car (more attractive)
+  // =============================
   function drawCar(){
     const w = stage.getBoundingClientRect().width;
     const h = stage.getBoundingClientRect().height;
@@ -1099,19 +1094,20 @@
 
     const dx = p2.x - p.x;
     const dy = p2.y - p.y;
-    const tilt = clamp((dx / (Math.abs(dy)+1)) * 0.7, -0.5, 0.5);
+    const tilt = clamp((dx / (Math.abs(dy)+1)) * 0.7, -0.55, 0.55);
     game.car.tilt = lerp(game.car.tilt, tilt, 0.12);
 
     // trail
     game.car.trail.push({x:game.car.x, y:game.car.y, t:0});
-    if(game.car.trail.length > 18) game.car.trail.shift();
+    if(game.car.trail.length > 22) game.car.trail.shift();
 
     ctx.save();
     for(let i=0;i<game.car.trail.length;i++){
       const tr = game.car.trail[i];
       const a = i / game.car.trail.length;
-      ctx.globalAlpha = 0.14 * a;
-      drawGlowCircle(tr.x, tr.y+18, 26, 'rgba(90,228,255,0.35)', 0.6*a);
+      ctx.globalAlpha = 0.16 * a;
+      drawGlowCircle(tr.x, tr.y+18, 28, 'rgba(90,228,255,0.40)', 0.7*a);
+      drawGlowCircle(tr.x, tr.y+18, 22, 'rgba(255,77,109,0.14)', 0.55*a);
     }
     ctx.restore();
 
@@ -1119,57 +1115,87 @@
     ctx.save();
     ctx.globalAlpha = 0.35;
     ctx.beginPath();
-    ctx.ellipse(game.car.x, game.car.y+22, 24, 10, 0, 0, Math.PI*2);
-    ctx.fillStyle = 'rgba(0,0,0,0.65)';
+    ctx.ellipse(game.car.x, game.car.y+24, 28, 12, 0, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(0,0,0,0.70)';
     ctx.fill();
     ctx.restore();
 
     // glow
     if(game.car.glow > 0.01){
-      drawGlowCircle(game.car.x, game.car.y+6, 80, 'rgba(53,242,140,0.30)', 0.7*game.car.glow);
-      drawGlowCircle(game.car.x, game.car.y+6, 50, 'rgba(90,228,255,0.16)', 0.5*game.car.glow);
+      drawGlowCircle(game.car.x, game.car.y+6, 92, 'rgba(53,242,140,0.30)', 0.7*game.car.glow);
+      drawGlowCircle(game.car.x, game.car.y+6, 70, 'rgba(90,228,255,0.16)', 0.6*game.car.glow);
     }
 
     // body
     ctx.save();
     ctx.translate(game.car.x, game.car.y);
-    ctx.rotate(game.car.tilt * 0.28);
+    ctx.rotate(game.car.tilt * 0.30);
 
-    const grad = ctx.createLinearGradient(-18,-30,18,30);
-    grad.addColorStop(0, 'rgba(255,255,255,0.12)');
-    grad.addColorStop(0.35, 'rgba(90,228,255,0.22)');
-    grad.addColorStop(1, 'rgba(255,255,255,0.08)');
+    // outer shell
+    const shell = ctx.createLinearGradient(-22,-36,22,36);
+    shell.addColorStop(0, 'rgba(255,255,255,0.10)');
+    shell.addColorStop(0.35, 'rgba(90,228,255,0.28)');
+    shell.addColorStop(0.7, 'rgba(255,77,109,0.14)');
+    shell.addColorStop(1, 'rgba(255,255,255,0.07)');
 
-    ctx.fillStyle = 'rgba(255,255,255,0.12)';
-    roundRect(ctx, -18, -32, 36, 64, 14);
+    // inner neon paint (more colorful)
+    const paint = ctx.createLinearGradient(-20,-34,20,34);
+    paint.addColorStop(0, 'rgba(255,77,109,0.25)');  // pink/red
+    paint.addColorStop(0.45, 'rgba(90,228,255,0.33)'); // cyan
+    paint.addColorStop(1, 'rgba(53,242,140,0.22)'); // green
+
+    // chassis
+    ctx.fillStyle = 'rgba(255,255,255,0.10)';
+    roundRect(ctx, -21, -36, 42, 72, 16);
     ctx.fill();
 
-    ctx.fillStyle = grad;
-    roundRect(ctx, -16, -30, 32, 60, 13);
+    ctx.fillStyle = shell;
+    roundRect(ctx, -19, -34, 38, 68, 15);
     ctx.fill();
 
+    // paint layer
+    ctx.globalAlpha = 0.95;
+    ctx.fillStyle = paint;
+    roundRect(ctx, -17, -32, 34, 64, 14);
+    ctx.fill();
+
+    // window
+    ctx.globalAlpha = 0.92;
     ctx.fillStyle = 'rgba(10,14,26,0.62)';
     roundRect(ctx, -12, -18, 24, 22, 10);
     ctx.fill();
 
-    ctx.globalAlpha = 0.9;
-    ctx.fillStyle = 'rgba(53,242,140,0.16)';
-    roundRect(ctx, -4, -30, 8, 60, 6);
+    // center stripe
+    ctx.globalAlpha = 0.90;
+    ctx.fillStyle = 'rgba(255,255,255,0.14)';
+    roundRect(ctx, -4, -32, 8, 64, 6);
+    ctx.fill();
+
+    // side fins
+    ctx.globalAlpha = 0.75;
+    ctx.fillStyle = 'rgba(90,228,255,0.12)';
+    roundRect(ctx, -19, -10, 6, 30, 6);
+    roundRect(ctx, 13, -10, 6, 30, 6);
     ctx.fill();
 
     // headlights
-    ctx.globalAlpha = 0.85;
-    ctx.fillStyle = 'rgba(255,209,102,0.55)';
-    roundRect(ctx, -14, -32, 8, 10, 6);
-    roundRect(ctx, 6, -32, 8, 10, 6);
+    ctx.globalAlpha = 0.92;
+    ctx.fillStyle = 'rgba(255,209,102,0.60)';
+    roundRect(ctx, -15, -36, 9, 11, 6);
+    roundRect(ctx, 6, -36, 9, 11, 6);
     ctx.fill();
 
     // brake lights
     ctx.globalAlpha = 0.9;
-    ctx.fillStyle = (game._lastWrongBlink>0) ? 'rgba(255,77,109,0.85)' : 'rgba(255,77,109,0.25)';
-    roundRect(ctx, -14, 24, 8, 10, 6);
-    roundRect(ctx, 6, 24, 8, 10, 6);
+    ctx.fillStyle = (game._lastWrongBlink>0) ? 'rgba(255,77,109,0.88)' : 'rgba(255,77,109,0.28)';
+    roundRect(ctx, -15, 25, 9, 11, 6);
+    roundRect(ctx, 6, 25, 9, 11, 6);
     ctx.fill();
+
+    // neon underglow
+    ctx.globalAlpha = 0.75;
+    drawGlowCircle(0, 18, 42, 'rgba(90,228,255,0.24)', 0.9);
+    drawGlowCircle(0, 18, 34, 'rgba(255,77,109,0.12)', 0.8);
 
     ctx.restore();
   }
@@ -1178,16 +1204,16 @@
     for(const p of particles){
       const k = Math.max(0, 1 - p.t/p.life);
       ctx.save();
-      ctx.globalAlpha = 0.85 * k;
+      ctx.globalAlpha = 0.90 * k;
       if(p.kind === 'confetti'){
         ctx.translate(p.x, p.y);
         ctx.rotate(p.rot);
-        ctx.fillStyle = 'rgba(255,255,255,0.75)';
-        ctx.fillRect(-p.s/2, -p.s/2, p.s, p.s*0.6);
+        ctx.fillStyle = 'rgba(255,255,255,0.78)';
+        ctx.fillRect(-p.s/2, -p.s/2, p.s, p.s*0.65);
         ctx.restore();
       } else {
-        drawGlowCircle(p.x, p.y, 18*p.s/7, 'rgba(255,209,102,0.24)', 0.40*k);
-        drawGlowCircle(p.x, p.y, 12*p.s/7, 'rgba(90,228,255,0.22)', 0.30*k);
+        drawGlowCircle(p.x, p.y, 20*p.s/8, 'rgba(255,209,102,0.22)', 0.42*k);
+        drawGlowCircle(p.x, p.y, 14*p.s/8, 'rgba(90,228,255,0.22)', 0.35*k);
         ctx.restore();
       }
     }
@@ -1197,12 +1223,12 @@
     const w = stage.getBoundingClientRect().width;
     const h = stage.getBoundingClientRect().height;
     const pad = 14;
-    const barW = Math.min(520, w - 2*pad);
+    const barW = Math.min(540, w - 2*pad);
     const barH = 10;
     const x = pad;
     const y = h - pad - barH - 6;
 
-    const frac = clamp(game.cpIndex / TOTAL_CHECKPOINTS, 0, 1);
+    const frac = clamp(game.lapIndex / TOTAL_LAPS, 0, 1);
 
     ctx.save();
     ctx.globalAlpha = 0.9;
@@ -1211,35 +1237,39 @@
     ctx.fill();
 
     const g = ctx.createLinearGradient(x,y,x+barW,y);
-    g.addColorStop(0, 'rgba(90,228,255,0.55)');
+    g.addColorStop(0, 'rgba(255,77,109,0.45)');
+    g.addColorStop(0.5, 'rgba(90,228,255,0.55)');
     g.addColorStop(1, 'rgba(53,242,140,0.45)');
     ctx.fillStyle = g;
     roundRect(ctx, x, y, barW*frac, barH, 8);
     ctx.fill();
 
-    for(let i=0;i<TOTAL_CHECKPOINTS;i++){
-      const t = i/(TOTAL_CHECKPOINTS-1);
+    for(let i=0;i<TOTAL_LAPS;i++){
+      const t = i/(TOTAL_LAPS-1);
       const cx = x + t*barW;
       const cy = y + barH/2;
-      const done = (i < game.cpIndex);
-      const active = (i === game.cpIndex);
-      if(active) drawGlowCircle(cx, cy, 18, 'rgba(255,209,102,0.24)', 0.8);
+      const done = (i < game.lapIndex);
+      const active = (i === game.lapIndex);
+      if(active) drawGlowCircle(cx, cy, 18, 'rgba(255,209,102,0.22)', 0.85);
       ctx.beginPath();
       ctx.arc(cx, cy, 3.2, 0, Math.PI*2);
       ctx.fillStyle = done ? 'rgba(53,242,140,0.85)' : active ? 'rgba(255,209,102,0.85)' : 'rgba(234,240,255,0.35)';
       ctx.fill();
     }
 
-    ctx.fillStyle = 'rgba(234,240,255,0.82)';
+    ctx.fillStyle = 'rgba(234,240,255,0.84)';
     ctx.font = '700 12px system-ui, -apple-system, Segoe UI, Roboto, Arial';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'bottom';
-    ctx.fillText(`Progress: ${game.cpIndex}/${TOTAL_CHECKPOINTS}`, x, y - 6);
+    ctx.fillText(`Progress: ${game.lapIndex}/${TOTAL_LAPS} laps`, x, y - 6);
     ctx.restore();
   }
 
+  // =============================
   // Loop
+  // =============================
   let last = 0;
+
   function update(dt){
     perfTime += dt;
 
@@ -1248,7 +1278,7 @@
       if(toastTimer <= 0) toast.classList.remove('show');
     }
 
-    game.shake = Math.max(0, game.shake - dt*0.9);
+    game.shake = Math.max(0, game.shake - dt*0.95);
     game.car.glow = Math.max(0, game.car.glow - dt*0.85);
     game._lastWrongBlink = Math.max(0, (game._lastWrongBlink||0) - dt);
 
@@ -1258,15 +1288,16 @@
     if(game.state === STATE.RUNNING){
       world.y += game.speed * dt;
 
-      const next = checkpoints[game.cpIndex];
-      if(next){
-        const gateY = next.y + world.y;
-        const d = Math.abs((game.car.y) - gateY);
-        if(d < game.tuning.gateRadius){
+      // detect finish-line crossing
+      if(game.finish.active){
+        const finishY = game.finish.y + world.y; // screen y of finish line
+        const d = Math.abs(game.car.y - finishY);
+        if(d < game.tuning.triggerRadius){
+          // lap completed -> pause -> MCQ
           game.targetSpeed = 0;
           setState(STATE.STALL);
           game._stallReason = 'preQuestion';
-          showToast(null, 'Checkpoint', `Checkpoint ${game.cpIndex+1} reached. Answer to proceed.`);
+          showToast(null, 'Lap completed', `Lap ${game.lapIndex+1}: answer the MCQ to start next lap.`);
           beep(480, 0.06, 'triangle', 0.02);
         }
       }
@@ -1275,12 +1306,12 @@
     if(game.state === STATE.STALL){
       if(game._stallReason === 'preQuestion'){
         if(game.timeInState >= game.tuning.preQuestionPause){
-          openQuestion(game.cpIndex);
+          openQuestion(game.lapIndex);
           game._stallReason = null;
         }
       } else if(game._stallReason === 'wrongAnswer'){
         if(game.timeInState >= game.tuning.stallTime){
-          openQuestion(game.cpIndex);
+          openQuestion(game.lapIndex);
           game._stallReason = null;
         }
       }
@@ -1289,31 +1320,35 @@
     if(game.state === STATE.FEEDBACK){
       if(game.timeInState >= game.tuning.postAnswerHold){
         if(game._feedbackNext === 'advance'){
-          checkpoints[game.cpIndex].passed = true;
-          game.cpIndex += 1;
-          cpText.textContent = `Checkpoint ${game.cpIndex}/${TOTAL_CHECKPOINTS}`;
           closeQuestion();
 
-          if(game.cpIndex >= TOTAL_CHECKPOINTS){
+          // mark lap done
+          game.lapIndex += 1;
+          lapText.textContent = `Lap ${game.lapIndex}/${TOTAL_LAPS}`;
+
+          if(game.lapIndex >= TOTAL_LAPS){
             setState(STATE.FINISHED);
             game.targetSpeed = 0;
-            showToast('good', 'Route completed', 'You reached the finish line. Well done.');
-            for(let i=0;i<4;i++){
-              spawnParticles(game.car.x + (Math.random()-0.5)*60, game.car.y-50, 22, 'confetti');
+            showToast('good', 'Finished', 'All laps completed. Great job!');
+            for(let i=0;i<5;i++){
+              spawnParticles(game.car.x + (Math.random()-0.5)*70, game.car.y-60, 24, 'confetti');
             }
             beep(660, 0.09, 'sine', 0.03);
+            game.finish.active = false;
           } else {
+            // spawn next lap finish line ahead
+            spawnFinishLineAhead();
             setState(STATE.RUNNING);
             game.targetSpeed = game.tuning.burst;
-            game._burstTimer = 0.55;
-            showToast('good', 'Correct', 'Moving to the next checkpoint.');
+            game._burstTimer = 0.6;
+            showToast('good', 'Next lap', `Lap ${game.lapIndex+1} started. Reach the finish line.`);
           }
         } else {
           closeQuestion();
           setState(STATE.STALL);
           game._stallReason = 'wrongAnswer';
-          game._lastWrongBlink = 0.6;
-          showToast('bad', 'Try again', 'Reattempt the checkpoint question.');
+          game._lastWrongBlink = 0.65;
+          showToast('bad', 'Try again', 'Reattempt the same lap question.');
         }
       }
     }
@@ -1341,14 +1376,7 @@
     ctx.translate(sx, sy);
 
     drawRoad();
-
-    for(let i=0;i<checkpoints.length;i++){
-      if(i === checkpoints.length-1){
-        drawFinishLine(checkpoints[i]);
-      }
-      drawCheckpointGate(checkpoints[i], i);
-    }
-
+    drawFinishLine();
     drawCar();
     drawParticles();
     drawProgressHUD();
@@ -1369,12 +1397,11 @@
   function init(){
     resize();
     buildPath();
-    buildCheckpoints();
     resetGame();
     requestAnimationFrame(loop);
   }
 
-  // Rebuild on big size change
+  // Rebuild on large size change
   let lastW = 0, lastH = 0;
   setInterval(() => {
     const r = stage.getBoundingClientRect();
@@ -1382,7 +1409,7 @@
     if(Math.abs(w-lastW) > 40 || Math.abs(h-lastH) > 40){
       lastW = w; lastH = h;
       buildPath();
-      buildCheckpoints();
+      spawnFinishLineAhead();
     }
   }, 600);
 
