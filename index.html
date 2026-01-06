@@ -2,26 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cyber Lap Race — Pit Stop Checkpoint Quiz</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cyber Lap Race — Full Track + Pit Stop MCQs</title>
   <style>
     :root{
       --bg:#070A12;
       --ink:#EAF0FF;
       --muted: rgba(234,240,255,0.72);
       --card: rgba(255,255,255,0.07);
-      --card2: rgba(255,255,255,0.10);
       --stroke: rgba(255,255,255,0.14);
-      --shadow: rgba(0,0,0,0.38);
+      --shadow: rgba(0,0,0,0.40);
 
       --cyan:#5AE4FF;
       --green:#35F28C;
       --pink:#FF4D6D;
       --amber:#FFD166;
       --violet:#A78BFA;
-
-      --road:#0B1020;
-      --road2:#0A0E1A;
     }
     *{box-sizing:border-box}
     body{
@@ -29,9 +25,9 @@
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color:var(--ink);
       background:
-        radial-gradient(1100px 750px at 18% 8%, rgba(90,228,255,0.18), transparent 55%),
-        radial-gradient(900px 700px at 80% 28%, rgba(53,242,140,0.12), transparent 58%),
-        radial-gradient(900px 600px at 50% 105%, rgba(255,77,109,0.10), transparent 58%),
+        radial-gradient(1000px 650px at 18% 8%, rgba(90,228,255,0.18), transparent 55%),
+        radial-gradient(900px 650px at 78% 22%, rgba(53,242,140,0.12), transparent 58%),
+        radial-gradient(900px 650px at 50% 110%, rgba(255,77,109,0.10), transparent 58%),
         var(--bg);
       overflow-x:hidden;
     }
@@ -44,7 +40,6 @@
       gap: 12px;
     }
     @media (max-width: 980px){ .wrap{ grid-template-columns: 1fr; } }
-
     .card{
       border: 1px solid var(--stroke);
       background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
@@ -61,26 +56,15 @@
       gap: 12px;
       flex-wrap:wrap;
     }
-    .brand{
-      display:flex; align-items:center; gap:10px;
-      min-width: 260px;
-    }
+    .brand{ display:flex; align-items:center; gap:10px; min-width: 260px; }
     .logo{
       width: 14px; height: 14px; border-radius: 50%;
       background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(90,228,255,0.95) 55%, rgba(90,228,255,0.15));
       box-shadow: 0 0 18px rgba(90,228,255,0.60);
       flex: 0 0 auto;
     }
-    .title{
-      font-weight: 820;
-      letter-spacing: 0.2px;
-      line-height: 1.1;
-    }
-    .subtitle{
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 2px;
-    }
+    .title{ font-weight: 820; letter-spacing:0.2px; line-height:1.1; }
+    .subtitle{ font-size: 12px; color: var(--muted); margin-top: 2px; }
     .pills{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
     .pill{
       display:flex; gap:8px; align-items:center;
@@ -102,14 +86,13 @@
     .stage{
       position: relative;
       aspect-ratio: 16/9;
-      min-height: 320px;
+      min-height: 330px;
       background:
         radial-gradient(1000px 650px at 50% 50%, rgba(255,255,255,0.06), transparent 60%),
         linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
     }
     canvas{ width:100%; height:100%; display:block; }
 
-    /* Side panel */
     .side{ padding: 12px 14px; }
     .h2{ font-size: 14px; font-weight: 820; margin: 6px 0 10px; letter-spacing:0.2px; }
     .small{ font-size: 12px; color: var(--muted); line-height: 1.45; }
@@ -133,59 +116,13 @@
       background: linear-gradient(180deg, rgba(90,228,255,0.22), rgba(90,228,255,0.10));
     }
 
-    .legend{ display:grid; gap:10px; margin-top: 12px; }
-    .row{
-      display:flex; gap:10px; align-items:flex-start;
-      padding: 10px;
-      border: 1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.04);
-      border-radius: 14px;
-    }
-    .ico{
-      width: 34px; height: 34px; border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.06);
-      display:grid; place-items:center;
-      flex: 0 0 auto;
-    }
-    .row b{ display:block; font-size: 12.8px; margin-bottom:2px; }
-    .row span{ display:block; font-size: 12px; color: var(--muted); line-height:1.35; }
-
-    /* Toast */
-    .toast{
-      position:absolute;
-      left:50%; top: 12px;
-      transform: translateX(-50%) translateY(-10px);
-      opacity:0;
-      pointer-events:none;
-      transition: opacity .18s ease, transform .18s ease;
-      max-width: min(800px, calc(100% - 24px));
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.16);
-      background: rgba(10,14,26,0.72);
-      box-shadow: 0 18px 45px rgba(0,0,0,0.45);
-      display:flex; gap:10px; align-items:center;
-    }
-    .toast.show{ opacity:1; transform: translateX(-50%) translateY(0px); }
-    .toast .chip{
-      width: 10px; height: 10px; border-radius: 50%;
-      background: var(--cyan);
-      box-shadow: 0 0 14px rgba(90,228,255,0.65);
-      flex: 0 0 auto;
-    }
-    .toast.good .chip{ background: var(--green); box-shadow: 0 0 14px rgba(53,242,140,0.62); }
-    .toast.bad .chip{ background: var(--pink); box-shadow: 0 0 14px rgba(255,77,109,0.58); }
-    .toast b{ font-size: 13px; }
-    .toast span{ font-size: 12px; color: var(--muted); }
-
-    /* Overlay (Pit + MCQ) */
+    /* Overlay */
     .overlay{
       position:absolute; inset:0;
       display:none;
       align-items:center; justify-content:center;
       padding: 16px;
-      background: rgba(0,0,0,0.50);
+      background: rgba(0,0,0,0.52);
       backdrop-filter: blur(8px);
     }
     .overlay.show{ display:flex; }
@@ -194,26 +131,20 @@
       width: min(900px, 100%);
       border-radius: 18px;
       border: 1px solid rgba(255,255,255,0.16);
-      background: linear-gradient(180deg, rgba(10,14,26,0.90), rgba(10,14,26,0.75));
+      background: linear-gradient(180deg, rgba(10,14,26,0.92), rgba(10,14,26,0.78));
       box-shadow: 0 26px 60px rgba(0,0,0,0.55);
       overflow:hidden;
     }
-
     .phead{
-      padding: 14px 14px 12px;
+      padding: 14px;
       border-bottom: 1px solid rgba(255,255,255,0.10);
-      display:flex; align-items:flex-start; justify-content:space-between; gap: 10px;
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
       background:
-        radial-gradient(500px 220px at 20% 0%, rgba(90,228,255,0.14), transparent 60%),
+        radial-gradient(520px 240px at 20% 0%, rgba(90,228,255,0.14), transparent 60%),
         radial-gradient(520px 240px at 80% 0%, rgba(255,77,109,0.10), transparent 60%);
     }
-    .phead .t{
-      font-weight: 860;
-      letter-spacing:0.2px;
-    }
-    .phead .m{
-      font-size: 12px; color: var(--muted); margin-top: 3px;
-    }
+    .phead .t{ font-weight: 860; letter-spacing:0.2px; }
+    .phead .m{ font-size: 12px; color: var(--muted); margin-top: 3px; }
     .badgeP{
       padding: 7px 10px;
       border-radius: 999px;
@@ -222,11 +153,10 @@
       font-size: 12px;
       white-space:nowrap;
     }
-
     .pbody{ padding: 14px; }
     .pitGrid{
       display:grid;
-      grid-template-columns: 1fr 0.9fr;
+      grid-template-columns: 1fr 0.95fr;
       gap: 12px;
       align-items:stretch;
     }
@@ -244,28 +174,26 @@
       content:"";
       position:absolute; inset:-1px;
       background:
-        radial-gradient(500px 220px at 20% 20%, rgba(90,228,255,0.16), transparent 60%),
-        radial-gradient(500px 240px at 80% 30%, rgba(53,242,140,0.10), transparent 60%),
-        radial-gradient(480px 240px at 50% 110%, rgba(255,77,109,0.10), transparent 60%);
+        radial-gradient(520px 240px at 20% 20%, rgba(90,228,255,0.16), transparent 60%),
+        radial-gradient(520px 240px at 80% 30%, rgba(53,242,140,0.10), transparent 60%),
+        radial-gradient(500px 240px at 50% 110%, rgba(255,77,109,0.10), transparent 60%);
       opacity: 0.9;
       pointer-events:none;
     }
     .pitCard > *{ position: relative; z-index: 1; }
-    .pitTitleRow{
-      display:flex; align-items:center; gap:10px;
-      margin-bottom: 8px;
-    }
+
+    .pitTitleRow{ display:flex; align-items:center; gap:10px; margin-bottom:8px; }
     .pitIcon{
-      width: 42px; height: 42px; border-radius: 14px;
+      width: 44px; height: 44px; border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.16);
       background: rgba(255,255,255,0.06);
       display:grid; place-items:center;
       box-shadow: 0 10px 26px rgba(0,0,0,0.35);
+      flex:0 0 auto;
     }
     .pitName{ font-weight: 860; letter-spacing:0.2px; }
     .pitDesc{ font-size: 12px; color: rgba(234,240,255,0.76); margin-top: 1px; }
 
-    /* Service widgets */
     .widget{
       margin-top: 10px;
       border-radius: 14px;
@@ -288,18 +216,9 @@
       box-shadow: 0 0 18px rgba(90,228,255,0.25);
       transition: width 120ms linear;
     }
-    .barGlow{
-      position:absolute; inset:-20px;
-      background: radial-gradient(closest-side, rgba(90,228,255,0.16), transparent 70%);
-      opacity: 0.9;
-      pointer-events:none;
-    }
-
-    .gaugeWrap{
-      display:flex; align-items:center; gap:12px;
-    }
+    .gaugeWrap{ display:flex; gap:12px; align-items:center; }
     .gauge{
-      width: 120px; height: 70px;
+      width: 128px; height: 74px;
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,0.12);
       background: rgba(255,255,255,0.05);
@@ -308,7 +227,7 @@
       overflow:hidden;
     }
     .needle{
-      width: 3px; height: 52px;
+      width: 3px; height: 54px;
       background: rgba(255,209,102,0.9);
       transform-origin: 50% 90%;
       transform: rotate(-55deg);
@@ -318,17 +237,15 @@
     .dial{
       position:absolute; inset:0;
       background:
-        radial-gradient(60px 45px at 50% 75%, rgba(90,228,255,0.16), transparent 60%),
+        radial-gradient(66px 48px at 50% 75%, rgba(90,228,255,0.16), transparent 60%),
         linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.10));
       opacity: 0.9;
     }
-
     .scan{
-      height: 70px;
+      height: 74px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.12);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.12));
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.12));
       position:relative;
       overflow:hidden;
     }
@@ -339,10 +256,7 @@
       background: linear-gradient(90deg, transparent, rgba(90,228,255,0.35), transparent);
       animation: scan 1.2s linear infinite;
     }
-    @keyframes scan{
-      0%{ left:-30%; }
-      100%{ left: 110%; }
-    }
+    @keyframes scan{ 0%{ left:-30%; } 100%{ left: 110%; } }
 
     .crew{
       display:grid;
@@ -369,20 +283,12 @@
     .crewItem b{ display:block; font-size: 12.8px; margin-bottom:2px; }
     .crewItem span{ display:block; font-size: 12px; color: var(--muted); line-height:1.35; }
 
-    .qtext{
-      font-size: 16px;
-      line-height: 1.35;
-      margin: 0 0 12px;
-      color: rgba(234,240,255,0.95);
-    }
-    .opts{
-      display:grid; gap:10px;
-      grid-template-columns: 1fr 1fr;
-    }
+    .qtext{ font-size: 16px; line-height: 1.35; margin: 0 0 12px; color: rgba(234,240,255,0.95); }
+    .opts{ display:grid; gap:10px; grid-template-columns: 1fr 1fr; }
     @media (max-width: 640px){ .opts{ grid-template-columns: 1fr; } }
     .opt{
       text-align:left;
-      padding: 12px 12px;
+      padding: 12px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.14);
       background: rgba(255,255,255,0.05);
@@ -445,8 +351,8 @@
         <div class="brand">
           <span class="logo"></span>
           <div>
-            <div class="title">Checkpoint Lap Race</div>
-            <div class="subtitle">Each lap ends with a Pit Stop service + 1 MCQ to continue</div>
+            <div class="title">Lap Circuit Race</div>
+            <div class="subtitle">Full track shown. Complete 1 full lap → Pit Service → 1 MCQ → next lap</div>
           </div>
         </div>
 
@@ -460,18 +366,9 @@
       <div class="stage" id="stage">
         <canvas id="c"></canvas>
 
-        <div class="toast" id="toast">
-          <span class="chip"></span>
-          <div style="min-width:0">
-            <b id="toastTitle">Message</b><br/>
-            <span id="toastMsg">...</span>
-          </div>
-        </div>
-
         <div class="overlay" id="overlay" aria-modal="true" role="dialog">
           <div class="panel">
 
-            <!-- Pit Stop Panel -->
             <div id="pitPanel">
               <div class="phead">
                 <div style="min-width:0">
@@ -491,10 +388,7 @@
                         <div class="pitDesc" id="pitDesc">Crew is topping up fuel for the next sector.</div>
                       </div>
                     </div>
-
-                    <div class="widget" id="pitWidget">
-                      <!-- injected widget -->
-                    </div>
+                    <div class="widget" id="pitWidget"></div>
                   </div>
 
                   <div class="crew">
@@ -524,12 +418,11 @@
               </div>
 
               <div class="pfoot">
-                <div class="hint"><span class="spark"></span><span id="pitHint">Relax — this is a pit stop, not an exam.</span></div>
-                <div class="feedback" id="pitFoot">After service, one MCQ will unlock the next lap.</div>
+                <div class="hint"><span class="spark"></span><span id="pitHint">Pit stop visuals keep it game-like (not test-like).</span></div>
+                <div class="feedback" id="pitFoot">After the service animation, 1 MCQ unlocks the next lap.</div>
               </div>
             </div>
 
-            <!-- MCQ Panel -->
             <div id="mcqPanel" class="hidden">
               <div class="phead">
                 <div style="min-width:0">
@@ -558,14 +451,11 @@
 
     <div class="card">
       <div class="side">
-        <div class="h2">How it feels (simple)</div>
+        <div class="h2">Controls</div>
         <div class="small">
-          You drive a lap (auto). At the milestone you enter a <b>Pit Stop</b> with a different service each time.
-          After the short service animation, one MCQ appears.
-          <br/><br/>
-          <b>Correct:</b> service completes (green) → boost → next lap.
-          <br/>
-          <b>Wrong:</b> service shows a warning (amber) → retry same MCQ.
+          <b>Start</b> to begin. The car auto-drives one full lap on the visible circuit.
+          At the finish line: pit service animation → 1 MCQ.
+          Correct answer = next lap. Wrong answer = retry same MCQ.
         </div>
 
         <div class="btnrow">
@@ -574,53 +464,15 @@
           <button id="resetBtn">Reset</button>
         </div>
 
-        <div class="legend">
-          <div class="row">
-            <div class="ico">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M7 14l-2 6" stroke="rgba(234,240,255,0.9)" stroke-width="2" stroke-linecap="round"/>
-                <path d="M17 14l2 6" stroke="rgba(234,240,255,0.9)" stroke-width="2" stroke-linecap="round"/>
-                <path d="M6 14h12" stroke="rgba(234,240,255,0.75)" stroke-width="2" stroke-linecap="round"/>
-                <path d="M9 6h6l2 6H7l2-6z" fill="rgba(90,228,255,0.25)"/>
-              </svg>
-            </div>
-            <div>
-              <b>No pressure</b>
-              <span>Pit stop visuals mask evaluation and keep it game-like.</span>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="ico">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M12 2l3 7 7 3-7 3-3 7-3-7-7-3 7-3 3-7z" fill="rgba(53,242,140,0.28)"/>
-              </svg>
-            </div>
-            <div>
-              <b>1 lap = 1 MCQ</b>
-              <span>Exactly 12 laps and 12 questions. No chained MCQs at one barrier.</span>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="ico">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M7 4h10v16H7V4z" stroke="rgba(234,240,255,0.85)" stroke-width="2" />
-                <path d="M9 7h6" stroke="rgba(90,228,255,0.65)" stroke-width="2" stroke-linecap="round"/>
-                <path d="M9 11h6" stroke="rgba(53,242,140,0.55)" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div>
-              <b>Mobile-friendly</b>
-              <span>Large cards, single focus (pit/MCQ) with smooth transitions.</span>
-            </div>
-          </div>
+        <div class="h2" style="margin-top:14px;">Why this feels better</div>
+        <div class="small">
+          The whole lap is visible, so it feels like a real race circuit.
+          No “snake road”, no barrier glitches. Exactly <b>12 laps = 12 MCQs</b>.
         </div>
 
-        <div class="h2" style="margin-top:14px;">Performance tuning</div>
+        <div class="h2" style="margin-top:14px;">If it’s slow</div>
         <div class="small">
-          This version avoids heavy effects and uses a stable lap distance trigger (not collision).
-          If your device is slow, reduce “DPR cap” inside the script (look for <b>DPR_CAP</b>).
+          Lower <b>DPR_CAP</b> in the script (1.25 or 1.0). This build already pre-renders the track to an offscreen canvas for speed.
         </div>
       </div>
     </div>
@@ -629,97 +481,96 @@
 <script>
 (() => {
   // ============================================================
-  // Questions (12) — aligned to "Cyber Security Initiatives in India"
-  // (You can replace these with your chapter-derived questions.)
+  // QUESTIONS (12) — replace with your uploaded chapter MCQs if needed
   // ============================================================
   const QUESTIONS = [
-    { q: "CERT-In is primarily responsible for:", options: [
-        "Responding to cyber incidents, vulnerability reporting, and promoting IT security practices",
-        "Running state police station crime databases",
-        "Issuing passports for cyber professionals",
-        "Maintaining only a national email directory"
-      ], answer: 0, hint: "National incident response team.", fb: "CERT-In is the national agency for cyber incident response and security advisories." },
+    { q:"CERT-In is primarily responsible for:", options:[
+      "Responding to cyber incidents, vulnerability reporting, and promoting IT security practices",
+      "Running state police station crime databases",
+      "Issuing passports for cyber professionals",
+      "Maintaining only a national email directory"
+    ], answer:0, hint:"National incident response team.", fb:"CERT-In is India’s national agency for cyber incident response and advisories." },
 
-    { q: "NCIIPC is associated with protecting:", options: [
-        "Critical Information Infrastructure (CII)",
-        "Only private banking passwords",
-        "Only university LMS portals",
-        "Only social media accounts"
-      ], answer: 0, hint: "Think: CII protection.", fb: "NCIIPC is the nodal body for protection of Critical Information Infrastructure." },
+    { q:"NCIIPC is associated with protecting:", options:[
+      "Critical Information Infrastructure (CII)",
+      "Only private banking passwords",
+      "Only university LMS portals",
+      "Only social media accounts"
+    ], answer:0, hint:"Think: CII protection.", fb:"NCIIPC is the nodal body for protection of Critical Information Infrastructure." },
 
-    { q: "Natgrid (National Intelligence Grid) is best described as:", options: [
-        "An integrated intelligence grid connecting databases of core security agencies",
-        "A cyber awareness course for school students",
-        "A state-wise scholarship scheme",
-        "A VPN service for government staff"
-      ], answer: 0, hint: "Integrated grid + databases.", fb: "Natgrid enables secure access to multiple databases for intelligence/investigation." },
+    { q:"Natgrid (National Intelligence Grid) is best described as:", options:[
+      "An integrated intelligence grid connecting databases of core security agencies",
+      "A cyber awareness course for school students",
+      "A state-wise scholarship scheme",
+      "A VPN service for government staff"
+    ], answer:0, hint:"Integrated grid + databases.", fb:"Natgrid enables secure access to multiple databases for intelligence/investigation." },
 
-    { q: "CCTNS aims mainly to:", options: [
-        "Network police stations and enable crime/criminal tracking across locations",
-        "Replace CERT-In operations",
-        "Publish ISO standards for networks",
-        "Provide only cyber posters"
-      ], answer: 0, hint: "Police network + tracking.", fb: "CCTNS links police stations and supports nationwide crime and criminal tracking." },
+    { q:"CCTNS aims mainly to:", options:[
+      "Network police stations and enable crime/criminal tracking across locations",
+      "Replace CERT-In operations",
+      "Publish ISO standards for networks",
+      "Provide only cyber posters"
+    ], answer:0, hint:"Police network + tracking.", fb:"CCTNS links police stations and supports nationwide crime and criminal tracking." },
 
-    { q: "NCCC is intended primarily for:", options: [
-        "Cyber coordination and monitoring with intelligence support",
-        "Only academic curriculum approval",
-        "Only software licensing management",
-        "Only online exam scheduling"
-      ], answer: 0, hint: "Coordination + monitoring.", fb: "NCCC is described as a cyber coordination/monitoring center supporting national security." },
+    { q:"NCCC is intended primarily for:", options:[
+      "Cyber coordination and monitoring with intelligence support",
+      "Only academic curriculum approval",
+      "Only software licensing management",
+      "Only online exam scheduling"
+    ], answer:0, hint:"Coordination + monitoring.", fb:"NCCC is described as a cyber coordination/monitoring center supporting national security." },
 
-    { q: "A Botnet Cleaning Center is meant to:", options: [
-        "Detect botnets/malware and help users remove them from infected devices",
-        "Provide email accounts to all citizens",
-        "Replace police investigation systems",
-        "Issue ISO certificates"
-      ], answer: 0, hint: "Cleaning infected devices.", fb: "Botnet cleaning initiatives help detect and remove infections from user devices." },
+    { q:"A Botnet Cleaning Center is meant to:", options:[
+      "Detect botnets/malware and help users remove them from infected devices",
+      "Provide email accounts to all citizens",
+      "Replace police investigation systems",
+      "Issue ISO certificates"
+    ], answer:0, hint:"Cleaning infected devices.", fb:"Botnet cleaning initiatives help detect and remove infections from user devices." },
 
-    { q: "NISAP focuses mainly on:", options: [
-        "Information security awareness and implementation support aligned to ISMS practices",
-        "Border management and disaster response",
-        "Tax intelligence database integration",
-        "Replacing security tools with only open-source tools"
-      ], answer: 0, hint: "ISMS-like awareness.", fb: "NISAP supports strengthening information security practices and awareness." },
+    { q:"NISAP focuses mainly on:", options:[
+      "Information security awareness and implementation support aligned to ISMS practices",
+      "Border management and disaster response",
+      "Tax intelligence database integration",
+      "Replacing security tools with only open-source tools"
+    ], answer:0, hint:"ISMS-like awareness.", fb:"NISAP supports strengthening information security practices and awareness." },
 
-    { q: "NCTC (proposed) was mainly to:", options: [
-        "Coordinate counter-terrorism measures among state and central agencies",
-        "Certify mobile phones for secure use",
-        "Run cyber forensics labs in every district",
-        "Issue email rules for universities"
-      ], answer: 0, hint: "Counter-terror coordination.", fb: "NCTC was proposed as a centralized mechanism for counter-terror coordination." },
+    { q:"NCTC (proposed) was mainly to:", options:[
+      "Coordinate counter-terrorism measures among state and central agencies",
+      "Certify mobile phones for secure use",
+      "Run cyber forensics labs in every district",
+      "Issue email rules for universities"
+    ], answer:0, hint:"Counter-terror coordination.", fb:"NCTC was proposed as a centralized mechanism for counter-terror coordination." },
 
-    { q: "Government e-mail policy is mainly about:", options: [
-        "Guidelines and safe practices for official e-mail usage",
-        "Replacing internet with intranet",
-        "Banning passwords in government",
-        "Forcing only one email provider for private sector"
-      ], answer: 0, hint: "Usage guidelines.", fb: "Email policy focuses on secure, appropriate use of official email systems." },
+    { q:"Government e-mail policy is mainly about:", options:[
+      "Guidelines and safe practices for official e-mail usage",
+      "Replacing internet with intranet",
+      "Banning passwords in government",
+      "Forcing only one email provider for private sector"
+    ], answer:0, hint:"Usage guidelines.", fb:"Email policy focuses on secure, appropriate use of official email systems." },
 
-    { q: "Indo–US Cyber Security Forum (IUSCSF) supports:", options: [
-        "Bilateral cooperation and dialogue on cyber security issues",
-        "Maintaining India’s national crime records",
-        "Operating CCTNS networks",
-        "Issuing ISO certificates"
-      ], answer: 0, hint: "Bilateral forum.", fb: "IUSCSF strengthens cooperation and dialogue between India and the US on cyber security." },
+    { q:"Indo–US Cyber Security Forum (IUSCSF) supports:", options:[
+      "Bilateral cooperation and dialogue on cyber security issues",
+      "Maintaining India’s national crime records",
+      "Operating CCTNS networks",
+      "Issuing ISO certificates"
+    ], answer:0, hint:"Bilateral forum.", fb:"IUSCSF strengthens cooperation and dialogue between India and the US on cyber security." },
 
-    { q: "DSCI (Data Security Council of India) is best described as:", options: [
-        "An industry-led body promoting data security and privacy culture in India",
-        "A police station networking project",
-        "A counter-terror intelligence grid",
-        "A malware cleaning tool"
-      ], answer: 0, hint: "Industry body + data security.", fb: "DSCI works with industry and stakeholders to strengthen data protection practices." },
+    { q:"DSCI (Data Security Council of India) is best described as:", options:[
+      "An industry-led body promoting data security and privacy culture in India",
+      "A police station networking project",
+      "A counter-terror intelligence grid",
+      "A malware cleaning tool"
+    ], answer:0, hint:"Industry body + data security.", fb:"DSCI works with industry and stakeholders to strengthen data protection practices." },
 
-    { q: "Which is a typical NCIIPC-related activity?", options: [
-        "Malware analysis and alerts/advisories for critical sectors",
-        "Issuing driving licenses for cyber vehicles",
-        "Only publishing cyber news articles",
-        "Only doing annual university rankings"
-      ], answer: 0, hint: "Think: technical operations.", fb: "NCIIPC supports monitoring, analysis, and advisories for critical infrastructure security." },
+    { q:"Which is a typical NCIIPC-related activity?", options:[
+      "Malware analysis and alerts/advisories for critical sectors",
+      "Issuing driving licenses for cyber vehicles",
+      "Only publishing cyber news articles",
+      "Only doing annual university rankings"
+    ], answer:0, hint:"Think: technical operations.", fb:"NCIIPC supports monitoring, analysis, and advisories for critical infrastructure security." },
   ];
 
   // ============================================================
-  // 12 Pit Stop services (one per lap) — visual variety
+  // 12 SERVICES (one per lap)
   // ============================================================
   const SERVICES = [
     { name:"Fuel Refill", desc:"Topping up fuel for the next sector.", kind:"bar", color:"cyan", crew:[
@@ -785,38 +636,27 @@
   ];
 
   // ============================================================
-  // Canvas + rendering
+  // DOM
   // ============================================================
   const stage = document.getElementById('stage');
   const canvas = document.getElementById('c');
   const ctx = canvas.getContext('2d');
 
-  const DPR_CAP = 1.5;  // reduce if needed (1.25 / 1.0)
-  let dpr = 1;
-
-  function resize(){
-    const r = stage.getBoundingClientRect();
-    dpr = Math.min(DPR_CAP, window.devicePixelRatio || 1);
-    canvas.width = Math.floor(r.width * dpr);
-    canvas.height = Math.floor(r.height * dpr);
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-  }
-  window.addEventListener('resize', resize);
-
-  // ============================================================
-  // UI
-  // ============================================================
   const overlay = document.getElementById('overlay');
   const pitPanel = document.getElementById('pitPanel');
   const mcqPanel = document.getElementById('mcqPanel');
 
+  const lapText = document.getElementById('lapText');
+  const crewText = document.getElementById('crewText');
+  const stateText = document.getElementById('stateText');
+
   const pitHeaderTitle = document.getElementById('pitHeaderTitle');
-  const pitHeaderMeta = document.getElementById('pitHeaderMeta');
-  const pitLapBadge = document.getElementById('pitLapBadge');
-  const pitIcon = document.getElementById('pitIcon');
-  const pitName = document.getElementById('pitName');
-  const pitDesc = document.getElementById('pitDesc');
-  const pitWidget = document.getElementById('pitWidget');
+  const pitHeaderMeta  = document.getElementById('pitHeaderMeta');
+  const pitLapBadge    = document.getElementById('pitLapBadge');
+  const pitIcon        = document.getElementById('pitIcon');
+  const pitName        = document.getElementById('pitName');
+  const pitDesc        = document.getElementById('pitDesc');
+  const pitWidget      = document.getElementById('pitWidget');
 
   const crewA = document.getElementById('crewA');
   const crewB = document.getElementById('crewB');
@@ -828,27 +668,18 @@
   const crewCT = document.getElementById('crewCT');
   const crewCD = document.getElementById('crewCD');
 
-  const qTitle = document.getElementById('qTitle');
-  const qMeta = document.getElementById('qMeta');
-  const qLap = document.getElementById('qLap');
+  const qLap  = document.getElementById('qLap');
   const qText = document.getElementById('qText');
   const optsDiv = document.getElementById('opts');
   const hintText = document.getElementById('hintText');
   const fbText = document.getElementById('fbText');
 
-  const lapText = document.getElementById('lapText');
-  const crewText = document.getElementById('crewText');
-  const stateText = document.getElementById('stateText');
-
-  const toast = document.getElementById('toast');
-  const toastTitle = document.getElementById('toastTitle');
-  const toastMsg = document.getElementById('toastMsg');
-
-  // Buttons
   document.getElementById('startBtn').addEventListener('click', startGame);
   document.getElementById('resetBtn').addEventListener('click', resetGame);
 
-  // Sound
+  // ============================================================
+  // Sound (optional)
+  // ============================================================
   let soundOn = false;
   let audioCtx = null;
   const soundBtn = document.getElementById('soundBtn');
@@ -860,7 +691,7 @@
       try{
         if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         if(audioCtx.state === "suspended") await audioCtx.resume();
-        beep(600, 0.05, 'triangle', 0.02);
+        beep(620, 0.05, 'triangle', 0.02);
       }catch(_){}
     }
   });
@@ -878,57 +709,72 @@
     o.stop(t0 + dur);
   }
 
-  // Toast
-  let toastTimer = 0;
-  function showToast(type, title, msg){
-    toast.classList.remove('good','bad');
-    if(type==='good') toast.classList.add('good');
-    if(type==='bad') toast.classList.add('bad');
-    toastTitle.textContent = title;
-    toastMsg.textContent = msg;
-    toast.classList.add('show');
-    toastTimer = 2.1;
+  // ============================================================
+  // Helpers
+  // ============================================================
+  function clamp(x,a,b){ return Math.max(a, Math.min(b,x)); }
+  function lerp(a,b,t){ return a + (b-a)*t; }
+  function shuffle(arr){
+    const a = arr.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
   }
 
   // ============================================================
-  // Game state (distance-based lap = stable)
+  // Canvas sizing
+  // ============================================================
+  const DPR_CAP = 1.5;
+  let dpr = 1;
+  function resize(){
+    const r = stage.getBoundingClientRect();
+    dpr = Math.min(DPR_CAP, window.devicePixelRatio || 1);
+    canvas.width = Math.floor(r.width * dpr);
+    canvas.height = Math.floor(r.height * dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    buildTrack(); // rebuild with new size
+  }
+  window.addEventListener('resize', resize);
+
+  // ============================================================
+  // GAME STATE
   // ============================================================
   const TOTAL_LAPS = 12;
-  const LAP_DISTANCE = 1900; // tune: 1600-2200 for pacing
-  const STATE = {
-    READY:"READY",
-    RUN:"RUN",
-    PIT:"PIT",
-    MCQ:"MCQ",
-    FEED:"FEED",
-    DONE:"DONE"
-  };
+  const STATE = { READY:"READY", RUN:"RUN", PIT:"PIT", MCQ:"MCQ", FEED:"FEED", DONE:"DONE" };
 
   const game = {
     state: STATE.READY,
     lap: 0,
-    lapDist: 0,
-    milestoneArmed: true,
 
+    // lap progress along closed path: s in [0,1)
+    s: 0,
+    prevS: 0,
+    lapCounted: false,
+
+    // speeds
     speed: 0,
     targetSpeed: 0,
-    cruise: 250,
-    boost: 345,
+    cruise: 0.16,  // laps per second (0.16 => ~6.25s per lap). Increase for faster.
+    boost: 0.22,
 
-    carGlow: 0,
+    // effects
+    glow: 0,
     shake: 0,
     wrongBlink: 0,
 
-    // streak for crew stars
     streak: 0,
 
-    // pit timings
+    // pit
     pitT: 0,
-    pitDuration: 2.4, // service animation time (not too long)
+    pitDuration: 2.2,
+    pitWidgetMode: "bar",
+    pitProgress: 0,
+    pitNeedle: -55,
 
-    // MCQ
+    // questions
     qOrder: [],
-    qIndex: 0,
     currentQ: null,
     canAnswer: true,
     feedbackNext: null,
@@ -947,80 +793,38 @@
       s===STATE.DONE ? "Finished" : s;
   }
 
-  // ============================================================
-  // Utility
-  // ============================================================
-  function clamp(x,a,b){ return Math.max(a, Math.min(b,x)); }
-  function lerp(a,b,t){ return a + (b-a)*t; }
-  function shuffle(arr){
-    const a = arr.slice();
-    for(let i=a.length-1;i>0;i--){
-      const j = Math.floor(Math.random()*(i+1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
+  function updateCrewStars(){
+    const s = game.streak;
+    const stars =
+      s >= 5 ? 5 :
+      s >= 3 ? 4 :
+      s >= 2 ? 3 :
+      s >= 1 ? 2 : 1;
+    const str = "★★★★★".slice(0, stars) + "☆☆☆☆☆".slice(0, 5-stars);
+    crewText.textContent = `Crew ${str}`;
   }
 
   // ============================================================
-  // Road model: cheap procedural centerline (fast, no lag)
+  // Overlay controls
   // ============================================================
-  function roadCenterX(yWorld, w){
-    // gentle curves; stable and cheap
-    const cx = w * 0.5;
-    const a = Math.sin(yWorld * 0.0042) * 120;
-    const b = Math.sin(yWorld * 0.0110 + 1.7) * 38;
-    const c = Math.sin(yWorld * 0.0016 + 0.9) * 26;
-    return cx + a + b + c;
+  function showPit(){
+    overlay.classList.add("show");
+    pitPanel.classList.remove("hidden");
+    mcqPanel.classList.add("hidden");
   }
-
-  function roadSlope(yWorld){
-    // derivative-ish to tilt car
-    const dx = (roadCenterX(yWorld + 12, stageW) - roadCenterX(yWorld - 12, stageW));
-    return clamp(dx / 24, -3, 3);
+  function showMCQ(){
+    overlay.classList.add("show");
+    pitPanel.classList.add("hidden");
+    mcqPanel.classList.remove("hidden");
   }
-
-  let stageW=0, stageH=0;
-
-  // ============================================================
-  // Particles (capped)
-  // ============================================================
-  const particles = [];
-  const MAX_PARTICLES = 90;
-
-  function spawnParticles(x,y, n, kind){
-    for(let i=0;i<n;i++){
-      if(particles.length >= MAX_PARTICLES) break;
-      const a = Math.random()*Math.PI*2;
-      const sp = (kind==='confetti' ? 60 : 110) + Math.random()*130;
-      const vx = Math.cos(a)*sp;
-      const vy = Math.sin(a)*sp - (kind==='dust' ? 60 : 0);
-      particles.push({
-        x,y, vx,vy,
-        t:0,
-        life: (kind==='confetti'?1.4:0.7) + Math.random()*0.35,
-        kind,
-        rot: Math.random()*6.28,
-        vr: (Math.random()-0.5)*9,
-        s: (kind==='confetti'?6:3)+Math.random()*5
-      });
-    }
-  }
-  function updateParticles(dt){
-    for(let i=particles.length-1;i>=0;i--){
-      const p = particles[i];
-      p.t += dt;
-      const k = 1 - p.t/p.life;
-      p.vy += (p.kind==='confetti' ? 110 : 180) * dt;
-      p.x += p.vx * dt;
-      p.y += p.vy * dt;
-      p.vx *= 0.985;
-      p.rot += p.vr * dt;
-      if(k <= 0) particles.splice(i,1);
-    }
+  function hideOverlay(){
+    overlay.classList.remove("show");
+    pitPanel.classList.remove("hidden");
+    mcqPanel.classList.add("hidden");
   }
 
   // ============================================================
-  // Pit UI (varies per lap)
+  // PIT UI
   // ============================================================
   function serviceColorToken(svc){
     const map = { cyan:"var(--cyan)", green:"var(--green)", pink:"var(--pink)", amber:"var(--amber)", violet:"var(--violet)" };
@@ -1028,67 +832,49 @@
   }
 
   function iconSVG(name, color){
-    // simple inline icons; cheap
     const c = color;
     const common = `stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"`;
-    if(name.toLowerCase().includes("fuel")){
+    const n = name.toLowerCase();
+    if(n.includes("fuel")){
       return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-        <path ${common} d="M6 3h8v18H6z"/>
-        <path ${common} d="M14 8h2l2 2v9a2 2 0 0 1-2 2h-2"/>
-        <path ${common} d="M8 7h4"/>
+        <path ${common} d="M6 3h8v18H6z"/><path ${common} d="M14 8h2l2 2v9a2 2 0 0 1-2 2h-2"/><path ${common} d="M8 7h4"/>
       </svg>`;
     }
-    if(name.toLowerCase().includes("tyre") || name.toLowerCase().includes("wheel")){
+    if(n.includes("tyre") || n.includes("wheel")){
       return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-        <circle ${common} cx="12" cy="12" r="8"/>
-        <circle ${common} cx="12" cy="12" r="3"/>
-        <path ${common} d="M12 4v2M12 18v2M4 12h2M18 12h2"/>
+        <circle ${common} cx="12" cy="12" r="8"/><circle ${common} cx="12" cy="12" r="3"/><path ${common} d="M12 4v2M12 18v2M4 12h2M18 12h2"/>
       </svg>`;
     }
-    if(name.toLowerCase().includes("oil")){
+    if(n.includes("oil")){
       return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-        <path ${common} d="M10 3h4v5h-4z"/>
-        <path ${common} d="M8 8h8v13H8z"/>
-        <path ${common} d="M9 12h6"/>
+        <path ${common} d="M10 3h4v5h-4z"/><path ${common} d="M8 8h8v13H8z"/><path ${common} d="M9 12h6"/>
       </svg>`;
     }
-    if(name.toLowerCase().includes("brake")){
+    if(n.includes("brake")){
       return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-        <circle ${common} cx="12" cy="12" r="8"/>
-        <path ${common} d="M12 7v10"/>
-        <path ${common} d="M9 9h6"/>
+        <circle ${common} cx="12" cy="12" r="8"/><path ${common} d="M12 7v10"/><path ${common} d="M9 9h6"/>
       </svg>`;
     }
-    if(name.toLowerCase().includes("scan") || name.toLowerCase().includes("ecu") || name.toLowerCase().includes("sensor")){
+    if(n.includes("scan") || n.includes("ecu") || n.includes("sensor") || n.includes("inspection")){
       return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-        <rect ${common} x="5" y="6" width="14" height="12" rx="2"/>
-        <path ${common} d="M8 10h8M8 14h6"/>
+        <rect ${common} x="5" y="6" width="14" height="12" rx="2"/><path ${common} d="M8 10h8M8 14h6"/>
       </svg>`;
     }
-    if(name.toLowerCase().includes("coolant")){
+    if(n.includes("coolant")){
       return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-        <path ${common} d="M12 3v10"/>
-        <path ${common} d="M9 13a3 3 0 1 0 6 0"/>
-        <path ${common} d="M8 21h8"/>
+        <path ${common} d="M12 3v10"/><path ${common} d="M9 13a3 3 0 1 0 6 0"/><path ${common} d="M8 21h8"/>
       </svg>`;
     }
-    if(name.toLowerCase().includes("turbo")){
+    if(n.includes("turbo")){
       return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-        <path ${common} d="M4 14a8 8 0 1 1 16 0"/>
-        <path ${common} d="M12 12l4-3"/>
-        <path ${common} d="M7 18h10"/>
+        <path ${common} d="M4 14a8 8 0 1 1 16 0"/><path ${common} d="M12 12l4-3"/><path ${common} d="M7 18h10"/>
       </svg>`;
     }
-    // default wrench-ish
     return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-      <path ${common} d="M14 7a4 4 0 0 0-6 4l-5 5 3 3 5-5a4 4 0 0 0 4-6z"/>
-      <path ${common} d="M9 14l1 1"/>
+      <path ${common} d="M14 7a4 4 0 0 0-6 4l-5 5 3 3 5-5a4 4 0 0 0 4-6z"/><path ${common} d="M9 14l1 1"/>
     </svg>`;
   }
 
-  let pitWidgetMode = "bar";
-  let pitProgress = 0;
-  let pitNeedle = -55; // degrees
   function setPitUI(lapIndex, phaseText){
     const svc = SERVICES[lapIndex];
     const col = serviceColorToken(svc);
@@ -1115,22 +901,19 @@
     }
 
     // widget
-    pitWidgetMode = svc.kind;
-    pitProgress = 0;
-    pitNeedle = -55;
+    game.pitWidgetMode = svc.kind;
+    game.pitProgress = 0;
+    game.pitNeedle = -55;
 
-    if(pitWidgetMode === "bar"){
+    if(game.pitWidgetMode === "bar"){
       pitWidget.innerHTML = `
         <div class="small" style="margin-bottom:8px; color: rgba(234,240,255,0.82)">
           <b style="color:${col}">Service</b> progress
         </div>
-        <div class="bar">
-          <div class="barGlow"></div>
-          <div class="barFill" id="barFill"></div>
-        </div>
+        <div class="bar"><div class="barFill" id="barFill"></div></div>
         <div class="small" style="margin-top:10px">Crew is working…</div>
       `;
-    } else if(pitWidgetMode === "gauge"){
+    } else if(game.pitWidgetMode === "gauge"){
       pitWidget.innerHTML = `
         <div class="small" style="margin-bottom:8px; color: rgba(234,240,255,0.82)">
           <b style="color:${col}">Calibration</b> gauge
@@ -1141,12 +924,12 @@
             <div class="needle" id="needle"></div>
           </div>
           <div>
-            <div class="small">Target zone: <b style="color:${col}">Stable</b></div>
+            <div class="small">Target: <b style="color:${col}">Stable</b></div>
             <div class="small" style="margin-top:6px">Needle settles when ready.</div>
           </div>
         </div>
       `;
-    } else { // scan
+    } else {
       pitWidget.innerHTML = `
         <div class="small" style="margin-bottom:8px; color: rgba(234,240,255,0.82)">
           <b style="color:${col}">Diagnostics</b> scan
@@ -1157,56 +940,9 @@
     }
   }
 
-  function showPit(){
-    overlay.classList.add("show");
-    pitPanel.classList.remove("hidden");
-    mcqPanel.classList.add("hidden");
-  }
-  function showMCQ(){
-    overlay.classList.add("show");
-    pitPanel.classList.add("hidden");
-    mcqPanel.classList.remove("hidden");
-  }
-  function hideOverlay(){
-    overlay.classList.remove("show");
-    pitPanel.classList.remove("hidden");
-    mcqPanel.classList.add("hidden");
-  }
-
   // ============================================================
   // MCQ
   // ============================================================
-  function openMCQ(){
-    game.currentQ = game.qOrder[game.lap]; // one Q per lap (fixed)
-    game.canAnswer = true;
-
-    qTitle.textContent = "Checkpoint Question";
-    qMeta.textContent = "Answer correctly to complete the service and start the next lap.";
-    qLap.textContent = `Lap ${game.lap+1}/${TOTAL_LAPS}`;
-
-    qText.textContent = game.currentQ.q;
-    hintText.textContent = `Tip: ${game.currentQ.hint || "Choose the best answer."}`;
-    fbText.textContent = "";
-
-    optsDiv.innerHTML = "";
-    const letters = ["A","B","C","D"];
-    game.currentQ.options.forEach((t,i) => {
-      const el = document.createElement("div");
-      el.className = "opt";
-      el.dataset.idx = String(i);
-      el.innerHTML = `<div class="badge">${letters[i]}</div>
-                      <div style="min-width:0">
-                        <div style="font-weight:760; font-size:13px; line-height:1.25">${t}</div>
-                      </div>`;
-      el.addEventListener("click", () => choose(i));
-      optsDiv.appendChild(el);
-    });
-
-    showMCQ();
-    setState(STATE.MCQ);
-    beep(520, 0.06, 'triangle', 0.02);
-  }
-
   function lockOptions(lock){
     [...optsDiv.querySelectorAll(".opt")].forEach(el => {
       el.style.pointerEvents = lock ? "none" : "auto";
@@ -1216,6 +952,31 @@
   function mark(i, cls){
     const el = optsDiv.querySelector(`.opt[data-idx="${i}"]`);
     if(el) el.classList.add(cls);
+  }
+
+  function openMCQ(){
+    game.currentQ = game.qOrder[game.lap];
+    game.canAnswer = true;
+    qLap.textContent = `Lap ${game.lap+1}/${TOTAL_LAPS}`;
+    qText.textContent = game.currentQ.q;
+    hintText.textContent = `Tip: ${game.currentQ.hint || "Choose the best answer."}`;
+    fbText.textContent = "";
+    optsDiv.innerHTML = "";
+
+    const letters = ["A","B","C","D"];
+    game.currentQ.options.forEach((t,i) => {
+      const el = document.createElement("div");
+      el.className = "opt";
+      el.dataset.idx = String(i);
+      el.innerHTML = `<div class="badge">${letters[i]}</div>
+                      <div style="min-width:0"><div style="font-weight:760; font-size:13px; line-height:1.25">${t}</div></div>`;
+      el.addEventListener("click", () => choose(i));
+      optsDiv.appendChild(el);
+    });
+
+    showMCQ();
+    setState(STATE.MCQ);
+    beep(520, 0.06, 'triangle', 0.02);
   }
 
   function choose(i){
@@ -1231,18 +992,17 @@
       fbText.textContent = "Correct. Service completed. Starting next lap…";
       game.feedbackNext = "advance";
       game.streak += 1;
-      game.carGlow = 1.0;
-      spawnParticles(game.carX, game.carY + 18, 16, "dust");
+      game.glow = 1.0;
       beep(760, 0.08, 'sine', 0.03);
       setState(STATE.FEED);
-    }else{
+    } else {
       mark(i,"bad");
       mark(correct,"good");
       fbText.textContent = game.currentQ.fb || "Incorrect. Review and try again.";
       game.feedbackNext = "retry";
       game.streak = 0;
       game.shake = 0.35;
-      game.wrongBlink = 0.7;
+      game.wrongBlink = 0.8;
       beep(220, 0.10, 'sawtooth', 0.015);
       setState(STATE.FEED);
     }
@@ -1259,17 +1019,576 @@
   });
 
   // ============================================================
-  // Crew stars (motivation, not "marks")
+  // TRACK: full circuit shown (pre-rendered to offscreen canvas)
   // ============================================================
-  function updateCrewStars(){
-    const s = game.streak;
-    const stars =
-      s >= 5 ? 5 :
-      s >= 3 ? 4 :
-      s >= 2 ? 3 :
-      s >= 1 ? 2 : 1;
-    const str = "★★★★★".slice(0, stars) + "☆☆☆☆☆".slice(0, 5-stars);
-    crewText.textContent = `Crew ${str}`;
+  let W=0,H=0;
+  const track = {
+    pts: [],     // centerline points
+    tang: [],    // tangents (unit)
+    nrm: [],     // normals (unit)
+    len: 0,
+    width: 0,
+    startIdx: 0, // finish line index
+    pitIdx: 0,
+    mapCanvas: null,
+    mapCtx: null
+  };
+
+  function unit(x,y){
+    const m = Math.hypot(x,y) || 1;
+    return {x:x/m,y:y/m};
+  }
+
+  function buildTrack(){
+    const r = stage.getBoundingClientRect();
+    W = r.width; H = r.height;
+
+    const cx = W*0.52;
+    const cy = H*0.52;
+
+    // A nice circuit: "rounded rectangle / speedway" with subtle variation.
+    // Parameter t in [0,2π)
+    const a = Math.min(W,H)*0.34;
+    const b = Math.min(W,H)*0.26;
+
+    const wobA = 0.10;
+    const wobB = 0.06;
+
+    const N = 900; // resolution
+    const pts = [];
+    for(let i=0;i<N;i++){
+      const t = (i/N) * Math.PI*2;
+
+      // base ellipse
+      let x = cx + a * Math.cos(t);
+      let y = cy + b * Math.sin(t);
+
+      // add a subtle "circuit character" without snake feel
+      x += Math.sin(2*t + 0.6) * a * wobA * 0.25;
+      y += Math.sin(3*t + 1.1) * b * wobB * 0.25;
+
+      // add a gentle chicane-like bulge on one side
+      const bump = Math.exp(-Math.pow((t - 1.35),2)/(2*0.18*0.18));
+      x += bump * 18;
+      y -= bump * 10;
+
+      pts.push({x,y});
+    }
+
+    // compute tangents/normals
+    const tang = new Array(N);
+    const nrm  = new Array(N);
+    for(let i=0;i<N;i++){
+      const p0 = pts[(i-1+N)%N];
+      const p1 = pts[(i+1)%N];
+      const u = unit(p1.x - p0.x, p1.y - p0.y);
+      tang[i] = u;
+      nrm[i] = {x: -u.y, y: u.x};
+    }
+
+    track.pts = pts;
+    track.tang = tang;
+    track.nrm = nrm;
+    track.width = Math.min(W,H) * 0.14; // road width
+    track.startIdx = Math.floor(N * 0.02); // near top-left-ish
+    track.pitIdx = (track.startIdx + Math.floor(N*0.03)) % N;
+
+    // build offscreen map (fast render each frame)
+    track.mapCanvas = document.createElement('canvas');
+    track.mapCanvas.width = Math.floor(W * dpr);
+    track.mapCanvas.height = Math.floor(H * dpr);
+    track.mapCtx = track.mapCanvas.getContext('2d');
+    track.mapCtx.setTransform(dpr,0,0,dpr,0,0);
+    renderTrackToMap();
+  }
+
+  function renderTrackToMap(){
+    const mctx = track.mapCtx;
+    if(!mctx) return;
+
+    mctx.clearRect(0,0,W,H);
+
+    // background: grass + subtle texture
+    const g = mctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0, "rgba(10,16,30,0.72)");
+    g.addColorStop(1, "rgba(8,10,18,0.80)");
+    mctx.fillStyle = g;
+    mctx.fillRect(0,0,W,H);
+
+    // "grass" speckles
+    mctx.save();
+    mctx.globalAlpha = 0.12;
+    for(let i=0;i<700;i++){
+      const x = Math.random()*W;
+      const y = Math.random()*H;
+      const r = 1 + Math.random()*2.5;
+      mctx.fillStyle = (Math.random()<0.5) ? "rgba(53,242,140,0.25)" : "rgba(90,228,255,0.18)";
+      mctx.beginPath(); mctx.arc(x,y,r,0,Math.PI*2); mctx.fill();
+    }
+    mctx.restore();
+
+    // outer glow halo for the track area (cheap and effective)
+    mctx.save();
+    mctx.globalAlpha = 0.22;
+    mctx.strokeStyle = "rgba(90,228,255,0.25)";
+    mctx.lineWidth = track.width + 46;
+    mctx.lineCap = "round";
+    mctx.beginPath();
+    const p0 = track.pts[0];
+    mctx.moveTo(p0.x,p0.y);
+    for(const p of track.pts) mctx.lineTo(p.x,p.y);
+    mctx.closePath();
+    mctx.stroke();
+    mctx.restore();
+
+    // asphalt (broad stroke)
+    mctx.save();
+    mctx.lineCap = "round";
+    mctx.lineJoin = "round";
+    mctx.strokeStyle = "rgba(10,14,26,0.96)";
+    mctx.lineWidth = track.width;
+    mctx.beginPath();
+    mctx.moveTo(track.pts[0].x, track.pts[0].y);
+    for(const p of track.pts) mctx.lineTo(p.x,p.y);
+    mctx.closePath();
+    mctx.stroke();
+    mctx.restore();
+
+    // asphalt texture dots (light)
+    mctx.save();
+    mctx.globalAlpha = 0.14;
+    for(let i=0;i<1200;i++){
+      const idx = Math.floor(Math.random()*track.pts.length);
+      const p = track.pts[idx];
+      const nx = track.nrm[idx].x, ny = track.nrm[idx].y;
+      const off = (Math.random()-0.5) * (track.width*0.85);
+      const x = p.x + nx*off + (Math.random()-0.5)*2;
+      const y = p.y + ny*off + (Math.random()-0.5)*2;
+      mctx.fillStyle = (Math.random()<0.5) ? "rgba(255,255,255,0.18)" : "rgba(0,0,0,0.35)";
+      mctx.fillRect(x,y,1,1);
+    }
+    mctx.restore();
+
+    // kerbs: red/white stripes near edges
+    function drawKerb(sideSign, alpha){
+      mctx.save();
+      mctx.globalAlpha = alpha;
+      mctx.lineCap = "butt";
+      mctx.lineWidth = 8;
+      for(let i=0;i<track.pts.length;i+=10){
+        const p = track.pts[i];
+        const nx = track.nrm[i].x, ny = track.nrm[i].y;
+        const x = p.x + nx * sideSign * (track.width*0.52);
+        const y = p.y + ny * sideSign * (track.width*0.52);
+        const on = (Math.floor(i/10) % 2) === 0;
+        mctx.strokeStyle = on ? "rgba(255,77,109,0.85)" : "rgba(255,255,255,0.75)";
+        mctx.beginPath();
+        mctx.moveTo(x, y);
+        const p2 = track.pts[(i+8)%track.pts.length];
+        const x2 = p2.x + track.nrm[(i+8)%track.pts.length].x * sideSign * (track.width*0.52);
+        const y2 = p2.y + track.nrm[(i+8)%track.pts.length].y * sideSign * (track.width*0.52);
+        mctx.lineTo(x2,y2);
+        mctx.stroke();
+      }
+      mctx.restore();
+    }
+    drawKerb(+1, 0.85);
+    drawKerb(-1, 0.85);
+
+    // center dashed line
+    mctx.save();
+    mctx.globalAlpha = 0.55;
+    mctx.lineWidth = 2;
+    mctx.strokeStyle = "rgba(255,255,255,0.22)";
+    for(let i=0;i<track.pts.length;i+=16){
+      const p = track.pts[i];
+      const p2 = track.pts[(i+8)%track.pts.length];
+      mctx.beginPath();
+      mctx.moveTo(p.x,p.y);
+      mctx.lineTo(p2.x,p2.y);
+      mctx.stroke();
+    }
+    mctx.restore();
+
+    // finish line + pit entry
+    drawFinishAndPit();
+  }
+
+  function drawFinishAndPit(){
+    const mctx = track.mapCtx;
+    const N = track.pts.length;
+
+    // finish line as a checkered band
+    const i = track.startIdx;
+    const p = track.pts[i];
+    const t = track.tang[i];
+    const n = track.nrm[i];
+
+    const w = track.width*0.90;
+    const h = 18;
+
+    mctx.save();
+    mctx.translate(p.x, p.y);
+    mctx.rotate(Math.atan2(t.y, t.x));
+    mctx.globalAlpha = 0.95;
+
+    // checkers
+    const cols = 12;
+    for(let c=0;c<cols;c++){
+      mctx.fillStyle = (c%2===0) ? "rgba(255,255,255,0.85)" : "rgba(0,0,0,0.85)";
+      mctx.fillRect(-w/2 + (c/cols)*w, -h/2, w/cols, h);
+    }
+    mctx.strokeStyle = "rgba(90,228,255,0.25)";
+    mctx.lineWidth = 2;
+    mctx.strokeRect(-w/2, -h/2, w, h);
+
+    mctx.restore();
+
+    // pit lane marker
+    const j = track.pitIdx;
+    const pp = track.pts[j];
+    const tt = track.tang[j];
+
+    mctx.save();
+    mctx.translate(pp.x, pp.y);
+    mctx.rotate(Math.atan2(tt.y, tt.x));
+    mctx.globalAlpha = 0.9;
+    mctx.fillStyle = "rgba(255,209,102,0.25)";
+    mctx.fillRect(-track.width*0.45, -track.width*0.25, track.width*0.9, track.width*0.18);
+    mctx.fillStyle = "rgba(255,209,102,0.85)";
+    mctx.font = "700 11px system-ui, -apple-system, Segoe UI, Roboto, Arial";
+    mctx.textAlign = "center";
+    mctx.textBaseline = "middle";
+    mctx.fillText("PIT", 0, -track.width*0.17);
+    mctx.restore();
+  }
+
+  // ============================================================
+  // Particles (light)
+  // ============================================================
+  const particles = [];
+  const MAX_PARTICLES = 90;
+  function spawnParticles(x,y,n,kind){
+    for(let i=0;i<n;i++){
+      if(particles.length>=MAX_PARTICLES) break;
+      const a = Math.random()*Math.PI*2;
+      const sp = (kind==='confetti'?60:120) + Math.random()*140;
+      particles.push({
+        x,y,
+        vx: Math.cos(a)*sp,
+        vy: Math.sin(a)*sp,
+        t:0,
+        life: (kind==='confetti'?1.4:0.7)+Math.random()*0.35,
+        kind,
+        rot: Math.random()*6.28,
+        vr: (Math.random()-0.5)*9,
+        s: (kind==='confetti'?6:3)+Math.random()*5
+      });
+    }
+  }
+  function updateParticles(dt){
+    for(let i=particles.length-1;i>=0;i--){
+      const p = particles[i];
+      p.t += dt;
+      const k = 1 - p.t/p.life;
+      p.vy += (p.kind==='confetti'?110:200)*dt;
+      p.x += p.vx*dt;
+      p.y += p.vy*dt;
+      p.vx *= 0.985;
+      p.rot += p.vr*dt;
+      if(k<=0) particles.splice(i,1);
+    }
+  }
+  function drawParticles(){
+    for(const p of particles){
+      const k = Math.max(0, 1 - p.t/p.life);
+      ctx.save();
+      ctx.globalAlpha = 0.9*k;
+      if(p.kind==='confetti'){
+        ctx.translate(p.x,p.y);
+        ctx.rotate(p.rot);
+        ctx.fillStyle = "rgba(255,255,255,0.78)";
+        ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*0.65);
+      } else {
+        const r = 18*p.s/8;
+        const g = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,r);
+        g.addColorStop(0,"rgba(255,209,102,0.22)");
+        g.addColorStop(1,"rgba(0,0,0,0)");
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.arc(p.x,p.y,r,0,Math.PI*2); ctx.fill();
+      }
+      ctx.restore();
+    }
+  }
+
+  // ============================================================
+  // Car drawing (bigger + cleaner top-down)
+  // ============================================================
+  function roundRectPath(x,y,w,h,r){
+    const rr = Math.min(r, w/2, h/2);
+    ctx.beginPath();
+    ctx.moveTo(x+rr,y);
+    ctx.arcTo(x+w,y,x+w,y+h,rr);
+    ctx.arcTo(x+w,y+h,x,y+h,rr);
+    ctx.arcTo(x,y+h,x,y,rr);
+    ctx.arcTo(x,y,x+w,y,rr);
+    ctx.closePath();
+  }
+
+  function drawCar(x,y,angle){
+    // shadow
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.rotate(angle);
+
+    ctx.globalAlpha = 0.28;
+    ctx.fillStyle = "rgba(0,0,0,0.85)";
+    ctx.beginPath();
+    ctx.ellipse(0, 16, 18, 9, 0, 0, Math.PI*2);
+    ctx.fill();
+
+    // glow
+    if(game.glow>0.02){
+      ctx.globalAlpha = 0.55*game.glow;
+      let g = ctx.createRadialGradient(0,10,0,0,10,60);
+      g.addColorStop(0,"rgba(53,242,140,0.20)");
+      g.addColorStop(1,"rgba(0,0,0,0)");
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(0,10,60,0,Math.PI*2); ctx.fill();
+    }
+
+    // body
+    ctx.globalAlpha = 1;
+    const shell = ctx.createLinearGradient(-20,-40,20,40);
+    shell.addColorStop(0, "rgba(255,77,109,0.34)");
+    shell.addColorStop(0.45, "rgba(90,228,255,0.42)");
+    shell.addColorStop(1, "rgba(53,242,140,0.28)");
+
+    // chassis outer
+    ctx.fillStyle = "rgba(255,255,255,0.10)";
+    roundRectPath(-18,-36,36,72,16);
+    ctx.fill();
+
+    // chassis inner
+    ctx.fillStyle = shell;
+    roundRectPath(-15,-33,30,66,14);
+    ctx.fill();
+
+    // center stripe
+    ctx.fillStyle = "rgba(255,255,255,0.14)";
+    roundRectPath(-4,-33,8,66,6);
+    ctx.fill();
+
+    // window
+    ctx.fillStyle = "rgba(10,14,26,0.65)";
+    roundRectPath(-11,-18,22,24,10);
+    ctx.fill();
+
+    // wheels
+    ctx.fillStyle = "rgba(0,0,0,0.70)";
+    roundRectPath(-19,-26,6,14,4); ctx.fill();
+    roundRectPath(13,-26,6,14,4); ctx.fill();
+    roundRectPath(-19,12,6,14,4); ctx.fill();
+    roundRectPath(13,12,6,14,4); ctx.fill();
+
+    // headlights
+    ctx.fillStyle = "rgba(255,209,102,0.68)";
+    roundRectPath(-12,-36,8,10,5); ctx.fill();
+    roundRectPath(4,-36,8,10,5); ctx.fill();
+
+    // brake lights blink on wrong
+    ctx.fillStyle = (game.wrongBlink>0) ? "rgba(255,77,109,0.88)" : "rgba(255,77,109,0.32)";
+    roundRectPath(-12,26,8,10,5); ctx.fill();
+    roundRectPath(4,26,8,10,5); ctx.fill();
+
+    // tiny spoiler highlight
+    ctx.globalAlpha = 0.9;
+    ctx.fillStyle = "rgba(255,255,255,0.10)";
+    roundRectPath(-12,34,24,6,4);
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  // ============================================================
+  // Render + update
+  // ============================================================
+  let last=0;
+  function tick(ts){
+    if(!last) last = ts;
+    const dt = Math.min(0.033, (ts-last)/1000);
+    last = ts;
+
+    game.tState += dt;
+
+    // effects decay
+    game.shake = Math.max(0, game.shake - dt*0.95);
+    game.glow = Math.max(0, game.glow - dt*0.85);
+    game.wrongBlink = Math.max(0, game.wrongBlink - dt);
+
+    // speed easing
+    game.speed = lerp(game.speed, game.targetSpeed, 0.07);
+
+    if(game.state === STATE.RUN){
+      game.prevS = game.s;
+      game.s = (game.s + game.speed*dt) % 1;
+
+      // detect lap completion when crossing start index region
+      // stable: we consider lap complete when s wraps around from near 1 to near 0
+      if(game.prevS > 0.92 && game.s < 0.08){
+        // complete exactly one lap event
+        setState(STATE.PIT);
+        game.targetSpeed = 0;
+        game.pitT = 0;
+
+        showPit();
+        setPitUI(game.lap, "Crew is servicing your car…");
+        beep(480, 0.06, "triangle", 0.02);
+      }
+    }
+
+    if(game.state === STATE.PIT){
+      game.pitT += dt;
+
+      // animate pit widgets
+      if(game.pitWidgetMode === "bar"){
+        game.pitProgress = clamp(game.pitT / game.pitDuration, 0, 1);
+        const bf = document.getElementById("barFill");
+        if(bf) bf.style.width = `${Math.floor(game.pitProgress*100)}%`;
+      } else if(game.pitWidgetMode === "gauge"){
+        const t = clamp(game.pitT / game.pitDuration, 0, 1);
+        game.pitNeedle = lerp(-55, 5, t);
+        const nd = document.getElementById("needle");
+        if(nd) nd.style.transform = `rotate(${game.pitNeedle}deg)`;
+      }
+
+      if(game.pitT >= game.pitDuration){
+        setPitUI(game.lap, "Service paused — quick checkpoint question.");
+        openMCQ();
+      }
+    }
+
+    if(game.state === STATE.FEED){
+      const hold = 0.95;
+      if(game.tState >= hold){
+        if(game.feedbackNext === "advance"){
+          hideOverlay();
+          game.lap += 1;
+          updateCrewStars();
+          lapText.textContent = `Lap ${game.lap}/${TOTAL_LAPS}`;
+
+          if(game.lap >= TOTAL_LAPS){
+            setState(STATE.DONE);
+            game.targetSpeed = 0;
+            // confetti at finish
+            const fp = track.pts[track.startIdx];
+            spawnParticles(fp.x, fp.y, 36, "confetti");
+            spawnParticles(fp.x+20, fp.y-10, 36, "confetti");
+            beep(660, 0.10, "sine", 0.03);
+          } else {
+            // next lap: reset car slightly after line for nice flow
+            game.s = 0.08;
+            game.prevS = game.s;
+            setState(STATE.RUN);
+            game.targetSpeed = game.boost;
+            game.glow = 1.0;
+            // boost dust near car
+            const car = sampleTrack(game.s);
+            spawnParticles(car.x, car.y, 14, "dust");
+            beep(740, 0.06, "triangle", 0.02);
+
+            // drop boost back to cruise after a moment
+            game._boostT = 0.65;
+          }
+        } else {
+          // retry: short pit then same MCQ again
+          setState(STATE.PIT);
+          game.pitT = 0;
+          showPit();
+          setPitUI(game.lap, "Issue detected — quick re-check needed.");
+          game.pitDuration = 1.3;
+        }
+      }
+    }
+
+    if(game._boostT){
+      game._boostT -= dt;
+      if(game._boostT <= 0){
+        game._boostT = null;
+        if(game.state === STATE.RUN) game.targetSpeed = game.cruise;
+      }
+    }
+
+    updateParticles(dt);
+    render(dt);
+
+    requestAnimationFrame(tick);
+  }
+
+  function render(dt){
+    ctx.clearRect(0,0,W,H);
+
+    // camera shake on wrong
+    const sx = (Math.random()-0.5) * 8 * game.shake;
+    const sy = (Math.random()-0.5) * 8 * game.shake;
+    ctx.save();
+    ctx.translate(sx,sy);
+
+    // draw pre-rendered track
+    if(track.mapCanvas) ctx.drawImage(track.mapCanvas, 0, 0, W, H);
+
+    // draw "lap progress ring" and lap label
+    drawHUD();
+
+    // draw car on track
+    const car = sampleTrack(game.s);
+    // car angle follows tangent
+    const ang = Math.atan2(car.ty, car.tx) + Math.PI/2; // rotate to align body
+    drawCar(car.x, car.y, ang);
+
+    // draw particles on top
+    drawParticles();
+
+    ctx.restore();
+  }
+
+  function drawHUD(){
+    // small ring + lap progress text
+    const pad = 14;
+    const r = 16;
+    const x = pad + 20;
+    const y = H - pad - 30;
+
+    // ring
+    ctx.save();
+    ctx.globalAlpha = 0.95;
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = "rgba(255,255,255,0.16)";
+    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.stroke();
+
+    const frac = (game.state===STATE.RUN || game.state===STATE.DONE) ? game.s : (game.s);
+    ctx.strokeStyle = "rgba(90,228,255,0.55)";
+    ctx.beginPath();
+    ctx.arc(x,y,r, -Math.PI/2, -Math.PI/2 + Math.PI*2*frac);
+    ctx.stroke();
+
+    // text
+    ctx.fillStyle = "rgba(234,240,255,0.84)";
+    ctx.font = "700 12px system-ui, -apple-system, Segoe UI, Roboto, Arial";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "middle";
+    const lapShown = Math.min(game.lap, TOTAL_LAPS);
+    ctx.fillText(`Lap ${lapShown}/${TOTAL_LAPS}`, x+28, y);
+
+    ctx.restore();
+  }
+
+  function sampleTrack(s){
+    const N = track.pts.length;
+    const idx = Math.floor(s * N) % N;
+    const p = track.pts[idx];
+    const t = track.tang[idx];
+    return {x:p.x, y:p.y, tx:t.x, ty:t.y, idx};
   }
 
   // ============================================================
@@ -1280,492 +1599,36 @@
     particles.length = 0;
 
     game.lap = 0;
-    game.lapDist = 0;
-    game.milestoneArmed = true;
+    game.s = 0.10;
+    game.prevS = game.s;
 
     game.speed = 0;
     game.targetSpeed = 0;
 
-    game.carGlow = 0;
+    game.glow = 0;
     game.shake = 0;
     game.wrongBlink = 0;
 
     game.streak = 0;
     updateCrewStars();
 
-    // fixed 12 questions, one per lap (shuffle once)
-    const q = shuffle(QUESTIONS).slice(0, TOTAL_LAPS);
-    game.qOrder = q;
+    game.pitDuration = 2.2;
+
+    game.qOrder = shuffle(QUESTIONS).slice(0, TOTAL_LAPS);
 
     lapText.textContent = `Lap 0/${TOTAL_LAPS}`;
-    showToast("good","Ready","Press Start. Each lap ends with a different Pit Stop service + 1 MCQ.");
     setState(STATE.READY);
   }
 
   function startGame(){
     if(game.state === STATE.DONE) resetGame();
     if(game.state === STATE.RUN) return;
-    showToast("good","Go","Enjoy the lap. The milestone triggers a pit stop (not a sudden quiz).");
     setState(STATE.RUN);
     game.targetSpeed = game.cruise;
+    // start particles near car
+    const car = sampleTrack(game.s);
+    spawnParticles(car.x, car.y, 10, "dust");
   }
-
-  // ============================================================
-  // Drawing
-  // ============================================================
-  function roundRect(x,y,w,h,r){
-    const rr = Math.min(r, w/2, h/2);
-    ctx.beginPath();
-    ctx.moveTo(x+rr,y);
-    ctx.arcTo(x+w,y,x+w,y+h,rr);
-    ctx.arcTo(x+w,y+h,x,y+h,rr);
-    ctx.arcTo(x,y+h,x,y,rr);
-    ctx.arcTo(x,y,x+w,y,rr);
-    ctx.closePath();
-  }
-  function glowCircle(x,y,r, rgba, a){
-    ctx.save();
-    ctx.globalAlpha = a;
-    const g = ctx.createRadialGradient(x,y,0,x,y,r);
-    g.addColorStop(0, rgba);
-    g.addColorStop(1, "rgba(0,0,0,0)");
-    ctx.fillStyle = g;
-    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
-    ctx.restore();
-  }
-
-  function drawRoad(worldY){
-    const w = stageW, h = stageH;
-    const roadW = Math.min(320, Math.max(260, w*0.33));
-    const step = 24;
-
-    // subtle background streaks (cheap)
-    ctx.save();
-    ctx.globalAlpha = 0.10;
-    ctx.strokeStyle = "rgba(90,228,255,0.25)";
-    ctx.lineWidth = 2;
-    for(let i=0;i<10;i++){
-      const x = (i*83 % w) + Math.sin((worldY*0.002)+i)*18;
-      const y = (i*127 % h) + ((worldY*0.12) % 80);
-      ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+10,y+30); ctx.stroke();
-    }
-    ctx.restore();
-
-    // road fill path
-    const left = [];
-    const right = [];
-    for(let sy=-80; sy<=h+80; sy+=step){
-      const yW = sy - worldY;
-      const cx = roadCenterX(yW, w);
-      left.push({x: cx - roadW/2, y: sy});
-      right.push({x: cx + roadW/2, y: sy});
-    }
-
-    ctx.save();
-    // road body
-    ctx.beginPath();
-    ctx.moveTo(left[0].x, left[0].y);
-    for(const p of left) ctx.lineTo(p.x,p.y);
-    for(let i=right.length-1;i>=0;i--) ctx.lineTo(right[i].x, right[i].y);
-    ctx.closePath();
-
-    const g = ctx.createLinearGradient(0,0,0,h);
-    g.addColorStop(0, "rgba(11,16,32,0.95)");
-    g.addColorStop(0.55, "rgba(10,14,26,0.96)");
-    g.addColorStop(1, "rgba(8,10,18,0.98)");
-    ctx.fillStyle = g;
-    ctx.fill();
-
-    // colored lane edges
-    ctx.globalAlpha = 0.95;
-    ctx.lineWidth = 6;
-    ctx.strokeStyle = "rgba(90,228,255,0.22)"; // left edge cyan glow
-    ctx.beginPath(); ctx.moveTo(left[0].x, left[0].y);
-    for(const p of left) ctx.lineTo(p.x,p.y);
-    ctx.stroke();
-
-    ctx.strokeStyle = "rgba(53,242,140,0.18)"; // right edge green glow
-    ctx.beginPath(); ctx.moveTo(right[0].x, right[0].y);
-    for(const p of right) ctx.lineTo(p.x,p.y);
-    ctx.stroke();
-
-    // rumble strips (cheap rectangles near edges)
-    ctx.globalAlpha = 0.55;
-    for(let i=0;i<left.length;i++){
-      const pL = left[i], pR = right[i];
-      const on = (Math.floor((pL.y + worldY*0.08)/34) % 2) === 0;
-      if(!on) continue;
-      ctx.fillStyle = "rgba(255,255,255,0.14)";
-      ctx.fillRect(pL.x+6, pL.y-4, 16, 8);
-      ctx.fillRect(pR.x-22, pR.y-4, 16, 8);
-    }
-
-    // center dashed
-    ctx.globalAlpha = 0.60;
-    ctx.strokeStyle = "rgba(255,255,255,0.22)";
-    ctx.lineWidth = 2;
-    for(let sy=-80; sy<=h+80; sy+=step){
-      const yW = sy - worldY;
-      const cx = roadCenterX(yW, w);
-      const on = (Math.floor((sy + worldY*0.04)/28) % 2) === 0;
-      if(!on) continue;
-      ctx.beginPath();
-      ctx.moveTo(cx, sy-10);
-      ctx.lineTo(cx, sy+10);
-      ctx.stroke();
-    }
-
-    // "corner apex" highlight (thin band, cheap)
-    ctx.globalAlpha = 0.35;
-    const apexY = h*0.45;
-    const yWA = apexY - worldY;
-    const cxA = roadCenterX(yWA, w);
-    glowCircle(cxA, apexY, 130, "rgba(255,209,102,0.20)", 0.85);
-
-    ctx.restore();
-  }
-
-  function drawCar(worldY){
-    const w = stageW, h = stageH;
-    const carY = h * 0.72;
-    const carWorldY = carY - worldY;
-    const carX = roadCenterX(carWorldY, w);
-
-    game.carX = carX;
-    game.carY = carY;
-
-    // tilt by slope
-    const slope = roadSlope(carWorldY);
-    const tilt = clamp(slope * 0.22, -0.55, 0.55);
-
-    // shadow
-    ctx.save();
-    ctx.globalAlpha = 0.38;
-    ctx.beginPath();
-    ctx.ellipse(carX, carY+26, 30, 12, 0, 0, Math.PI*2);
-    ctx.fillStyle = "rgba(0,0,0,0.75)";
-    ctx.fill();
-    ctx.restore();
-
-    // glow
-    if(game.carGlow > 0.02){
-      glowCircle(carX, carY+10, 92, "rgba(53,242,140,0.26)", 0.8*game.carGlow);
-      glowCircle(carX, carY+10, 72, "rgba(90,228,255,0.16)", 0.7*game.carGlow);
-    }
-
-    // body
-    ctx.save();
-    ctx.translate(carX, carY);
-    ctx.rotate(tilt * 0.30);
-
-    const shell = ctx.createLinearGradient(-22,-36,22,36);
-    shell.addColorStop(0, "rgba(255,255,255,0.10)");
-    shell.addColorStop(0.35, "rgba(90,228,255,0.32)");
-    shell.addColorStop(0.7, "rgba(255,77,109,0.16)");
-    shell.addColorStop(1, "rgba(255,255,255,0.08)");
-
-    const paint = ctx.createLinearGradient(-20,-34,20,34);
-    paint.addColorStop(0, "rgba(255,77,109,0.28)");
-    paint.addColorStop(0.5, "rgba(90,228,255,0.36)");
-    paint.addColorStop(1, "rgba(53,242,140,0.22)");
-
-    // chassis
-    ctx.fillStyle = "rgba(255,255,255,0.10)";
-    roundRect(-21, -36, 42, 72, 16);
-    ctx.fill();
-
-    ctx.fillStyle = shell;
-    roundRect(-19, -34, 38, 68, 15);
-    ctx.fill();
-
-    ctx.globalAlpha = 0.96;
-    ctx.fillStyle = paint;
-    roundRect(-17, -32, 34, 64, 14);
-    ctx.fill();
-
-    // window
-    ctx.globalAlpha = 0.92;
-    ctx.fillStyle = "rgba(10,14,26,0.62)";
-    roundRect(-12, -18, 24, 22, 10);
-    ctx.fill();
-
-    // stripe
-    ctx.globalAlpha = 0.92;
-    ctx.fillStyle = "rgba(255,255,255,0.14)";
-    roundRect(-4, -32, 8, 64, 6);
-    ctx.fill();
-
-    // headlights
-    ctx.globalAlpha = 0.94;
-    ctx.fillStyle = "rgba(255,209,102,0.62)";
-    roundRect(-15, -36, 9, 11, 6);
-    roundRect(6, -36, 9, 11, 6);
-    ctx.fill();
-
-    // brake lights blink on wrong
-    ctx.globalAlpha = 0.92;
-    ctx.fillStyle = (game.wrongBlink>0) ? "rgba(255,77,109,0.88)" : "rgba(255,77,109,0.28)";
-    roundRect(-15, 25, 9, 11, 6);
-    roundRect(6, 25, 9, 11, 6);
-    ctx.fill();
-
-    // underglow
-    ctx.globalAlpha = 0.75;
-    glowCircle(0, 18, 42, "rgba(90,228,255,0.22)", 0.95);
-    glowCircle(0, 18, 34, "rgba(255,77,109,0.12)", 0.85);
-
-    ctx.restore();
-  }
-
-  function drawParticles(){
-    for(const p of particles){
-      const k = Math.max(0, 1 - p.t/p.life);
-      ctx.save();
-      ctx.globalAlpha = 0.90 * k;
-      if(p.kind === "confetti"){
-        ctx.translate(p.x, p.y);
-        ctx.rotate(p.rot);
-        ctx.fillStyle = "rgba(255,255,255,0.78)";
-        ctx.fillRect(-p.s/2, -p.s/2, p.s, p.s*0.65);
-      } else {
-        glowCircle(p.x, p.y, 18*p.s/8, "rgba(255,209,102,0.18)", 0.40*k);
-        glowCircle(p.x, p.y, 14*p.s/8, "rgba(90,228,255,0.18)", 0.34*k);
-      }
-      ctx.restore();
-    }
-  }
-
-  function drawHUD(){
-    const w = stageW, h = stageH;
-    const pad = 14;
-    const barW = Math.min(560, w - 2*pad);
-    const barH = 10;
-    const x = pad, y = h - pad - barH - 6;
-
-    const lapFrac = clamp(game.lap / TOTAL_LAPS, 0, 1);
-    const distFrac = clamp(game.lapDist / LAP_DISTANCE, 0, 1);
-
-    ctx.save();
-    ctx.globalAlpha = 0.9;
-
-    // progress bar (laps)
-    ctx.fillStyle = "rgba(255,255,255,0.06)";
-    roundRect(x, y, barW, barH, 8);
-    ctx.fill();
-
-    const g = ctx.createLinearGradient(x,y,x+barW,y);
-    g.addColorStop(0, "rgba(255,77,109,0.45)");
-    g.addColorStop(0.5, "rgba(90,228,255,0.55)");
-    g.addColorStop(1, "rgba(53,242,140,0.45)");
-    ctx.fillStyle = g;
-    roundRect(x, y, barW*lapFrac, barH, 8);
-    ctx.fill();
-
-    // lap distance marker (tiny)
-    const mx = x + barW*lapFrac;
-    glowCircle(mx, y+barH/2, 18, "rgba(255,209,102,0.20)", 0.9);
-    ctx.beginPath(); ctx.arc(mx, y+barH/2, 3.2, 0, Math.PI*2);
-    ctx.fillStyle = "rgba(255,209,102,0.9)";
-    ctx.fill();
-
-    // distance ring at top-left (simple)
-    const rx = x + 18, ry = y - 40;
-    ctx.globalAlpha = 0.95;
-    glowCircle(rx, ry, 18, "rgba(90,228,255,0.14)", 0.8);
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = "rgba(255,255,255,0.18)";
-    ctx.beginPath(); ctx.arc(rx, ry, 14, 0, Math.PI*2); ctx.stroke();
-    ctx.strokeStyle = "rgba(90,228,255,0.55)";
-    ctx.beginPath(); ctx.arc(rx, ry, 14, -Math.PI/2, -Math.PI/2 + Math.PI*2*distFrac); ctx.stroke();
-
-    ctx.fillStyle = "rgba(234,240,255,0.84)";
-    ctx.font = "700 12px system-ui, -apple-system, Segoe UI, Roboto, Arial";
-    ctx.textAlign = "left"; ctx.textBaseline = "bottom";
-    ctx.fillText(`Lap distance`, x+40, y - 34);
-
-    ctx.restore();
-  }
-
-  // ============================================================
-  // Update loop
-  // ============================================================
-  let last = 0;
-  function tick(ts){
-    if(!last) last = ts;
-    const dt = Math.min(0.033, (ts-last)/1000);
-    last = ts;
-
-    // update stage sizes
-    const r = stage.getBoundingClientRect();
-    stageW = r.width;
-    stageH = r.height;
-
-    // toast
-    if(toastTimer > 0){
-      toastTimer -= dt;
-      if(toastTimer <= 0) toast.classList.remove("show");
-    }
-
-    // state time
-    game.tState += dt;
-
-    // effects
-    game.shake = Math.max(0, game.shake - dt*0.95);
-    game.carGlow = Math.max(0, game.carGlow - dt*0.85);
-    game.wrongBlink = Math.max(0, game.wrongBlink - dt);
-
-    // speed easing
-    game.speed = lerp(game.speed, game.targetSpeed, 0.07);
-
-    // world movement uses accumulated distance
-    if(game.state === STATE.RUN){
-      game.lapDist += game.speed * dt;
-
-      // Lap completion trigger (single, stable)
-      if(game.milestoneArmed && game.lapDist >= LAP_DISTANCE){
-        game.milestoneArmed = false;                 // HARD LOCK (prevents chaining)
-        game.targetSpeed = 0;
-        setState(STATE.PIT);
-        game.pitT = 0;
-        showPit();
-
-        const svc = SERVICES[game.lap];
-        setPitUI(game.lap, "Crew is servicing your car…");
-        showToast(null, "Pit Stop", `${svc.name}: complete the service to continue.`);
-
-        beep(480, 0.06, "triangle", 0.02);
-      }
-    }
-
-    // PIT animation
-    if(game.state === STATE.PIT){
-      game.pitT += dt;
-      const svc = SERVICES[game.lap];
-
-      // animate widget cheaply
-      if(pitWidgetMode === "bar"){
-        pitProgress = clamp(game.pitT / game.pitDuration, 0, 1);
-        const bf = document.getElementById("barFill");
-        if(bf) bf.style.width = `${Math.floor(pitProgress*100)}%`;
-      } else if(pitWidgetMode === "gauge"){
-        // needle settles towards 0 degrees as time progresses
-        const t = clamp(game.pitT / game.pitDuration, 0, 1);
-        pitNeedle = lerp(-55, 5, t);
-        const nd = document.getElementById("needle");
-        if(nd) nd.style.transform = `rotate(${pitNeedle}deg)`;
-      } else {
-        // scan is pure CSS animation (no JS)
-      }
-
-      // when pit time ends -> open MCQ
-      if(game.pitT >= game.pitDuration){
-        setPitUI(game.lap, "Service paused — quick checkpoint question.");
-        openMCQ();
-      }
-    }
-
-    // Feedback resolution
-    if(game.state === STATE.FEED){
-      // hold feedback a bit
-      const hold = 0.95;
-      if(game.tState >= hold){
-        if(game.feedbackNext === "advance"){
-          // leave pit, start next lap
-          hideOverlay();
-
-          game.lap += 1;
-          lapText.textContent = `Lap ${game.lap}/${TOTAL_LAPS}`;
-          updateCrewStars();
-
-          if(game.lap >= TOTAL_LAPS){
-            setState(STATE.DONE);
-            game.targetSpeed = 0;
-            showToast("good","Finished","All laps completed. Great job!");
-            // confetti burst
-            spawnParticles(game.carX + (Math.random()-0.5)*60, game.carY-60, 28, "confetti");
-            spawnParticles(game.carX + (Math.random()-0.5)*60, game.carY-60, 28, "confetti");
-            beep(660, 0.10, "sine", 0.03);
-          } else {
-            // reset lap distance and arm milestone
-            game.lapDist = 0;
-            game.milestoneArmed = true;
-
-            // boost start
-            setState(STATE.RUN);
-            game.targetSpeed = game.boost;
-            showToast("good","Service complete", `Lap ${game.lap+1} started. Enjoy the boost!`);
-            game.carGlow = 1.0;
-            beep(740, 0.06, "triangle", 0.02);
-
-            // decay boost quickly
-            game._boostT = 0.65;
-          }
-        } else {
-          // retry same question (still in pit theme)
-          // show pit quickly then MCQ again (keeps it "service needs re-check", not "failed test")
-          setState(STATE.PIT);
-          game.pitT = 0;
-          showPit();
-
-          setPitUI(game.lap, "Issue detected — quick re-check needed.");
-          // shorten pit animation on retry
-          game.pitDuration = 1.4;
-          showToast("bad","Re-check","Service not complete. Answer again to continue.");
-        }
-      }
-    }
-
-    // boost decay
-    if(game._boostT){
-      game._boostT -= dt;
-      if(game._boostT <= 0){
-        game._boostT = null;
-        if(game.state === STATE.RUN) game.targetSpeed = game.cruise;
-      }
-    }
-
-    updateParticles(dt);
-
-    render();
-
-    requestAnimationFrame(tick);
-  }
-
-  function render(){
-    const w = stageW, h = stageH;
-
-    // camera shake on wrong
-    const sx = (Math.random()-0.5) * 8 * game.shake;
-    const sy = (Math.random()-0.5) * 8 * game.shake;
-
-    ctx.save();
-    ctx.clearRect(0,0,w,h);
-    ctx.translate(sx, sy);
-
-    // worldY for road motion: use lapDist as scroll base to avoid stutter
-    // Multiply to feel faster: 1.0 is fine
-    const worldY = game.lapDist * 1.0;
-
-    drawRoad(worldY);
-    drawCar(worldY);
-    drawParticles();
-    drawHUD();
-
-    ctx.restore();
-  }
-
-  // ============================================================
-  // Input: MCQ
-  // ============================================================
-  // Switch from MCQ -> feedback state
-  function setFeedbackState(next){
-    game.feedbackNext = next;
-    setState(STATE.FEED);
-  }
-
-  // Hook choose() outcome to feedback state
-  const _choose = choose;
-  // already sets state in choose(); keep as is
 
   // ============================================================
   // Init
@@ -1776,30 +1639,6 @@
     requestAnimationFrame(tick);
   }
   init();
-
-  // reset pitDuration to default after retry loop ends (when leaving pit)
-  const originalOpenMCQ = openMCQ;
-  openMCQ = function(){
-    // restore standard duration whenever we reach MCQ from normal pit
-    if(game.pitDuration !== 2.4) game.pitDuration = 2.4;
-    originalOpenMCQ();
-  };
-
-  // ensure state transition after selecting option
-  const originalChoose = choose;
-  choose = function(i){
-    originalChoose(i);
-    // In choose() we set STATE.FEED already. Just ensure overlay remains visible for feedback hold.
-    // (overlay stays visible until advance/retry)
-  };
-
-  // ============================================================
-  // Make feedback state actually set (small fix)
-  // ============================================================
-  const originalSetState = setState;
-  setState = function(s){
-    originalSetState(s);
-  };
 
 })();
 </script>
