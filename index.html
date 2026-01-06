@@ -16,7 +16,6 @@
       --bad:#FF4D6D;
       --warn:#FFD166;
       --shadow: rgba(0,0,0,0.35);
-      --card: rgba(10,14,26,0.78);
       --stroke: rgba(255,255,255,0.14);
     }
     *{box-sizing:border-box}
@@ -37,9 +36,7 @@
       grid-template-columns: 1.35fr 0.65fr;
       gap: 12px;
     }
-    @media (max-width: 980px){
-      .wrap{grid-template-columns: 1fr; }
-    }
+    @media (max-width: 980px){ .wrap{grid-template-columns: 1fr;} }
 
     .card{
       border: 1px solid var(--stroke);
@@ -94,15 +91,9 @@
         radial-gradient(900px 500px at 50% 50%, rgba(255,255,255,0.06), transparent 60%),
         linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
     }
-    canvas{
-      width: 100%;
-      height: 100%;
-      display:block;
-    }
+    canvas{ width: 100%; height: 100%; display:block; }
 
-    .side{
-      padding: 12px 14px;
-    }
+    .side{ padding: 12px 14px; }
     .h2{
       font-weight: 760;
       margin: 6px 0 10px;
@@ -129,20 +120,9 @@
       border-color: rgba(90,228,255,0.45);
       background: linear-gradient(180deg, rgba(90,228,255,0.22), rgba(90,228,255,0.10));
     }
-    button.good{
-      border-color: rgba(53,242,140,0.40);
-      background: linear-gradient(180deg, rgba(53,242,140,0.20), rgba(53,242,140,0.08));
-    }
-    button.ghost{
-      background: rgba(255,255,255,0.04);
-    }
+    button.ghost{ background: rgba(255,255,255,0.04); }
 
-    .legend{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:10px;
-      margin-top: 12px;
-    }
+    .legend{ display:grid; grid-template-columns: 1fr; gap:10px; margin-top: 12px; }
     .row{
       display:flex; gap:10px; align-items:flex-start;
       padding: 10px;
@@ -157,7 +137,6 @@
       background: rgba(255,255,255,0.06);
       flex: 0 0 auto;
     }
-    .icon svg{opacity:0.95}
     .row b{display:block; font-size: 12.8px; margin-bottom: 2px;}
     .row span{display:block; font-size: 12px; color: var(--muted); line-height: 1.35;}
 
@@ -197,9 +176,7 @@
       display:grid; gap:10px;
       grid-template-columns: 1fr 1fr;
     }
-    @media (max-width: 640px){
-      .opts{ grid-template-columns: 1fr; }
-    }
+    @media (max-width: 640px){ .opts{ grid-template-columns: 1fr; } }
     .opt{
       text-align:left;
       padding: 12px 12px;
@@ -213,7 +190,6 @@
       user-select:none;
     }
     .opt:hover{ transform: translateY(-1px); border-color: rgba(90,228,255,0.35); }
-    .opt:active{ transform: translateY(0px); }
     .badge{
       width: 26px; height: 26px; border-radius: 10px;
       display:grid; place-items:center;
@@ -269,10 +245,7 @@
       display:flex; gap:10px; align-items:center;
       max-width: min(720px, calc(100% - 24px));
     }
-    .toast.show{
-      opacity:1;
-      transform: translateX(-50%) translateY(0px);
-    }
+    .toast.show{ opacity:1; transform: translateX(-50%) translateY(0px); }
     .toast .chip{
       width: 10px; height: 10px; border-radius: 50%;
       background: var(--accent);
@@ -343,7 +316,7 @@
             </div>
 
             <div class="qfoot">
-              <div class="hint"><span class="spark"></span><span id="hintText">Tip: Think of the correct agency / initiative.</span></div>
+              <div class="hint"><span class="spark"></span><span id="hintText">Tip…</span></div>
               <div class="feedback" id="fbText"></div>
               <div style="display:flex; gap:10px; align-items:center;">
                 <span class="small">Keyboard: <span class="kbd">A</span> <span class="kbd">B</span> <span class="kbd">C</span> <span class="kbd">D</span></span>
@@ -364,7 +337,7 @@
           <br/>
           <b>Incorrect:</b> the car stalls briefly, then you retry the same checkpoint.
           <br/><br/>
-          This is designed for low cognitive load: no steering, no timer, no distractions.
+          No steering, no timer.
         </div>
 
         <div class="btnrow">
@@ -383,7 +356,7 @@
             </div>
             <div>
               <b>Checkpoints</b>
-              <span>Each gate triggers one question. Movement is locked until you attempt the MCQ.</span>
+              <span>Each gate triggers one question. Movement is locked until you answer.</span>
             </div>
           </div>
 
@@ -396,7 +369,7 @@
             </div>
             <div>
               <b>Learning-first rewards</b>
-              <span>Correct answers give a glow, speed burst, and smooth forward motion.</span>
+              <span>Correct answers give glow + speed burst + smooth forward motion.</span>
             </div>
           </div>
 
@@ -409,15 +382,14 @@
             </div>
             <div>
               <b>Mobile-friendly</b>
-              <span>Large buttons, no small controls, and smooth screen transitions.</span>
+              <span>Large buttons, no small controls, smooth transitions.</span>
             </div>
           </div>
         </div>
 
         <div class="h2" style="margin-top:14px;">Data you can log (optional)</div>
         <div class="small">
-          Checkpoint reached, attempts per checkpoint, time spent per question, and final completion time.
-          (This demo keeps it local; you can later connect it to Google Sheet or LMS logging.)
+          Checkpoint reached, attempts per checkpoint, time spent per question, completion.
         </div>
       </div>
     </div>
@@ -426,12 +398,8 @@
 <script>
 (() => {
   // =============================
-  // Question bank (from your uploaded chapter content)
+  // Question bank (chapter-based)
   // =============================
-  // Each item: {q, options:[A,B,C,D], answerIndex, feedback, hint}
-  // Notes:
-  // - No "All of the above"
-  // - Mix of correct options A/B/C/D
   const QUESTIONS = [
     {
       q: "CERT-In was created in 2004 primarily to do what?",
@@ -442,7 +410,7 @@
         "Certify only private-sector cyber security products"
       ],
       answerIndex: 0,
-      feedback: "CERT-In was created to respond to incidents, report vulnerabilities, and promote effective IT security practices, and it also oversees administration related to the IT Act in this context.",
+      feedback: "CERT-In was created to respond to incidents, report vulnerabilities, and promote effective IT security practices.",
       hint: "Think: national incident response team."
     },
     {
@@ -454,7 +422,7 @@
         "CCTNS"
       ],
       answerIndex: 1,
-      feedback: "NISAP is an initiative by CERT-In to develop and implement information security policies and best practices, explicitly referencing ISO/IEC 27001.",
+      feedback: "NISAP is an initiative by CERT-In referencing ISO/IEC 27001 for information security policy and best practices.",
       hint: "It is a programme, not a centre."
     },
     {
@@ -466,11 +434,11 @@
         "Publish open standards for IT products"
       ],
       answerIndex: 0,
-      feedback: "NCTC was proposed to coordinate among agencies and serve as a single point of control/coordination for counter-terrorism measures.",
+      feedback: "NCTC was proposed to coordinate among agencies and serve as a central point for counter-terrorism measures.",
       hint: "Think: coordination for counter-terrorism."
     },
     {
-      q: "NCIPC/NCIIPC (Critical Information Infrastructure Protection Centre) is primarily responsible for:",
+      q: "NCIIPC (Critical Information Infrastructure Protection Centre) is primarily responsible for:",
       options: [
         "Only issuing email policies for government employees",
         "Protection of critical information infrastructure, including alerts, malware analysis, and CII guidance",
@@ -478,8 +446,8 @@
         "Managing university cyber labs"
       ],
       answerIndex: 1,
-      feedback: "NCIIPC is the nodal agency for protecting critical information infrastructure, including advisories, malware analysis, and facilitating adoption of policies/standards by CII owners.",
-      hint: "Think: critical information infrastructure (CII)."
+      feedback: "NCIIPC is the nodal agency for protecting critical information infrastructure (CII).",
+      hint: "Think: CII protection."
     },
     {
       q: "Natgrid is best described as:",
@@ -490,7 +458,7 @@
         "A botnet removal tool for smartphones"
       ],
       answerIndex: 2,
-      feedback: "Natgrid is the integrated intelligence grid connecting databases of core security agencies to support intelligence and counter-terrorism functions.",
+      feedback: "Natgrid connects databases of core security agencies as an integrated intelligence grid.",
       hint: "Think: integrated grid + databases."
     },
     {
@@ -502,7 +470,7 @@
         "Replace CERT-In operations"
       ],
       answerIndex: 0,
-      feedback: "CCTNS focuses on networking and a comprehensive database to support investigation and detection of criminals across states and police stations.",
+      feedback: "CCTNS supports investigation/detection via a networked database across police stations and states.",
       hint: "Think: police stations + crime/criminal database."
     },
     {
@@ -514,11 +482,11 @@
         "Only conduct annual security audits for ministries"
       ],
       answerIndex: 0,
-      feedback: "NCCC is described as a proposed cyber security and e-surveillance agency meant to screen metadata and coordinate intelligence gathering.",
+      feedback: "NCCC is described as a cyber security and e-surveillance coordination agency.",
       hint: "Think: coordination + metadata screening."
     },
     {
-      q: "A Botnet Cleaning Center (under Digital India context) is set up mainly to:",
+      q: "A Botnet Cleaning Center is set up mainly to:",
       options: [
         "Issue daily cyber advisories to critical sectors only",
         "Detect botnets/malware and help users remove them from devices",
@@ -526,11 +494,11 @@
         "Maintain internal security and border management"
       ],
       answerIndex: 1,
-      feedback: "The botnet cleaning and malware analysis centre is meant to detect malicious programs like botnets and assist people in removing them from devices.",
+      feedback: "The botnet cleaning centre helps detect and remove botnets/malware from devices.",
       hint: "Think: citizen device cleanup."
     },
     {
-      q: "Which of the following is a key objective under India’s strategic approach to secure cyberspace?",
+      q: "Which objective is emphasized in India’s approach to secure cyberspace?",
       options: [
         "Maximize internet usage growth",
         "Prevent cyber attacks against critical infrastructures",
@@ -538,8 +506,8 @@
         "Replace proprietary products with only open-source software"
       ],
       answerIndex: 1,
-      feedback: "The framework lists objectives such as preventing attacks against critical infrastructures, reducing vulnerability, and minimizing damage/recovery time.",
-      hint: "Look for the most realistic national objective."
+      feedback: "Preventing attacks on critical infrastructure is a key stated objective.",
+      hint: "Most realistic national objective."
     },
     {
       q: "Under ‘Actions to secure cyberspace’, which item is explicitly mentioned?",
@@ -550,11 +518,11 @@
         "A ban on vulnerability assessments"
       ],
       answerIndex: 1,
-      feedback: "The actions include forensics and attack attribution, early watch and warnings, and protection of critical networks/systems.",
+      feedback: "The actions include forensics and attack attribution.",
       hint: "Think: investigation + attribution."
     },
     {
-      q: "The Cyber Security Assurance Framework aims to support Government and critical infrastructure through:",
+      q: "The Cyber Security Assurance Framework supports Government and CII through:",
       options: [
         "Enabling and Endorsing actions",
         "Only punitive actions for non-compliance",
@@ -562,8 +530,8 @@
         "Only hardware procurement and replacement"
       ],
       answerIndex: 0,
-      feedback: "The chapter distinguishes enabling actions (policy, guidelines, advisory/regulatory) and endorsing actions (commercial assessment/certification via qualified providers).",
-      hint: "Two-part structure: one policy-oriented, one service-oriented."
+      feedback: "The chapter differentiates enabling actions and endorsing actions in the assurance framework.",
+      hint: "Two-part structure."
     },
     {
       q: "Which is an example of an ‘endorsing action’ in the assurance framework?",
@@ -574,83 +542,23 @@
         "Publicity campaigns about safe password practices only"
       ],
       answerIndex: 2,
-      feedback: "Endorsing actions are commercial in nature and include assessment/certification like ISO 27001/ISMS certification and audits after meeting qualification criteria.",
-      hint: "Think: third-party assessment/certification."
+      feedback: "Endorsing actions include assessment and certification such as ISO 27001/ISMS audits.",
+      hint: "Think: third-party certification."
     },
     {
-      q: "The National Cyber Alert System (NCAS) concept emphasizes that national response needs:",
+      q: "The National Cyber Alert System (NCAS) concept emphasizes:",
       options: [
         "Only government teams without industry involvement",
-        "A partnership between government and industry for analysis, warnings, and coordinated response",
+        "A partnership between government and industry for analysis, warnings, and response",
         "A single private company to issue all alerts",
         "Only annual awareness workshops"
       ],
       answerIndex: 1,
-      feedback: "NCAS highlights public-private partnership to analyze threats, issue warnings, coordinate response, and restore operations.",
-      hint: "Think: partnership + warnings + response."
+      feedback: "NCAS highlights public-private partnership for analysis, warnings, coordinated response and restoration.",
+      hint: "Think: partnership."
     },
     {
-      q: "Which is explicitly listed as a focus area under National Cyber Alert System actions?",
-      options: [
-        "Exercise cyber security continuity plans and drills",
-        "Discourage incident reporting to prevent panic",
-        "Replace all networks annually",
-        "Avoid vulnerability assessment to reduce exposure"
-      ],
-      answerIndex: 0,
-      feedback: "The list includes continuity plans and drills, expanding warning networks, and improving incident response capabilities.",
-      hint: "Think: preparedness and testing."
-    },
-    {
-      q: "Augmentation of CERT-In is recommended mainly to improve capabilities for:",
-      options: [
-        "Cyber forensics/artifact analysis and monitoring capabilities, along with vulnerability prediction and mitigation",
-        "Only creating open standards for software procurement",
-        "Replacing sectoral CERTs entirely",
-        "Operating university e-learning systems"
-      ],
-      answerIndex: 0,
-      feedback: "The chapter mentions strengthening CERT-In in manpower, tools, and capabilities for prediction/analysis/mitigation and cyber forensics/monitoring.",
-      hint: "Think: tools + people + forensics."
-    },
-    {
-      q: "Sectoral CERTs are suggested because:",
-      options: [
-        "A single CERT cannot understand different sector domain needs well enough",
-        "They are only for private companies to market products",
-        "They reduce the need for incident response",
-        "They replace legal and judiciary training needs"
-      ],
-      answerIndex: 0,
-      feedback: "Sectoral CERTs address specific domain needs of sectors like aviation, energy, telecom, railways, etc., complementing national coordination.",
-      hint: "Think: domain-specific needs."
-    },
-    {
-      q: "The chapter lists the critical sectors for CII focus to include Defense, Finance, Energy, Transportation and:",
-      options: [
-        "Agriculture",
-        "Tourism",
-        "Telecommunications",
-        "Textiles"
-      ],
-      answerIndex: 2,
-      feedback: "The critical sectors listed include Defense, Finance, Energy, Transportation and Telecommunications.",
-      hint: "Think: core national infrastructure sector."
-    },
-    {
-      q: "A recommended compliance step for Government and critical sector organizations is to:",
-      options: [
-        "Designate a knowledgeable CISO as the point of contact and interact regularly with CERT-In",
-        "Avoid regular interaction with CERT-In to maintain secrecy",
-        "Perform audits only once in ten years",
-        "Stop using email for all official communication"
-      ],
-      answerIndex: 0,
-      feedback: "The text recommends designating a senior management CISO point-of-contact to coordinate compliance and interact with CERT-In.",
-      hint: "Think: a named senior role."
-    },
-    {
-      q: "Which activity is specifically mentioned as part of periodic testing and evaluation of security controls?",
+      q: "Which activity is mentioned as part of periodic testing and evaluation of security controls?",
       options: [
         "Only awareness posters",
         "Penetration testing (announced and unannounced)",
@@ -658,81 +566,16 @@
         "Only changing usernames"
       ],
       answerIndex: 1,
-      feedback: "Testing and evaluation examples include penetration testing (announced/unannounced), vulnerability assessment, and application/web security testing.",
-      hint: "Think: practical testing method."
-    },
-    {
-      q: "The idea of a ‘trusted company certification’ is motivated mainly by:",
-      options: [
-        "Reducing student workload in MOOCs",
-        "Addressing perceived gaps in compliance to security/privacy standards to build global trust for outsourcing",
-        "Replacing ISO standards with local ones",
-        "Avoiding self-certification models"
-      ],
-      answerIndex: 1,
-      feedback: "The chapter links trusted company certification to building trust and confidence for outsourcing by demonstrating security/privacy compliance.",
-      hint: "Think: outsourcing trust + compliance."
-    },
-    {
-      q: "Government secure intranet is suggested primarily to:",
-      options: [
-        "Connect strategic installations with CERT-In for faster information sharing and crisis response",
-        "Replace all public internet connections permanently",
-        "Host only entertainment services for employees",
-        "Avoid coordination during emergencies"
-      ],
-      answerIndex: 0,
-      feedback: "A secure intranet is proposed to connect strategic installations with CERT-In as the nodal center to improve sharing and crisis management.",
-      hint: "Think: connect strategic installations + CERT-In."
-    },
-    {
-      q: "Quality and protection of electronic records emphasizes that:",
-      options: [
-        "Audit logs should be avoided to reduce storage costs",
-        "Electronic evidence must be properly collected, retained, and presented for legal action when needed",
-        "Only paper records are acceptable for investigations",
-        "Logs are not useful for future investigations"
-      ],
-      answerIndex: 1,
-      feedback: "The section highlights protecting records and proper collection/retention/presentation of electronic evidence, with audit logs retained for investigation support.",
-      hint: "Think: evidence rules + audit logs."
-    },
-    {
-      q: "E-governance initiatives should be based on best information security practices and encourage wider usage of:",
-      options: [
-        "Public Key Infrastructure (PKI)",
-        "Only biometric attendance",
-        "Only social media authentication",
-        "Unencrypted email attachments"
-      ],
-      answerIndex: 0,
-      feedback: "The chapter recommends best practices for e-governance and encourages wider use of PKI in government departments.",
-      hint: "Think: cryptographic infrastructure for trust."
-    },
-    {
-      q: "Secure software development (in-house or outsourced) should be monitored using:",
-      options: [
-        "Only agile standups without security checks",
-        "A system development life cycle methodology that includes security considerations and controls",
-        "Only marketing-led review meetings",
-        "A ban on code reviews"
-      ],
-      answerIndex: 1,
-      feedback: "The chapter explicitly says SDLC should include information security considerations and selection of appropriate controls/countermeasures.",
-      hint: "Think: SDLC + security."
-    },
+      feedback: "Penetration testing (announced/unannounced) is explicitly listed, along with vulnerability assessment.",
+      hint: "Think: practical testing."
+    }
   ];
 
   // =============================
-  // Game configuration
+  // Config
   // =============================
-  const TOTAL_CHECKPOINTS = 12; // Use 12 checkpoints for a concise module experience
-  // We'll sample 12 unique questions from the pool per run.
-  // If pool smaller than checkpoints, it will reuse, but here pool is > 12.
+  const TOTAL_CHECKPOINTS = 12;
 
-  // =============================
-  // Canvas setup
-  // =============================
   const canvas = document.getElementById('c');
   const stage = document.getElementById('stage');
   const ctx = canvas.getContext('2d');
@@ -746,9 +589,7 @@
   }
   window.addEventListener('resize', resize);
 
-  // =============================
-  // UI elements
-  // =============================
+  // UI
   const overlay = document.getElementById('overlay');
   const optsDiv = document.getElementById('opts');
   const qText = document.getElementById('qText');
@@ -757,24 +598,18 @@
   const qCP = document.getElementById('qCP');
   const fbText = document.getElementById('fbText');
   const hintText = document.getElementById('hintText');
-
   const cpText = document.getElementById('cpText');
   const statusText = document.getElementById('statusText');
-
   const startBtn = document.getElementById('startBtn');
   const resetBtn = document.getElementById('resetBtn');
   const soundBtn = document.getElementById('soundBtn');
-
   const toast = document.getElementById('toast');
   const toastTitle = document.getElementById('toastTitle');
   const toastMsg = document.getElementById('toastMsg');
 
-  // =============================
-  // Sound (optional, gentle)
-  // =============================
+  // Sound
   let soundOn = false;
   let audioCtx = null;
-
   function beep(freq=440, dur=0.08, type='sine', gain=0.03){
     if(!soundOn) return;
     if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -789,145 +624,122 @@
     o.stop(t0 + dur);
   }
 
-  // =============================
-  // Utility: random sampling without replacement
-  // =============================
+  // Helpers
+  function lerp(a,b,t){ return a + (b-a)*t; }
+  function clamp(x,a,b){ return Math.max(a, Math.min(b, x)); }
+
   function sampleUnique(arr, n){
     const a = arr.slice();
     for(let i=a.length-1;i>0;i--){
       const j = Math.floor(Math.random()*(i+1));
       [a[i], a[j]] = [a[j], a[i]];
     }
-    return a.slice(0, Math.min(n, a.length));
+    while(a.length < n) a.push(arr[Math.floor(Math.random()*arr.length)]);
+    return a.slice(0, n);
   }
 
   // =============================
-  // Race path (a gentle curving road)
-  // We define checkpoints along a "centerline" in world coordinates.
-  // We'll scroll the world so the car looks like it's moving forward.
+  // World + path
   // =============================
   const path = [];
-  const world = { y: 0 }; // scrolling offset
-  const road = { width: 260, shoulder: 52 }; // in screen pixels
-  const lane = { gap: 18 };
+  const world = { y: 0 };
+  const road = { width: 260 };
 
-  // Build a smooth path of points from near bottom to far top
   function buildPath(){
     path.length = 0;
     const w = stage.getBoundingClientRect().width;
     const h = stage.getBoundingClientRect().height;
 
     const centerX = w * 0.5;
-    const startY = h + 220;
-    const endY = -900;
+    const startY = h + 260;
+    const endY = -1400;
 
-    const segments = 70;
+    const segments = 90;
     for(let i=0;i<=segments;i++){
       const t = i / segments;
-      // x wiggle: gentle sine + slight drift
       const x = centerX
-        + Math.sin(t* Math.PI * 2.4) * 120
-        + Math.sin(t* Math.PI * 5.1) * 36
-        + (t - 0.5) * 40;
+        + Math.sin(t* Math.PI * 2.0) * 120
+        + Math.sin(t* Math.PI * 4.6) * 36
+        + (t - 0.5) * 50;
       const y = startY + (endY - startY)*t;
       path.push({x,y});
     }
   }
 
-  // Compute checkpoint positions along the path
+  function nearestPathIndexForY(targetY){
+    let bestI = 0, bestD = Infinity;
+    for(let i=0;i<path.length;i++){
+      const d = Math.abs(path[i].y - targetY);
+      if(d < bestD){ bestD = d; bestI = i; }
+    }
+    return bestI;
+  }
+
+  // ✅ FIX: checkpoints are placed AHEAD of the car (above it),
+  // so they scroll down towards the car as world.y increases.
   let checkpoints = [];
   function buildCheckpoints(){
     checkpoints = [];
-    // distribute checkpoints along portion of path
-    // avoid very start/end extremes
-    const idxStart = 8;
-    const idxEnd = path.length - 10;
-    const span = idxEnd - idxStart;
+
+    const h = stage.getBoundingClientRect().height;
+    const carScreenY = h * 0.72;
+    const carWorldY0 = carScreenY - world.y;
+
+    const firstAhead = 220;      // first checkpoint appears soon
+    const spacing = 240;         // distance between checkpoints
+
     for(let i=0;i<TOTAL_CHECKPOINTS;i++){
-      const t = i/(TOTAL_CHECKPOINTS-1);
-      const idx = Math.round(idxStart + span * t);
+      const targetWorldY = carWorldY0 - firstAhead - i*spacing;
+      const idx = nearestPathIndexForY(targetWorldY);
       const p = path[idx];
-      checkpoints.push({ x: p.x, y: p.y, passed: false });
+      checkpoints.push({ x: p.x, y: p.y, passed: false, idx });
     }
   }
 
   // =============================
-  // Particles + FX
+  // Particles
   // =============================
   const particles = [];
   function spawnParticles(x,y, count, kind){
     for(let i=0;i<count;i++){
       const a = Math.random()*Math.PI*2;
-      const sp = (kind==='confetti' ? 50 : 80) + Math.random()*120;
+      const sp = (kind==='confetti' ? 60 : 90) + Math.random()*120;
       const vx = Math.cos(a)*sp + (Math.random()-0.5)*30;
-      const vy = Math.sin(a)*sp - (kind==='dust' ? 40 : 0);
-      particles.push({
-        x, y,
-        vx, vy,
-        life: (kind==='confetti' ? 1.2 : 0.65) + Math.random()*0.4,
-        t: 0,
-        kind,
-        rot: Math.random()*Math.PI*2,
-        vr: (Math.random()-0.5)*8,
-        s: (kind==='confetti' ? 5 : 3) + Math.random()*4
-      });
+      const vy = Math.sin(a)*sp - (kind==='dust' ? 50 : 0);
+      particles.push({ x,y, vx,vy, life:(kind==='confetti'?1.2:0.65)+Math.random()*0.4, t:0, kind, rot:Math.random()*6.28, vr:(Math.random()-0.5)*8, s:(kind==='confetti'?5:3)+Math.random()*4 });
     }
   }
-
   function updateParticles(dt){
     for(let i=particles.length-1;i>=0;i--){
       const p = particles[i];
       p.t += dt;
       const k = Math.max(0, 1 - p.t/p.life);
-      p.vy += (p.kind==='confetti' ? 120 : 160) * dt;
+      p.vy += (p.kind==='confetti' ? 120 : 170) * dt;
       p.x += p.vx * dt;
       p.y += p.vy * dt;
       p.rot += p.vr * dt;
-      // damping
       p.vx *= 0.98;
       if(k<=0) particles.splice(i,1);
     }
   }
 
   // =============================
-  // Game state
+  // State
   // =============================
-  const STATE = {
-    READY: 'ready',
-    RUNNING: 'running',
-    QUESTION: 'question',
-    FEEDBACK: 'feedback',
-    FINISHED: 'finished',
-    STALL: 'stall'
-  };
+  const STATE = { READY:'ready', RUNNING:'running', QUESTION:'question', FEEDBACK:'feedback', FINISHED:'finished', STALL:'stall' };
 
   const game = {
     state: STATE.READY,
-    cpIndex: 0,           // next checkpoint to clear
-    questionsRun: [],     // selected questions for this run (length TOTAL_CHECKPOINTS)
+    cpIndex: 0,
+    questionsRun: [],
     currentQ: null,
     attemptsAtCP: 0,
     timeInState: 0,
     shake: 0,
-    speed: 0,             // world scroll speed
+    speed: 0,
     targetSpeed: 0,
-    // Car look
-    car: {
-      x: 0,
-      y: 0,
-      tilt: 0,
-      glow: 0,
-      trail: []
-    },
-    // Timing tuning
-    tuning: {
-      cruise: 210,        // px/sec world scroll when moving
-      burst: 310,         // px/sec after correct
-      stallTime: 1.2,     // seconds stall after wrong
-      preQuestionPause: 0.55, // seconds pause before question overlay
-      postAnswerHold: 0.85,   // feedback hold
-      gateRadius: 34
-    }
+    car: { x:0, y:0, tilt:0, glow:0, trail:[] },
+    tuning: { cruise: 220, burst: 320, stallTime: 1.2, preQuestionPause: 0.55, postAnswerHold: 0.85, gateRadius: 34 }
   };
 
   function setState(s){
@@ -937,14 +749,12 @@
       s===STATE.READY ? "Ready" :
       s===STATE.RUNNING ? "Racing" :
       s===STATE.QUESTION ? "Question" :
-      s===STATE.STALL ? "Stalled" :
+      s===STATE.STALL ? "Paused" :
       s===STATE.FEEDBACK ? "Feedback" :
       s===STATE.FINISHED ? "Finished" : s;
   }
 
-  // =============================
-  // Toast helper
-  // =============================
+  // Toast
   let toastTimer = 0;
   function showToast(type, title, msg){
     toast.classList.remove('good','bad');
@@ -956,9 +766,7 @@
     toastTimer = 2.0;
   }
 
-  // =============================
-  // Question overlay logic
-  // =============================
+  // Questions
   function openQuestion(cpIdx){
     game.currentQ = game.questionsRun[cpIdx];
     game.attemptsAtCP = 0;
@@ -968,22 +776,16 @@
     qCP.textContent = `CP ${cpIdx+1}/${TOTAL_CHECKPOINTS}`;
     qText.textContent = game.currentQ.q;
     fbText.textContent = "";
-    hintText.textContent = `Tip: ${game.currentQ.hint || "Think carefully and choose the best answer."}`;
+    hintText.textContent = `Tip: ${game.currentQ.hint || "Choose the best answer."}`;
 
-    // Render options
     optsDiv.innerHTML = "";
     const letters = ["A","B","C","D"];
     game.currentQ.options.forEach((optText, i) => {
       const d = document.createElement('div');
       d.className = 'opt';
-      d.setAttribute('role','button');
-      d.setAttribute('tabindex','0');
       d.dataset.idx = String(i);
       d.innerHTML = `<div class="badge">${letters[i]}</div><div style="min-width:0"><div style="font-weight:700; font-size:13px; line-height:1.25">${optText}</div></div>`;
       d.addEventListener('click', () => chooseOption(i));
-      d.addEventListener('keydown', (e) => {
-        if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); chooseOption(i); }
-      });
       optsDiv.appendChild(d);
     });
 
@@ -992,9 +794,7 @@
     beep(520, 0.06, 'triangle', 0.02);
   }
 
-  function closeQuestion(){
-    overlay.classList.remove('show');
-  }
+  function closeQuestion(){ overlay.classList.remove('show'); }
 
   function lockOptions(lock=true){
     [...optsDiv.querySelectorAll('.opt')].forEach(el => {
@@ -1010,72 +810,43 @@
 
   function chooseOption(idx){
     if(game.state !== STATE.QUESTION) return;
-
     lockOptions(true);
     game.attemptsAtCP += 1;
 
-    const correct = (idx === game.currentQ.answerIndex);
     const correctIdx = game.currentQ.answerIndex;
+    const correct = idx === correctIdx;
 
     if(correct){
       markOption(idx,'good');
       fbText.textContent = "Correct. Moving ahead.";
       beep(740, 0.08, 'sine', 0.03);
-      beep(980, 0.08, 'sine', 0.02);
-
-      // Celebrate lightly
       game.car.glow = 1.0;
       spawnParticles(game.car.x, game.car.y+20, 18, 'dust');
-
-      // Move to next checkpoint after a short hold
       setState(STATE.FEEDBACK);
       game._feedbackNext = 'advance';
-      game._feedbackCorrectIdx = correctIdx;
     } else {
       markOption(idx,'bad');
       markOption(correctIdx,'good');
-      fbText.textContent = "Incorrect. Read the feedback and try again.";
-      beep(240, 0.10, 'sawtooth', 0.015);
-      beep(180, 0.12, 'sawtooth', 0.012);
-
-      // Small shake to signal error (very mild)
       game.shake = 0.35;
-
-      // Provide the explanation (short)
-      // If multiple wrong attempts, show hint reinforcement.
-      const base = game.currentQ.feedback || "Review the concept and try again.";
-      const extra = (game.attemptsAtCP >= 2)
-        ? " Hint: focus on the keyword in the question (agency / initiative / objective)."
-        : "";
-      fbText.textContent = base + extra;
-
+      fbText.textContent = (game.currentQ.feedback || "Incorrect. Review and try again.") + (game.attemptsAtCP>=2 ? " Hint: focus on the keyword (agency / initiative / objective)." : "");
+      beep(220, 0.10, 'sawtooth', 0.015);
       setState(STATE.FEEDBACK);
       game._feedbackNext = 'retry';
-      game._feedbackCorrectIdx = correctIdx;
     }
   }
 
-  // Keyboard shortcuts A/B/C/D during question
   window.addEventListener('keydown', (e) => {
     if(game.state !== STATE.QUESTION) return;
-    const k = e.key.toLowerCase();
     const map = {a:0,b:1,c:2,d:3};
-    if(map[k] !== undefined){
-      e.preventDefault();
-      chooseOption(map[k]);
-    }
+    const k = e.key.toLowerCase();
+    if(map[k] !== undefined){ e.preventDefault(); chooseOption(map[k]); }
   });
 
-  // =============================
   // Start/reset
-  // =============================
   function resetGame(){
     closeQuestion();
-    overlay.classList.remove('show');
-
     particles.length = 0;
     game.car.trail = [];
-
     game.cpIndex = 0;
     game.speed = 0;
     game.targetSpeed = 0;
@@ -1083,32 +854,27 @@
     game.shake = 0;
     game.car.glow = 0;
 
-    // choose run questions
-    const run = sampleUnique(QUESTIONS, TOTAL_CHECKPOINTS);
-    // If pool < checkpoints, repeat (unlikely here)
-    while(run.length < TOTAL_CHECKPOINTS) run.push(QUESTIONS[Math.floor(Math.random()*QUESTIONS.length)]);
-    game.questionsRun = run;
+    game.questionsRun = sampleUnique(QUESTIONS, TOTAL_CHECKPOINTS);
+    cpText.textContent = `Checkpoint 0/${TOTAL_CHECKPOINTS}`;
 
-    // reset checkpoint passed flags
+    // rebuild checkpoints with world reset (important)
+    buildCheckpoints();
     checkpoints.forEach(cp => cp.passed = false);
 
-    cpText.textContent = `Checkpoint 0/${TOTAL_CHECKPOINTS}`;
-    showToast('good', 'Ready', 'Press Start to begin the route.');
+    showToast('good', 'Ready', 'Press Start. The first checkpoint will appear ahead.');
     setState(STATE.READY);
   }
 
   function startGame(){
-    if(game.state === STATE.RUNNING) return;
     if(game.state === STATE.FINISHED) resetGame();
-
-    showToast('good', 'Go', 'Approach the first checkpoint to unlock the question.');
+    if(game.state === STATE.RUNNING) return;
+    showToast('good', 'Go', 'Reach the checkpoint gate to unlock the MCQ.');
     setState(STATE.RUNNING);
     game.targetSpeed = game.tuning.cruise;
   }
 
-  startBtn.addEventListener('click', () => startGame());
-  resetBtn.addEventListener('click', () => resetGame());
-
+  startBtn.addEventListener('click', startGame);
+  resetBtn.addEventListener('click', resetGame);
   soundBtn.addEventListener('click', async () => {
     soundOn = !soundOn;
     soundBtn.textContent = `Sound: ${soundOn ? "On" : "Off"}`;
@@ -1122,28 +888,18 @@
     }
   });
 
-  // =============================
-  // Geometry helpers
-  // =============================
-  function lerp(a,b,t){ return a + (b-a)*t; }
-  function clamp(x,a,b){ return Math.max(a, Math.min(b, x)); }
-  function dist(ax,ay,bx,by){ const dx=ax-bx, dy=ay-by; return Math.hypot(dx,dy); }
-
-  function getPathPointByY(worldY){
-    // Find approximate point on path given a "y" in world coordinates
-    // We'll map car's screen y to world y by adding world offset.
-    // Since path y decreases upwards, we search nearest.
-    let best = path[0], bestD = 1e9;
-    for(const p of path){
-      const d = Math.abs(p.y - worldY);
-      if(d < bestD){ bestD = d; best = p; }
-    }
-    return best;
+  // Drawing helpers
+  function roundRect(ctx, x, y, w, h, r){
+    const rr = Math.min(r, w/2, h/2);
+    ctx.beginPath();
+    ctx.moveTo(x+rr,y);
+    ctx.arcTo(x+w,y,x+w,y+h,rr);
+    ctx.arcTo(x+w,y+h,x,y+h,rr);
+    ctx.arcTo(x,y+h,x,y,rr);
+    ctx.arcTo(x,y,x+w,y,rr);
+    ctx.closePath();
   }
 
-  // =============================
-  // Drawing: road and environment
-  // =============================
   function drawGlowCircle(x,y,r, color, alpha){
     ctx.save();
     ctx.globalAlpha = alpha;
@@ -1155,11 +911,13 @@
     ctx.restore();
   }
 
+  // Road
+  let perfTime = 0;
   function drawRoad(){
     const w = stage.getBoundingClientRect().width;
     const h = stage.getBoundingClientRect().height;
 
-    // background stars/particles (subtle)
+    // subtle "stars"
     ctx.save();
     ctx.globalAlpha = 0.22;
     for(let i=0;i<40;i++){
@@ -1170,24 +928,18 @@
     }
     ctx.restore();
 
-    // Draw road by sampling path points and building left/right edges
     const left = [];
     const right = [];
-
-    // We draw points that are within screen (with margin)
     const margin = 240;
     const yMin = -margin;
     const yMax = h + margin;
 
-    // Determine visible path points after scrolling
-    for(const p of path){
+    for(let i=0;i<path.length;i++){
+      const p = path[i];
       const sy = p.y + world.y;
       if(sy < yMin || sy > yMax) continue;
 
-      // Determine tangent by looking at nearest next point
-      // We'll approximate normal for road offset
-      const idx = path.indexOf(p);
-      const p2 = path[Math.min(path.length-1, idx+1)];
+      const p2 = path[Math.min(path.length-1, i+1)];
       const dx = p2.x - p.x;
       const dy = p2.y - p.y;
       const len = Math.hypot(dx,dy) || 1;
@@ -1199,7 +951,6 @@
       right.push({ x: p.x - nx*half, y: sy - ny*half });
     }
 
-    // Asphalt fill
     if(left.length > 2){
       ctx.save();
       ctx.beginPath();
@@ -1208,7 +959,6 @@
       for(let i=right.length-1;i>=0;i--) ctx.lineTo(right[i].x, right[i].y);
       ctx.closePath();
 
-      // Asphalt gradient
       const g = ctx.createLinearGradient(0,0,0,h);
       g.addColorStop(0, 'rgba(14,18,33,0.92)');
       g.addColorStop(0.5, 'rgba(10,14,26,0.92)');
@@ -1216,83 +966,52 @@
       ctx.fillStyle = g;
       ctx.fill();
 
-      // Subtle asphalt noise lines
-      ctx.globalAlpha = 0.10;
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
-      ctx.lineWidth = 1;
-      for(let i=0;i<18;i++){
-        ctx.beginPath();
-        const y = (i/18)*h;
-        ctx.moveTo(0, y + ((world.y*0.25+i*9)%7));
-        ctx.lineTo(w, y + ((world.y*0.25+i*9)%7));
-        ctx.stroke();
-      }
-
-      // Road edges glow
+      // edges glow
       ctx.globalAlpha = 0.55;
       ctx.strokeStyle = 'rgba(90,228,255,0.20)';
       ctx.lineWidth = 5;
-      ctx.beginPath();
-      ctx.moveTo(left[0].x, left[0].y);
+      ctx.beginPath(); ctx.moveTo(left[0].x, left[0].y);
       for(const a of left) ctx.lineTo(a.x,a.y);
       ctx.stroke();
 
       ctx.strokeStyle = 'rgba(53,242,140,0.14)';
       ctx.lineWidth = 4;
-      ctx.beginPath();
-      ctx.moveTo(right[0].x, right[0].y);
+      ctx.beginPath(); ctx.moveTo(right[0].x, right[0].y);
       for(const a of right) ctx.lineTo(a.x,a.y);
       ctx.stroke();
 
-      // Lane markings
-      ctx.globalAlpha = 0.85;
-      ctx.strokeStyle = 'rgba(255,255,255,0.28)';
+      // center dashed line
+      ctx.globalAlpha = 0.65;
+      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
       ctx.lineWidth = 2;
-
-      // Build centerline
-      const center = [];
-      for(const p of path){
-        const sy = p.y + world.y;
-        if(sy < yMin || sy > yMax) continue;
-        center.push({x:p.x, y:sy});
-      }
-
-      // dashed center line segments
-      for(let i=1;i<center.length;i++){
-        const a = center[i-1], b = center[i];
-        const segLen = Math.hypot(b.x-a.x, b.y-a.y);
-        // dash pattern in screen y
-        const dash = 22, gap = 18;
-        // draw only some segments as dash "chunks"
-        const t = (a.y + world.y*0.02) * 0.02;
-        if((i + Math.floor(t)) % 2 === 0){
+      let lastDraw = 0;
+      for(let i=1;i<path.length;i++){
+        const a = {x:path[i-1].x, y:path[i-1].y + world.y};
+        const b = {x:path[i].x, y:path[i].y + world.y};
+        if(a.y < yMin || a.y > yMax) continue;
+        const toggle = Math.floor((a.y + world.y*0.02) / 26) % 2;
+        if(toggle===0){
           ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
+          ctx.moveTo(a.x,a.y);
+          ctx.lineTo(b.x,b.y);
           ctx.stroke();
+          lastDraw++;
         }
       }
-
       ctx.restore();
     }
   }
 
   function drawCheckpointGate(cp, idx){
     const h = stage.getBoundingClientRect().height;
-
     const x = cp.x;
     const y = cp.y + world.y;
-
-    // Only draw if on screen
-    if(y < -120 || y > h + 120) return;
+    if(y < -140 || y > h + 140) return;
 
     const passed = cp.passed;
     const pulse = 0.5 + 0.5*Math.sin(perfTime*2.2 + idx*0.8);
 
-    // Gate posts
     ctx.save();
-
-    // Glow behind gate
     if(!passed){
       drawGlowCircle(x, y, 110, 'rgba(90,228,255,0.25)', 0.65 * pulse);
       drawGlowCircle(x, y, 80, 'rgba(255,209,102,0.14)', 0.45 * pulse);
@@ -1302,18 +1021,13 @@
     const postH = 46;
     const postW = 10;
 
-    // left post
     ctx.fillStyle = passed ? 'rgba(255,255,255,0.10)' : 'rgba(255,255,255,0.18)';
     ctx.fillRect(x - gateW/2, y - postH/2, postW, postH);
-
-    // right post
     ctx.fillRect(x + gateW/2 - postW, y - postH/2, postW, postH);
 
-    // cross bar
     ctx.fillStyle = passed ? 'rgba(255,255,255,0.08)' : 'rgba(90,228,255,0.22)';
     ctx.fillRect(x - gateW/2, y - postH/2, gateW, 6);
 
-    // Flag number badge
     const r = 14;
     const bx = x;
     const by = y - postH/2 - 10;
@@ -1331,7 +1045,6 @@
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(String(idx+1), bx, by+0.5);
-
     ctx.restore();
   }
 
@@ -1339,13 +1052,13 @@
     const h = stage.getBoundingClientRect().height;
     const x = cp.x;
     const y = cp.y + world.y;
-    if(y < -180 || y > h + 180) return;
+    if(y < -200 || y > h + 200) return;
 
     const w = road.width * 0.90;
     ctx.save();
     drawGlowCircle(x, y, 140, 'rgba(53,242,140,0.18)', 0.85);
     ctx.globalAlpha = 0.95;
-    // black-white stripes
+
     const stripes = 14;
     const stripeW = w / stripes;
     const y0 = y - 10, hh = 20;
@@ -1365,37 +1078,34 @@
     ctx.restore();
   }
 
-  // =============================
-  // Car draw (simple but polished)
-  // =============================
+  function getPathPointByY(targetWorldY){
+    const idx = nearestPathIndexForY(targetWorldY);
+    return { p: path[idx], idx };
+  }
+
+  // Car
   function drawCar(){
     const w = stage.getBoundingClientRect().width;
     const h = stage.getBoundingClientRect().height;
 
-    // Car follows path at a fixed screen y, derive x from path using world y
     const carScreenY = h * 0.72;
     const carWorldY = carScreenY - world.y;
-    const p = getPathPointByY(carWorldY);
+
+    const { p, idx } = getPathPointByY(carWorldY);
+    const p2 = path[Math.min(path.length-1, idx+1)];
 
     game.car.x = p.x;
     game.car.y = carScreenY;
 
-    // approximate tilt from local path direction
-    const idx = path.findIndex(pp => pp === p);
-    const p2 = path[Math.min(path.length-1, idx+1)];
     const dx = p2.x - p.x;
     const dy = p2.y - p.y;
-    const ang = Math.atan2(dy, dx); // along path
-    // Convert to a "tilt" relative to vertical
     const tilt = clamp((dx / (Math.abs(dy)+1)) * 0.7, -0.5, 0.5);
     game.car.tilt = lerp(game.car.tilt, tilt, 0.12);
 
-    // trail effect
+    // trail
     game.car.trail.push({x:game.car.x, y:game.car.y, t:0});
     if(game.car.trail.length > 18) game.car.trail.shift();
-    for(const tr of game.car.trail) tr.t += 0.016;
 
-    // Draw trail
     ctx.save();
     for(let i=0;i<game.car.trail.length;i++){
       const tr = game.car.trail[i];
@@ -1405,30 +1115,26 @@
     }
     ctx.restore();
 
-    // Car body
-    const x = game.car.x;
-    const y = game.car.y;
-
     // shadow
     ctx.save();
     ctx.globalAlpha = 0.35;
     ctx.beginPath();
-    ctx.ellipse(x, y+22, 24, 10, 0, 0, Math.PI*2);
+    ctx.ellipse(game.car.x, game.car.y+22, 24, 10, 0, 0, Math.PI*2);
     ctx.fillStyle = 'rgba(0,0,0,0.65)';
     ctx.fill();
     ctx.restore();
 
-    // glow when correct
+    // glow
     if(game.car.glow > 0.01){
-      drawGlowCircle(x, y+6, 80, 'rgba(53,242,140,0.30)', 0.7*game.car.glow);
-      drawGlowCircle(x, y+6, 50, 'rgba(90,228,255,0.16)', 0.5*game.car.glow);
+      drawGlowCircle(game.car.x, game.car.y+6, 80, 'rgba(53,242,140,0.30)', 0.7*game.car.glow);
+      drawGlowCircle(game.car.x, game.car.y+6, 50, 'rgba(90,228,255,0.16)', 0.5*game.car.glow);
     }
 
+    // body
     ctx.save();
-    ctx.translate(x, y);
+    ctx.translate(game.car.x, game.car.y);
     ctx.rotate(game.car.tilt * 0.28);
 
-    // main chassis
     const grad = ctx.createLinearGradient(-18,-30,18,30);
     grad.addColorStop(0, 'rgba(255,255,255,0.12)');
     grad.addColorStop(0.35, 'rgba(90,228,255,0.22)');
@@ -1442,27 +1148,25 @@
     roundRect(ctx, -16, -30, 32, 60, 13);
     ctx.fill();
 
-    // windshield
     ctx.fillStyle = 'rgba(10,14,26,0.62)';
     roundRect(ctx, -12, -18, 24, 22, 10);
     ctx.fill();
 
-    // hood stripe
     ctx.globalAlpha = 0.9;
     ctx.fillStyle = 'rgba(53,242,140,0.16)';
     roundRect(ctx, -4, -30, 8, 60, 6);
     ctx.fill();
 
-    // headlights (front is upward direction visually)
+    // headlights
     ctx.globalAlpha = 0.85;
     ctx.fillStyle = 'rgba(255,209,102,0.55)';
     roundRect(ctx, -14, -32, 8, 10, 6);
     roundRect(ctx, 6, -32, 8, 10, 6);
     ctx.fill();
 
-    // brake lights (rear)
+    // brake lights
     ctx.globalAlpha = 0.9;
-    ctx.fillStyle = (game.state===STATE.STALL || (game._lastWrongBlink>0)) ? 'rgba(255,77,109,0.85)' : 'rgba(255,77,109,0.25)';
+    ctx.fillStyle = (game._lastWrongBlink>0) ? 'rgba(255,77,109,0.85)' : 'rgba(255,77,109,0.25)';
     roundRect(ctx, -14, 24, 8, 10, 6);
     roundRect(ctx, 6, 24, 8, 10, 6);
     ctx.fill();
@@ -1470,26 +1174,11 @@
     ctx.restore();
   }
 
-  function roundRect(ctx, x, y, w, h, r){
-    const rr = Math.min(r, w/2, h/2);
-    ctx.beginPath();
-    ctx.moveTo(x+rr,y);
-    ctx.arcTo(x+w,y,x+w,y+h,rr);
-    ctx.arcTo(x+w,y+h,x,y+h,rr);
-    ctx.arcTo(x,y+h,x,y,rr);
-    ctx.arcTo(x,y,x+w,y,rr);
-    ctx.closePath();
-  }
-
-  // =============================
-  // Draw particles
-  // =============================
   function drawParticles(){
     for(const p of particles){
       const k = Math.max(0, 1 - p.t/p.life);
       ctx.save();
       ctx.globalAlpha = 0.85 * k;
-
       if(p.kind === 'confetti'){
         ctx.translate(p.x, p.y);
         ctx.rotate(p.rot);
@@ -1497,7 +1186,6 @@
         ctx.fillRect(-p.s/2, -p.s/2, p.s, p.s*0.6);
         ctx.restore();
       } else {
-        // dust/sparks
         drawGlowCircle(p.x, p.y, 18*p.s/7, 'rgba(255,209,102,0.24)', 0.40*k);
         drawGlowCircle(p.x, p.y, 12*p.s/7, 'rgba(90,228,255,0.22)', 0.30*k);
         ctx.restore();
@@ -1505,62 +1193,86 @@
     }
   }
 
-  // =============================
-  // Main loop
-  // =============================
-  let last = 0;
-  let perfTime = 0;
+  function drawProgressHUD(){
+    const w = stage.getBoundingClientRect().width;
+    const h = stage.getBoundingClientRect().height;
+    const pad = 14;
+    const barW = Math.min(520, w - 2*pad);
+    const barH = 10;
+    const x = pad;
+    const y = h - pad - barH - 6;
 
+    const frac = clamp(game.cpIndex / TOTAL_CHECKPOINTS, 0, 1);
+
+    ctx.save();
+    ctx.globalAlpha = 0.9;
+    ctx.fillStyle = 'rgba(255,255,255,0.06)';
+    roundRect(ctx, x, y, barW, barH, 8);
+    ctx.fill();
+
+    const g = ctx.createLinearGradient(x,y,x+barW,y);
+    g.addColorStop(0, 'rgba(90,228,255,0.55)');
+    g.addColorStop(1, 'rgba(53,242,140,0.45)');
+    ctx.fillStyle = g;
+    roundRect(ctx, x, y, barW*frac, barH, 8);
+    ctx.fill();
+
+    for(let i=0;i<TOTAL_CHECKPOINTS;i++){
+      const t = i/(TOTAL_CHECKPOINTS-1);
+      const cx = x + t*barW;
+      const cy = y + barH/2;
+      const done = (i < game.cpIndex);
+      const active = (i === game.cpIndex);
+      if(active) drawGlowCircle(cx, cy, 18, 'rgba(255,209,102,0.24)', 0.8);
+      ctx.beginPath();
+      ctx.arc(cx, cy, 3.2, 0, Math.PI*2);
+      ctx.fillStyle = done ? 'rgba(53,242,140,0.85)' : active ? 'rgba(255,209,102,0.85)' : 'rgba(234,240,255,0.35)';
+      ctx.fill();
+    }
+
+    ctx.fillStyle = 'rgba(234,240,255,0.82)';
+    ctx.font = '700 12px system-ui, -apple-system, Segoe UI, Roboto, Arial';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText(`Progress: ${game.cpIndex}/${TOTAL_CHECKPOINTS}`, x, y - 6);
+    ctx.restore();
+  }
+
+  // Loop
+  let last = 0;
   function update(dt){
     perfTime += dt;
 
-    // Toast countdown
     if(toastTimer > 0){
       toastTimer -= dt;
       if(toastTimer <= 0) toast.classList.remove('show');
     }
 
-    // Shake decay
     game.shake = Math.max(0, game.shake - dt*0.9);
-
-    // Glow decay
     game.car.glow = Math.max(0, game.car.glow - dt*0.85);
-
-    // Brake blink decay
     game._lastWrongBlink = Math.max(0, (game._lastWrongBlink||0) - dt);
 
-    // Smooth speed
     game.speed = lerp(game.speed, game.targetSpeed, 0.06);
-
-    // State machine
     game.timeInState += dt;
 
     if(game.state === STATE.RUNNING){
-      // scroll world to simulate movement
       world.y += game.speed * dt;
 
-      // Check if we reached next checkpoint
       const next = checkpoints[game.cpIndex];
       if(next){
         const gateY = next.y + world.y;
-        // When car approaches gate area, pause then open question
         const d = Math.abs((game.car.y) - gateY);
         if(d < game.tuning.gateRadius){
-          // Pause movement and open question after small pause
           game.targetSpeed = 0;
           setState(STATE.STALL);
           game._stallReason = 'preQuestion';
           showToast(null, 'Checkpoint', `Checkpoint ${game.cpIndex+1} reached. Answer to proceed.`);
           beep(480, 0.06, 'triangle', 0.02);
         }
-      } else {
-        // if no checkpoint, finish
-        setState(STATE.FINISHED);
       }
     }
 
     if(game.state === STATE.STALL){
-      // stall reasons: preQuestion OR wrongAnswer
       if(game._stallReason === 'preQuestion'){
         if(game.timeInState >= game.tuning.preQuestionPause){
           openQuestion(game.cpIndex);
@@ -1568,7 +1280,6 @@
         }
       } else if(game._stallReason === 'wrongAnswer'){
         if(game.timeInState >= game.tuning.stallTime){
-          // reopen same question
           openQuestion(game.cpIndex);
           game._stallReason = null;
         }
@@ -1577,36 +1288,27 @@
 
     if(game.state === STATE.FEEDBACK){
       if(game.timeInState >= game.tuning.postAnswerHold){
-        // decide next action
         if(game._feedbackNext === 'advance'){
-          // mark checkpoint cleared
           checkpoints[game.cpIndex].passed = true;
           game.cpIndex += 1;
           cpText.textContent = `Checkpoint ${game.cpIndex}/${TOTAL_CHECKPOINTS}`;
-
           closeQuestion();
 
           if(game.cpIndex >= TOTAL_CHECKPOINTS){
-            // finished
             setState(STATE.FINISHED);
             game.targetSpeed = 0;
             showToast('good', 'Route completed', 'You reached the finish line. Well done.');
-            // confetti
             for(let i=0;i<4;i++){
               spawnParticles(game.car.x + (Math.random()-0.5)*60, game.car.y-50, 22, 'confetti');
             }
             beep(660, 0.09, 'sine', 0.03);
-            beep(880, 0.09, 'sine', 0.02);
           } else {
-            // burst forward
             setState(STATE.RUNNING);
             game.targetSpeed = game.tuning.burst;
-            // after short time, back to cruise
             game._burstTimer = 0.55;
             showToast('good', 'Correct', 'Moving to the next checkpoint.');
           }
         } else {
-          // retry same checkpoint
           closeQuestion();
           setState(STATE.STALL);
           game._stallReason = 'wrongAnswer';
@@ -1616,7 +1318,6 @@
       }
     }
 
-    // Burst timer logic
     if(game._burstTimer){
       game._burstTimer -= dt;
       if(game._burstTimer <= 0){
@@ -1632,7 +1333,6 @@
     const w = stage.getBoundingClientRect().width;
     const h = stage.getBoundingClientRect().height;
 
-    // camera shake (very small)
     const sx = (Math.random()-0.5) * 8 * game.shake;
     const sy = (Math.random()-0.5) * 8 * game.shake;
 
@@ -1640,87 +1340,18 @@
     ctx.clearRect(0,0,w,h);
     ctx.translate(sx, sy);
 
-    // Soft vignette
-    ctx.save();
-    ctx.fillStyle = 'rgba(0,0,0,0.22)';
-    ctx.fillRect(0,0,w,h);
-    ctx.restore();
     drawRoad();
-    // Draw checkpoints (last one is finish)
+
     for(let i=0;i<checkpoints.length;i++){
       if(i === checkpoints.length-1){
-        // last gate will be visually a finish line after it's cleared
-        if(game.cpIndex >= TOTAL_CHECKPOINTS){
-          // already finished; keep finish line
-          drawFinishLine(checkpoints[i]);
-        } else {
-          drawCheckpointGate(checkpoints[i], i);
-        }
-      } else {
-        drawCheckpointGate(checkpoints[i], i);
+        drawFinishLine(checkpoints[i]);
       }
+      drawCheckpointGate(checkpoints[i], i);
     }
-    // Finish line appears at last checkpoint area as you approach (optional)
-    if(game.cpIndex === TOTAL_CHECKPOINTS-1 && game.state !== STATE.FINISHED){
-      drawFinishLine(checkpoints[checkpoints.length-1]);
-    }
+
     drawCar();
     drawParticles();
-
-    // HUD mini progress bar at bottom (in-canvas)
-    drawProgressHUD(w,h);
-
-    ctx.restore();
-  }
-
-  function drawProgressHUD(w,h){
-    const pad = 14;
-    const barW = Math.min(520, w - 2*pad);
-    const barH = 10;
-    const x = pad;
-    const y = h - pad - barH - 6;
-
-    const frac = clamp(game.cpIndex / TOTAL_CHECKPOINTS, 0, 1);
-
-    // background
-    ctx.save();
-    ctx.globalAlpha = 0.9;
-    ctx.fillStyle = 'rgba(255,255,255,0.06)';
-    roundRect(ctx, x, y, barW, barH, 8);
-    ctx.fill();
-
-    // fill
-    const g = ctx.createLinearGradient(x,y,x+barW,y);
-    g.addColorStop(0, 'rgba(90,228,255,0.55)');
-    g.addColorStop(1, 'rgba(53,242,140,0.45)');
-    ctx.fillStyle = g;
-    roundRect(ctx, x, y, barW*frac, barH, 8);
-    ctx.fill();
-
-    // checkpoints dots
-    for(let i=0;i<TOTAL_CHECKPOINTS;i++){
-      const t = i/(TOTAL_CHECKPOINTS-1);
-      const cx = x + t*barW;
-      const cy = y + barH/2;
-
-      const done = (i < game.cpIndex);
-      const active = (i === game.cpIndex);
-
-      if(active){
-        drawGlowCircle(cx, cy, 18, 'rgba(255,209,102,0.24)', 0.8);
-      }
-      ctx.beginPath();
-      ctx.arc(cx, cy, 3.2, 0, Math.PI*2);
-      ctx.fillStyle = done ? 'rgba(53,242,140,0.85)' : active ? 'rgba(255,209,102,0.85)' : 'rgba(234,240,255,0.35)';
-      ctx.fill();
-    }
-
-    // text
-    ctx.fillStyle = 'rgba(234,240,255,0.82)';
-    ctx.font = '700 12px system-ui, -apple-system, Segoe UI, Roboto, Arial';
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'bottom';
-    ctx.fillText(`Progress: ${game.cpIndex}/${TOTAL_CHECKPOINTS}`, x, y - 6);
+    drawProgressHUD();
 
     ctx.restore();
   }
@@ -1729,16 +1360,12 @@
     if(!last) last = ts;
     const dt = Math.min(0.033, (ts - last) / 1000);
     last = ts;
-
     update(dt);
     render();
-
     requestAnimationFrame(loop);
   }
 
-  // =============================
-  // Init build
-  // =============================
+  // Init
   function init(){
     resize();
     buildPath();
@@ -1747,7 +1374,7 @@
     requestAnimationFrame(loop);
   }
 
-  // rebuild path and checkpoints if stage size changes significantly
+  // Rebuild on big size change
   let lastW = 0, lastH = 0;
   setInterval(() => {
     const r = stage.getBoundingClientRect();
