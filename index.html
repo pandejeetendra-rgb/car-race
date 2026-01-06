@@ -3,13 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Cyber Lap Race — Full Track + Pit Stop MCQs</title>
+  <title>Cyber Lap Race — 12 Themed Laps + MCQ Pit Stops</title>
   <style>
     :root{
       --bg:#070A12;
       --ink:#EAF0FF;
       --muted: rgba(234,240,255,0.72);
-      --card: rgba(255,255,255,0.07);
       --stroke: rgba(255,255,255,0.14);
       --shadow: rgba(0,0,0,0.40);
 
@@ -31,35 +30,28 @@
         var(--bg);
       overflow:hidden;
     }
-
-    .wrap{
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 12px;
-    }
+    .wrap{max-width:1200px;margin:0 auto;padding:12px}
     .card{
-      border: 1px solid var(--stroke);
+      border:1px solid var(--stroke);
       background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
-      border-radius: 18px;
+      border-radius:18px;
       box-shadow: 0 18px 44px var(--shadow);
       overflow:hidden;
     }
-
     .topbar{
       display:flex; align-items:center; justify-content:space-between;
       padding: 12px 14px;
       border-bottom: 1px solid rgba(255,255,255,0.10);
       background: rgba(10,14,26,0.52);
       backdrop-filter: blur(6px);
-      gap: 12px;
-      flex-wrap:wrap;
+      gap: 12px; flex-wrap:wrap;
     }
     .brand{ display:flex; align-items:center; gap:10px; min-width: 260px; }
     .logo{
-      width: 14px; height: 14px; border-radius: 50%;
+      width:14px; height:14px; border-radius:50%;
       background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(90,228,255,0.95) 55%, rgba(90,228,255,0.15));
       box-shadow: 0 0 18px rgba(90,228,255,0.60);
-      flex: 0 0 auto;
+      flex:0 0 auto;
     }
     .title{ font-weight: 820; letter-spacing:0.2px; line-height:1.1; }
     .subtitle{ font-size: 12px; color: var(--muted); margin-top: 2px; }
@@ -103,7 +95,6 @@
       background: linear-gradient(180deg, rgba(90,228,255,0.22), rgba(90,228,255,0.10));
     }
 
-    /* Bigger “lap view”: increase height on desktop, keep phone friendly */
     .stage{
       position: relative;
       height: min(78vh, 720px);
@@ -118,7 +109,6 @@
     }
     canvas{ width:100%; height:100%; display:block; }
 
-    /* Overlay */
     .overlay{
       position:absolute; inset:0;
       display:none;
@@ -157,137 +147,6 @@
     }
     .pbody{ padding: 14px; }
 
-    .pitGrid{
-      display:grid;
-      grid-template-columns: 1fr 0.95fr;
-      gap: 12px;
-      align-items:stretch;
-    }
-    @media (max-width: 760px){ .pitGrid{ grid-template-columns: 1fr; } }
-
-    .pitCard{
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.05);
-      border-radius: 16px;
-      padding: 12px;
-      position: relative;
-      overflow:hidden;
-    }
-    .pitCard::before{
-      content:"";
-      position:absolute; inset:-1px;
-      background:
-        radial-gradient(520px 240px at 20% 20%, rgba(90,228,255,0.16), transparent 60%),
-        radial-gradient(520px 240px at 80% 30%, rgba(53,242,140,0.10), transparent 60%),
-        radial-gradient(500px 240px at 50% 110%, rgba(255,77,109,0.10), transparent 60%);
-      opacity: 0.9;
-      pointer-events:none;
-    }
-    .pitCard > *{ position: relative; z-index: 1; }
-
-    .pitTitleRow{ display:flex; align-items:center; gap:10px; margin-bottom:8px; }
-    .pitIcon{
-      width: 44px; height: 44px; border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.16);
-      background: rgba(255,255,255,0.06);
-      display:grid; place-items:center;
-      box-shadow: 0 10px 26px rgba(0,0,0,0.35);
-      flex:0 0 auto;
-    }
-    .pitName{ font-weight: 860; letter-spacing:0.2px; }
-    .pitDesc{ font-size: 12px; color: rgba(234,240,255,0.76); margin-top: 1px; }
-
-    .widget{
-      margin-top: 10px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.18);
-      padding: 12px;
-    }
-    .small{ font-size: 12px; color: var(--muted); line-height: 1.45; }
-
-    .bar{
-      height: 14px; border-radius: 999px;
-      background: rgba(255,255,255,0.08);
-      overflow:hidden;
-      border: 1px solid rgba(255,255,255,0.10);
-      position:relative;
-    }
-    .barFill{
-      height: 100%;
-      width: 0%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, rgba(255,77,109,0.65), rgba(90,228,255,0.70), rgba(53,242,140,0.65));
-      box-shadow: 0 0 18px rgba(90,228,255,0.25);
-      transition: width 120ms linear;
-    }
-    .gaugeWrap{ display:flex; gap:12px; align-items:center; }
-    .gauge{
-      width: 128px; height: 74px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.05);
-      display:grid; place-items:center;
-      position:relative;
-      overflow:hidden;
-    }
-    .needle{
-      width: 3px; height: 54px;
-      background: rgba(255,209,102,0.9);
-      transform-origin: 50% 90%;
-      transform: rotate(-55deg);
-      border-radius: 3px;
-      box-shadow: 0 0 16px rgba(255,209,102,0.35);
-    }
-    .dial{
-      position:absolute; inset:0;
-      background:
-        radial-gradient(66px 48px at 50% 75%, rgba(90,228,255,0.16), transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.10));
-      opacity: 0.9;
-    }
-    .scan{
-      height: 74px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.12));
-      position:relative;
-      overflow:hidden;
-    }
-    .scan::before{
-      content:"";
-      position:absolute; left:-25%; top:0; bottom:0;
-      width: 30%;
-      background: linear-gradient(90deg, transparent, rgba(90,228,255,0.35), transparent);
-      animation: scan 1.2s linear infinite;
-    }
-    @keyframes scan{ 0%{ left:-30%; } 100%{ left: 110%; } }
-
-    .crew{
-      display:grid;
-      gap:10px;
-      grid-template-columns: 1fr;
-    }
-    .crewItem{
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.04);
-      padding: 10px;
-      display:flex; gap:10px; align-items:flex-start;
-    }
-    .crewDot{
-      width: 10px; height: 10px; border-radius: 50%;
-      background: rgba(255,255,255,0.25);
-      box-shadow: 0 0 14px rgba(90,228,255,0.25);
-      margin-top: 3px;
-      flex: 0 0 auto;
-    }
-    .crewItem.ok .crewDot{ background: rgba(53,242,140,0.9); box-shadow: 0 0 14px rgba(53,242,140,0.35); }
-    .crewItem.warn .crewDot{ background: rgba(255,209,102,0.95); box-shadow: 0 0 14px rgba(255,209,102,0.35); }
-    .crewItem.bad .crewDot{ background: rgba(255,77,109,0.95); box-shadow: 0 0 14px rgba(255,77,109,0.35); }
-    .crewItem b{ display:block; font-size: 12.8px; margin-bottom:2px; }
-    .crewItem span{ display:block; font-size: 12px; color: var(--muted); line-height:1.35; }
-
     .qtext{ font-size: 16px; line-height: 1.35; margin: 0 0 12px; color: rgba(234,240,255,0.95); }
     .opts{ display:grid; gap:10px; grid-template-columns: 1fr 1fr; }
     @media (max-width: 640px){ .opts{ grid-template-columns: 1fr; } }
@@ -322,6 +181,7 @@
       display:flex; align-items:center; justify-content:space-between; gap:10px;
       flex-wrap:wrap;
     }
+    .small{ font-size: 12px; color: var(--muted); line-height: 1.45; }
     .feedback{
       font-size: 12px; color: var(--muted);
       max-width: 72ch;
@@ -348,13 +208,13 @@
           <span class="logo"></span>
           <div>
             <div class="title">Lap Circuit Race</div>
-            <div class="subtitle">1 full lap → pit service → 1 MCQ → next lap (12 laps = 12 MCQs)</div>
+            <div class="subtitle">1 full lap → pit stop MCQ → next lap (12 laps, 12 different track looks)</div>
           </div>
         </div>
 
         <div class="pills">
           <div class="pill"><span class="dot"></span><b id="lapText">Lap 0/12</b></div>
-          <div class="pill"><span class="dot" style="background:var(--green)"></span><b id="crewText">Crew ★★★☆☆</b></div>
+          <div class="pill"><span class="dot" style="background:var(--green)"></span><b id="themeText">Theme 1/12</b></div>
           <div class="pill"><span class="dot" style="background:var(--amber)"></span><b id="stateText">Ready</b></div>
         </div>
 
@@ -371,61 +231,7 @@
         <div class="overlay" id="overlay" aria-modal="true" role="dialog">
           <div class="panel">
 
-            <div id="pitPanel">
-              <div class="phead">
-                <div style="min-width:0">
-                  <div class="t" id="pitHeaderTitle">PIT STOP</div>
-                  <div class="m" id="pitHeaderMeta">Service in progress…</div>
-                </div>
-                <div class="badgeP" id="pitLapBadge">Lap 1/12</div>
-              </div>
-
-              <div class="pbody">
-                <div class="pitGrid">
-                  <div class="pitCard">
-                    <div class="pitTitleRow">
-                      <div class="pitIcon" id="pitIcon"></div>
-                      <div style="min-width:0">
-                        <div class="pitName" id="pitName">Fuel Refill</div>
-                        <div class="pitDesc" id="pitDesc">Crew is topping up fuel for the next sector.</div>
-                      </div>
-                    </div>
-                    <div class="widget" id="pitWidget"></div>
-                  </div>
-
-                  <div class="crew">
-                    <div class="crewItem ok" id="crewA">
-                      <span class="crewDot"></span>
-                      <div>
-                        <b id="crewAT">Safety Check</b>
-                        <span id="crewAD">Harness and lights OK.</span>
-                      </div>
-                    </div>
-                    <div class="crewItem warn" id="crewB">
-                      <span class="crewDot"></span>
-                      <div>
-                        <b id="crewBT">Telemetry</b>
-                        <span id="crewBD">Scanning sensors…</span>
-                      </div>
-                    </div>
-                    <div class="crewItem" id="crewC">
-                      <span class="crewDot"></span>
-                      <div>
-                        <b id="crewCT">Pit Timer</b>
-                        <span id="crewCD">Almost done…</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="pfoot">
-                <div class="small" id="pitFoot">After the service animation, answer 1 MCQ to start the next lap.</div>
-                <div class="small">Keys (in MCQ): <span class="kbd">A</span> <span class="kbd">B</span> <span class="kbd">C</span> <span class="kbd">D</span></div>
-              </div>
-            </div>
-
-            <div id="mcqPanel" class="hidden">
+            <div id="mcqPanel">
               <div class="phead">
                 <div style="min-width:0">
                   <div class="t" id="qTitle">Checkpoint Question</div>
@@ -455,158 +261,170 @@
 <script>
 (() => {
   // ============================================================
-  // QUESTIONS (12) — replace with your uploaded chapter MCQs if needed
+  // QUESTIONS (12) — FIXED: correct option is NOT always A
+  // Store correct answer as text, then shuffle options each time.
   // ============================================================
-  const QUESTIONS = [
-    { q:"CERT-In is primarily responsible for:", options:[
-      "Responding to cyber incidents, vulnerability reporting, and promoting IT security practices",
-      "Running state police station crime databases",
-      "Issuing passports for cyber professionals",
-      "Maintaining only a national email directory"
-    ], answer:0, hint:"National incident response team.", fb:"CERT-In is India’s national agency for cyber incident response and advisories." },
-
-    { q:"NCIIPC is associated with protecting:", options:[
-      "Critical Information Infrastructure (CII)",
-      "Only private banking passwords",
-      "Only university LMS portals",
-      "Only social media accounts"
-    ], answer:0, hint:"Think: CII protection.", fb:"NCIIPC is the nodal body for protection of Critical Information Infrastructure." },
-
-    { q:"Natgrid (National Intelligence Grid) is best described as:", options:[
-      "An integrated intelligence grid connecting databases of core security agencies",
-      "A cyber awareness course for school students",
-      "A state-wise scholarship scheme",
-      "A VPN service for government staff"
-    ], answer:0, hint:"Integrated grid + databases.", fb:"Natgrid enables secure access to multiple databases for intelligence/investigation." },
-
-    { q:"CCTNS aims mainly to:", options:[
-      "Network police stations and enable crime/criminal tracking across locations",
-      "Replace CERT-In operations",
-      "Publish ISO standards for networks",
-      "Provide only cyber posters"
-    ], answer:0, hint:"Police network + tracking.", fb:"CCTNS links police stations and supports nationwide crime and criminal tracking." },
-
-    { q:"NCCC is intended primarily for:", options:[
-      "Cyber coordination and monitoring with intelligence support",
-      "Only academic curriculum approval",
-      "Only software licensing management",
-      "Only online exam scheduling"
-    ], answer:0, hint:"Coordination + monitoring.", fb:"NCCC is described as a cyber coordination/monitoring center supporting national security." },
-
-    { q:"A Botnet Cleaning Center is meant to:", options:[
-      "Detect botnets/malware and help users remove them from infected devices",
-      "Provide email accounts to all citizens",
-      "Replace police investigation systems",
-      "Issue ISO certificates"
-    ], answer:0, hint:"Cleaning infected devices.", fb:"Botnet cleaning initiatives help detect and remove infections from user devices." },
-
-    { q:"NISAP focuses mainly on:", options:[
-      "Information security awareness and implementation support aligned to ISMS practices",
-      "Border management and disaster response",
-      "Tax intelligence database integration",
-      "Replacing security tools with only open-source tools"
-    ], answer:0, hint:"ISMS-like awareness.", fb:"NISAP supports strengthening information security practices and awareness." },
-
-    { q:"NCTC (proposed) was mainly to:", options:[
-      "Coordinate counter-terrorism measures among state and central agencies",
-      "Certify mobile phones for secure use",
-      "Run cyber forensics labs in every district",
-      "Issue email rules for universities"
-    ], answer:0, hint:"Counter-terror coordination.", fb:"NCTC was proposed as a centralized mechanism for counter-terror coordination." },
-
-    { q:"Government e-mail policy is mainly about:", options:[
-      "Guidelines and safe practices for official e-mail usage",
-      "Replacing internet with intranet",
-      "Banning passwords in government",
-      "Forcing only one email provider for private sector"
-    ], answer:0, hint:"Usage guidelines.", fb:"Email policy focuses on secure, appropriate use of official email systems." },
-
-    { q:"Indo–US Cyber Security Forum (IUSCSF) supports:", options:[
-      "Bilateral cooperation and dialogue on cyber security issues",
-      "Maintaining India’s national crime records",
-      "Operating CCTNS networks",
-      "Issuing ISO certificates"
-    ], answer:0, hint:"Bilateral forum.", fb:"IUSCSF strengthens cooperation and dialogue between India and the US on cyber security." },
-
-    { q:"DSCI (Data Security Council of India) is best described as:", options:[
-      "An industry-led body promoting data security and privacy culture in India",
-      "A police station networking project",
-      "A counter-terror intelligence grid",
-      "A malware cleaning tool"
-    ], answer:0, hint:"Industry body + data security.", fb:"DSCI works with industry and stakeholders to strengthen data protection practices." },
-
-    { q:"Which is a typical NCIIPC-related activity?", options:[
-      "Malware analysis and alerts/advisories for critical sectors",
-      "Issuing driving licenses for cyber vehicles",
-      "Only publishing cyber news articles",
-      "Only doing annual university rankings"
-    ], answer:0, hint:"Think: technical operations.", fb:"NCIIPC supports monitoring, analysis, and advisories for critical infrastructure security." },
+  const QUESTIONS_BASE = [
+    {
+      q:"CERT-In is primarily responsible for:",
+      options:[
+        "Responding to cyber incidents, vulnerability reporting, and promoting IT security practices",
+        "Running state police station crime databases",
+        "Issuing passports for cyber professionals",
+        "Maintaining only a national email directory"
+      ],
+      correctText:"Responding to cyber incidents, vulnerability reporting, and promoting IT security practices",
+      hint:"National incident response team.",
+      fb:"CERT-In is India’s national agency for cyber incident response and advisories."
+    },
+    {
+      q:"NCIIPC is associated with protecting:",
+      options:[
+        "Critical Information Infrastructure (CII)",
+        "Only private banking passwords",
+        "Only university LMS portals",
+        "Only social media accounts"
+      ],
+      correctText:"Critical Information Infrastructure (CII)",
+      hint:"Think: CII protection.",
+      fb:"NCIIPC is the nodal body for protection of Critical Information Infrastructure."
+    },
+    {
+      q:"Natgrid (National Intelligence Grid) is best described as:",
+      options:[
+        "An integrated intelligence grid connecting databases of core security agencies",
+        "A cyber awareness course for school students",
+        "A state-wise scholarship scheme",
+        "A VPN service for government staff"
+      ],
+      correctText:"An integrated intelligence grid connecting databases of core security agencies",
+      hint:"Integrated grid + databases.",
+      fb:"Natgrid enables secure access to multiple databases for intelligence/investigation."
+    },
+    {
+      q:"CCTNS aims mainly to:",
+      options:[
+        "Network police stations and enable crime/criminal tracking across locations",
+        "Replace CERT-In operations",
+        "Publish ISO standards for networks",
+        "Provide only cyber posters"
+      ],
+      correctText:"Network police stations and enable crime/criminal tracking across locations",
+      hint:"Police network + tracking.",
+      fb:"CCTNS links police stations and supports nationwide crime and criminal tracking."
+    },
+    {
+      q:"NCCC is intended primarily for:",
+      options:[
+        "Cyber coordination and monitoring with intelligence support",
+        "Only academic curriculum approval",
+        "Only software licensing management",
+        "Only online exam scheduling"
+      ],
+      correctText:"Cyber coordination and monitoring with intelligence support",
+      hint:"Coordination + monitoring.",
+      fb:"NCCC is described as a cyber coordination/monitoring center supporting national security."
+    },
+    {
+      q:"A Botnet Cleaning Center is meant to:",
+      options:[
+        "Detect botnets/malware and help users remove them from infected devices",
+        "Provide email accounts to all citizens",
+        "Replace police investigation systems",
+        "Issue ISO certificates"
+      ],
+      correctText:"Detect botnets/malware and help users remove them from infected devices",
+      hint:"Cleaning infected devices.",
+      fb:"Botnet cleaning initiatives help detect and remove infections from user devices."
+    },
+    {
+      q:"NISAP focuses mainly on:",
+      options:[
+        "Information security awareness and implementation support aligned to ISMS practices",
+        "Border management and disaster response",
+        "Tax intelligence database integration",
+        "Replacing security tools with only open-source tools"
+      ],
+      correctText:"Information security awareness and implementation support aligned to ISMS practices",
+      hint:"ISMS-like awareness.",
+      fb:"NISAP supports strengthening information security practices and awareness."
+    },
+    {
+      q:"NCTC (proposed) was mainly to:",
+      options:[
+        "Coordinate counter-terrorism measures among state and central agencies",
+        "Certify mobile phones for secure use",
+        "Run cyber forensics labs in every district",
+        "Issue email rules for universities"
+      ],
+      correctText:"Coordinate counter-terrorism measures among state and central agencies",
+      hint:"Counter-terror coordination.",
+      fb:"NCTC was proposed as a centralized mechanism for counter-terror coordination."
+    },
+    {
+      q:"Government e-mail policy is mainly about:",
+      options:[
+        "Guidelines and safe practices for official e-mail usage",
+        "Replacing internet with intranet",
+        "Banning passwords in government",
+        "Forcing only one email provider for private sector"
+      ],
+      correctText:"Guidelines and safe practices for official e-mail usage",
+      hint:"Usage guidelines.",
+      fb:"Email policy focuses on secure, appropriate use of official email systems."
+    },
+    {
+      q:"Indo–US Cyber Security Forum (IUSCSF) supports:",
+      options:[
+        "Bilateral cooperation and dialogue on cyber security issues",
+        "Maintaining India’s national crime records",
+        "Operating CCTNS networks",
+        "Issuing ISO certificates"
+      ],
+      correctText:"Bilateral cooperation and dialogue on cyber security issues",
+      hint:"Bilateral forum.",
+      fb:"IUSCSF strengthens cooperation and dialogue between India and the US on cyber security."
+    },
+    {
+      q:"DSCI (Data Security Council of India) is best described as:",
+      options:[
+        "An industry-led body promoting data security and privacy culture in India",
+        "A police station networking project",
+        "A counter-terror intelligence grid",
+        "A malware cleaning tool"
+      ],
+      correctText:"An industry-led body promoting data security and privacy culture in India",
+      hint:"Industry body + data security.",
+      fb:"DSCI works with industry and stakeholders to strengthen data protection practices."
+    },
+    {
+      q:"Which is a typical NCIIPC-related activity?",
+      options:[
+        "Malware analysis and alerts/advisories for critical sectors",
+        "Issuing driving licenses for cyber vehicles",
+        "Only publishing cyber news articles",
+        "Only doing annual university rankings"
+      ],
+      correctText:"Malware analysis and alerts/advisories for critical sectors",
+      hint:"Think: technical operations.",
+      fb:"NCIIPC supports monitoring, analysis, and advisories for critical infrastructure security."
+    }
   ];
 
-  // ============================================================
-  // 12 SERVICES (one per lap)
-  // ============================================================
-  const SERVICES = [
-    { name:"Fuel Refill", desc:"Topping up fuel for the next sector.", kind:"bar", color:"cyan", crew:[
-      ["ok","Safety Check","Harness and lights OK."],
-      ["warn","Telemetry","Fuel sensor syncing…"],
-      ["","Pit Timer","Refill in progress…"]
-    ]},
-    { name:"Tyre Pressure Check", desc:"Balancing tyre pressure for stability.", kind:"gauge", color:"amber", crew:[
-      ["ok","Safety Check","Wheel nuts OK."],
-      ["warn","Pressure Sensor","Stabilizing readings…"],
-      ["","Pit Timer","Calibrating…"]
-    ]},
-    { name:"Engine Oil Change", desc:"Replacing oil for smoother performance.", kind:"bar", color:"pink", crew:[
-      ["ok","Safety Check","No leaks detected."],
-      ["warn","Oil Filter","Replacing filter…"],
-      ["","Pit Timer","Draining and filling…"]
-    ]},
-    { name:"Brake Check", desc:"Quick inspection of brake response.", kind:"scan", color:"green", crew:[
-      ["ok","Safety Check","Brake pads OK."],
-      ["warn","Diagnostics","Checking response curve…"],
-      ["","Pit Timer","Almost done…"]
-    ]},
-    { name:"ECU Scan", desc:"Scanning the ECU for faults.", kind:"scan", color:"violet", crew:[
-      ["ok","Safety Check","Connectors OK."],
-      ["warn","Scanner","Reading codes…"],
-      ["","Pit Timer","Clearing minor alerts…"]
-    ]},
-    { name:"Coolant Top-up", desc:"Cooling system stabilized for the next lap.", kind:"bar", color:"green", crew:[
-      ["ok","Safety Check","Hoses OK."],
-      ["warn","Thermal","Bringing temps down…"],
-      ["","Pit Timer","Topping up…"]
-    ]},
-    { name:"Wheel Alignment", desc:"Alignment tuned to reduce drift.", kind:"gauge", color:"cyan", crew:[
-      ["ok","Safety Check","Suspension OK."],
-      ["warn","Alignment","Adjusting toe angle…"],
-      ["","Pit Timer","Locking settings…"]
-    ]},
-    { name:"Air Filter Service", desc:"Airflow optimized for cleaner intake.", kind:"bar", color:"amber", crew:[
-      ["ok","Safety Check","Intake OK."],
-      ["warn","Filter","Cleaning…"],
-      ["","Pit Timer","Reassembling…"]
-    ]},
-    { name:"Sensors Check", desc:"Camera/LiDAR sensors recalibrated.", kind:"scan", color:"cyan", crew:[
-      ["ok","Safety Check","Mounts OK."],
-      ["warn","Sensors","Recalibrating…"],
-      ["","Pit Timer","Validating…"]
-    ]},
-    { name:"Turbo Tune", desc:"Boost mapped for quick acceleration.", kind:"gauge", color:"pink", crew:[
-      ["ok","Safety Check","Turbo lines OK."],
-      ["warn","Boost Map","Tuning response…"],
-      ["","Pit Timer","Testing ramp-up…"]
-    ]},
-    { name:"Final Inspection", desc:"Multi-point safety inspection.", kind:"scan", color:"green", crew:[
-      ["ok","Safety Check","All systems OK."],
-      ["warn","Checklist","Confirming…"],
-      ["","Pit Timer","Signing off…"]
-    ]},
-    { name:"Podium Prep", desc:"Polish + final systems sync.", kind:"bar", color:"violet", crew:[
-      ["ok","Safety Check","Ready."],
-      ["warn","Crew","Finishing touches…"],
-      ["","Pit Timer","One last check…"]
-    ]},
+  // 12 lap themes (visual variety)
+  const THEMES = [
+    { name:"Neon Blue",   lane:"rgba(90,228,255,0.10)",  kerbA:"rgba(255,77,109,0.90)", kerbB:"rgba(255,255,255,0.80)", halo:"rgba(90,228,255,0.22)" },
+    { name:"Cyber Green", lane:"rgba(53,242,140,0.10)",  kerbA:"rgba(53,242,140,0.88)", kerbB:"rgba(255,255,255,0.78)", halo:"rgba(53,242,140,0.18)" },
+    { name:"Hot Pink",    lane:"rgba(255,77,109,0.09)",  kerbA:"rgba(255,209,102,0.88)", kerbB:"rgba(255,255,255,0.78)", halo:"rgba(255,77,109,0.18)" },
+    { name:"Amber",       lane:"rgba(255,209,102,0.08)", kerbA:"rgba(255,77,109,0.88)", kerbB:"rgba(255,255,255,0.78)", halo:"rgba(255,209,102,0.18)" },
+    { name:"Violet",      lane:"rgba(167,139,250,0.10)", kerbA:"rgba(167,139,250,0.90)", kerbB:"rgba(255,255,255,0.78)", halo:"rgba(167,139,250,0.18)" },
+    { name:"Aqua",        lane:"rgba(90,228,255,0.08)",  kerbA:"rgba(53,242,140,0.88)", kerbB:"rgba(255,255,255,0.78)", halo:"rgba(90,228,255,0.16)" },
+    { name:"Lime",        lane:"rgba(53,242,140,0.08)",  kerbA:"rgba(255,209,102,0.88)", kerbB:"rgba(255,255,255,0.78)", halo:"rgba(53,242,140,0.16)" },
+    { name:"Rose",        lane:"rgba(255,77,109,0.08)",  kerbA:"rgba(90,228,255,0.88)", kerbB:"rgba(255,255,255,0.78)", halo:"rgba(255,77,109,0.16)" },
+    { name:"Ice",         lane:"rgba(234,240,255,0.07)", kerbA:"rgba(90,228,255,0.86)", kerbB:"rgba(255,255,255,0.80)", halo:"rgba(234,240,255,0.14)" },
+    { name:"Gold",        lane:"rgba(255,209,102,0.07)", kerbA:"rgba(255,209,102,0.90)", kerbB:"rgba(255,255,255,0.78)", halo:"rgba(255,209,102,0.16)" },
+    { name:"Spectrum",    lane:"rgba(255,255,255,0.06)", kerbA:"rgba(255,77,109,0.88)", kerbB:"rgba(53,242,140,0.86)",  halo:"rgba(90,228,255,0.16)" },
+    { name:"Finale",      lane:"rgba(90,228,255,0.08)",  kerbA:"rgba(255,209,102,0.90)", kerbB:"rgba(255,255,255,0.80)", halo:"rgba(255,77,109,0.16)" }
   ];
 
   // ============================================================
@@ -617,29 +435,9 @@
   const ctx = canvas.getContext('2d');
 
   const overlay = document.getElementById('overlay');
-  const pitPanel = document.getElementById('pitPanel');
-  const mcqPanel = document.getElementById('mcqPanel');
-
   const lapText = document.getElementById('lapText');
-  const crewText = document.getElementById('crewText');
+  const themeText = document.getElementById('themeText');
   const stateText = document.getElementById('stateText');
-
-  const pitHeaderMeta  = document.getElementById('pitHeaderMeta');
-  const pitLapBadge    = document.getElementById('pitLapBadge');
-  const pitIcon        = document.getElementById('pitIcon');
-  const pitName        = document.getElementById('pitName');
-  const pitDesc        = document.getElementById('pitDesc');
-  const pitWidget      = document.getElementById('pitWidget');
-
-  const crewA = document.getElementById('crewA');
-  const crewB = document.getElementById('crewB');
-  const crewC = document.getElementById('crewC');
-  const crewAT = document.getElementById('crewAT');
-  const crewAD = document.getElementById('crewAD');
-  const crewBT = document.getElementById('crewBT');
-  const crewBD = document.getElementById('crewBD');
-  const crewCT = document.getElementById('crewCT');
-  const crewCD = document.getElementById('crewCD');
 
   const qLap  = document.getElementById('qLap');
   const qText = document.getElementById('qText');
@@ -687,8 +485,7 @@
   // ============================================================
   function clamp(x,a,b){ return Math.max(a, Math.min(b,x)); }
   function lerp(a,b,t){ return a + (b-a)*t; }
-  function shuffle(arr){
-    const a = arr.slice();
+  function shuffleInPlace(a){
     for(let i=a.length-1;i>0;i--){
       const j = Math.floor(Math.random()*(i+1));
       [a[i], a[j]] = [a[j], a[i]];
@@ -707,7 +504,8 @@
     canvas.width = Math.floor(r.width * dpr);
     canvas.height = Math.floor(r.height * dpr);
     ctx.setTransform(dpr,0,0,dpr,0,0);
-    buildTrack();
+    buildTrackGeometry();
+    renderTrackToMap(); // uses current theme
   }
   window.addEventListener('resize', resize);
 
@@ -715,34 +513,22 @@
   // GAME STATE
   // ============================================================
   const TOTAL_LAPS = 12;
-  const STATE = { READY:"READY", RUN:"RUN", PIT:"PIT", MCQ:"MCQ", FEED:"FEED", DONE:"DONE" };
+  const STATE = { READY:"READY", RUN:"RUN", MCQ:"MCQ", FEED:"FEED", DONE:"DONE" };
 
   const game = {
     state: STATE.READY,
     lap: 0,
-
     s: 0,
     prevS: 0,
-
     speed: 0,
     targetSpeed: 0,
-
-    // lap speed: slightly slower looks more premium on big track
-    cruise: 0.14, // laps/sec (~7.1s lap)
+    cruise: 0.14,
     boost: 0.20,
-
     glow: 0,
     shake: 0,
     wrongBlink: 0,
 
-    streak: 0,
-
-    pitT: 0,
-    pitDuration: 2.2,
-    pitWidgetMode: "bar",
-    pitProgress: 0,
-    pitNeedle: -55,
-
+    // questions
     qOrder: [],
     currentQ: null,
     canAnswer: true,
@@ -757,236 +543,20 @@
     stateText.textContent =
       s===STATE.READY ? "Ready" :
       s===STATE.RUN ? "Racing" :
-      s===STATE.PIT ? "Pit Stop" :
       s===STATE.MCQ ? "Question" :
       s===STATE.FEED ? "Feedback" :
       s===STATE.DONE ? "Finished" : s;
   }
 
-  function updateCrewStars(){
-    const s = game.streak;
-    const stars =
-      s >= 5 ? 5 :
-      s >= 3 ? 4 :
-      s >= 2 ? 3 :
-      s >= 1 ? 2 : 1;
-    const str = "★★★★★".slice(0, stars) + "☆☆☆☆☆".slice(0, 5-stars);
-    crewText.textContent = `Crew ${str}`;
+  function updateTopPills(){
+    lapText.textContent = `Lap ${Math.min(game.lap, TOTAL_LAPS)}/${TOTAL_LAPS}`;
+    const t = THEMES[Math.min(game.lap, TOTAL_LAPS-1)];
+    themeText.textContent = `Theme ${Math.min(game.lap+1, TOTAL_LAPS)}/${TOTAL_LAPS}`;
+    themeText.title = t ? t.name : "";
   }
 
   // ============================================================
-  // Overlay controls
-  // ============================================================
-  function showPit(){
-    overlay.classList.add("show");
-    pitPanel.classList.remove("hidden");
-    mcqPanel.classList.add("hidden");
-  }
-  function showMCQ(){
-    overlay.classList.add("show");
-    pitPanel.classList.add("hidden");
-    mcqPanel.classList.remove("hidden");
-  }
-  function hideOverlay(){
-    overlay.classList.remove("show");
-    pitPanel.classList.remove("hidden");
-    mcqPanel.classList.add("hidden");
-  }
-
-  // ============================================================
-  // PIT UI
-  // ============================================================
-  function serviceColorToken(svc){
-    const map = { cyan:"var(--cyan)", green:"var(--green)", pink:"var(--pink)", amber:"var(--amber)", violet:"var(--violet)" };
-    return map[svc.color] || "var(--cyan)";
-  }
-
-  function iconSVG(name, color){
-    const c = color;
-    const common = `stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"`;
-    const n = name.toLowerCase();
-    if(n.includes("fuel")){
-      return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-        <path ${common} d="M6 3h8v18H6z"/><path ${common} d="M14 8h2l2 2v9a2 2 0 0 1-2 2h-2"/><path ${common} d="M8 7h4"/>
-      </svg>`;
-    }
-    if(n.includes("tyre") || n.includes("wheel") || n.includes("alignment")){
-      return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-        <circle ${common} cx="12" cy="12" r="8"/><circle ${common} cx="12" cy="12" r="3"/><path ${common} d="M12 4v2M12 18v2M4 12h2M18 12h2"/>
-      </svg>`;
-    }
-    if(n.includes("oil")){
-      return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-        <path ${common} d="M10 3h4v5h-4z"/><path ${common} d="M8 8h8v13H8z"/><path ${common} d="M9 12h6"/>
-      </svg>`;
-    }
-    if(n.includes("brake")){
-      return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-        <circle ${common} cx="12" cy="12" r="8"/><path ${common} d="M12 7v10"/><path ${common} d="M9 9h6"/>
-      </svg>`;
-    }
-    if(n.includes("scan") || n.includes("ecu") || n.includes("sensor") || n.includes("inspection")){
-      return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-        <rect ${common} x="5" y="6" width="14" height="12" rx="2"/><path ${common} d="M8 10h8M8 14h6"/>
-      </svg>`;
-    }
-    if(n.includes("coolant")){
-      return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-        <path ${common} d="M12 3v10"/><path ${common} d="M9 13a3 3 0 1 0 6 0"/><path ${common} d="M8 21h8"/>
-      </svg>`;
-    }
-    if(n.includes("turbo")){
-      return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-        <path ${common} d="M4 14a8 8 0 1 1 16 0"/><path ${common} d="M12 12l4-3"/><path ${common} d="M7 18h10"/>
-      </svg>`;
-    }
-    return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-      <path ${common} d="M14 7a4 4 0 0 0-6 4l-5 5 3 3 5-5a4 4 0 0 0 4-6z"/><path ${common} d="M9 14l1 1"/>
-    </svg>`;
-  }
-
-  function setPitUI(lapIndex, phaseText){
-    const svc = SERVICES[lapIndex];
-    const col = serviceColorToken(svc);
-
-    pitHeaderMeta.textContent = phaseText || "Service in progress…";
-    pitLapBadge.textContent = `Lap ${lapIndex+1}/${TOTAL_LAPS}`;
-
-    pitName.textContent = svc.name;
-    pitDesc.textContent = svc.desc;
-    pitIcon.innerHTML = iconSVG(svc.name, col);
-
-    const crew = svc.crew;
-    const cEls = [crewA, crewB, crewC];
-    const tEls = [crewAT, crewBT, crewCT];
-    const dEls = [crewAD, crewBD, crewCD];
-
-    for(let i=0;i<3;i++){
-      cEls[i].classList.remove("ok","warn","bad");
-      if(crew[i][0]) cEls[i].classList.add(crew[i][0]);
-      tEls[i].textContent = crew[i][1];
-      dEls[i].textContent = crew[i][2];
-    }
-
-    game.pitWidgetMode = svc.kind;
-    game.pitProgress = 0;
-    game.pitNeedle = -55;
-
-    if(game.pitWidgetMode === "bar"){
-      pitWidget.innerHTML = `
-        <div class="small" style="margin-bottom:8px; color: rgba(234,240,255,0.82)">
-          <b style="color:${col}">Service</b> progress
-        </div>
-        <div class="bar"><div class="barFill" id="barFill"></div></div>
-        <div class="small" style="margin-top:10px">Crew is working…</div>
-      `;
-    } else if(game.pitWidgetMode === "gauge"){
-      pitWidget.innerHTML = `
-        <div class="small" style="margin-bottom:8px; color: rgba(234,240,255,0.82)">
-          <b style="color:${col}">Calibration</b> gauge
-        </div>
-        <div class="gaugeWrap">
-          <div class="gauge">
-            <div class="dial"></div>
-            <div class="needle" id="needle"></div>
-          </div>
-          <div>
-            <div class="small">Target: <b style="color:${col}">Stable</b></div>
-            <div class="small" style="margin-top:6px">Needle settles when ready.</div>
-          </div>
-        </div>
-      `;
-    } else {
-      pitWidget.innerHTML = `
-        <div class="small" style="margin-bottom:8px; color: rgba(234,240,255,0.82)">
-          <b style="color:${col}">Diagnostics</b> scan
-        </div>
-        <div class="scan"></div>
-        <div class="small" style="margin-top:10px">Reading modules…</div>
-      `;
-    }
-  }
-
-  // ============================================================
-  // MCQ
-  // ============================================================
-  function lockOptions(lock){
-    [...optsDiv.querySelectorAll(".opt")].forEach(el => {
-      el.style.pointerEvents = lock ? "none" : "auto";
-      el.style.opacity = lock ? "0.92" : "1";
-    });
-  }
-  function mark(i, cls){
-    const el = optsDiv.querySelector(`.opt[data-idx="${i}"]`);
-    if(el) el.classList.add(cls);
-  }
-
-  function openMCQ(){
-    game.currentQ = game.qOrder[game.lap];
-    game.canAnswer = true;
-    qLap.textContent = `Lap ${game.lap+1}/${TOTAL_LAPS}`;
-    qText.textContent = game.currentQ.q;
-    hintText.textContent = `Tip: ${game.currentQ.hint || "Choose the best answer."}`;
-    fbText.textContent = "";
-    optsDiv.innerHTML = "";
-
-    const letters = ["A","B","C","D"];
-    game.currentQ.options.forEach((t,i) => {
-      const el = document.createElement("div");
-      el.className = "opt";
-      el.dataset.idx = String(i);
-      el.innerHTML = `<div class="badge">${letters[i]}</div>
-                      <div style="min-width:0"><div style="font-weight:760; font-size:13px; line-height:1.25">${t}</div></div>`;
-      el.addEventListener("click", () => choose(i));
-      optsDiv.appendChild(el);
-    });
-
-    showMCQ();
-    setState(STATE.MCQ);
-    beep(520, 0.06, 'triangle', 0.02);
-  }
-
-  function choose(i){
-    if(game.state !== STATE.MCQ || !game.canAnswer) return;
-    game.canAnswer = false;
-    lockOptions(true);
-
-    const correct = game.currentQ.answer;
-    const ok = (i === correct);
-
-    if(ok){
-      mark(i,"good");
-      fbText.textContent = "Correct. Starting next lap…";
-      game.feedbackNext = "advance";
-      game.streak += 1;
-      game.glow = 1.0;
-      beep(760, 0.08, 'sine', 0.03);
-      setState(STATE.FEED);
-    } else {
-      mark(i,"bad");
-      mark(correct,"good");
-      fbText.textContent = game.currentQ.fb || "Incorrect. Try again.";
-      game.feedbackNext = "retry";
-      game.streak = 0;
-      game.shake = 0.35;
-      game.wrongBlink = 0.8;
-      beep(220, 0.10, 'sawtooth', 0.015);
-      setState(STATE.FEED);
-    }
-  }
-
-  window.addEventListener("keydown", (e) => {
-    if(game.state !== STATE.MCQ) return;
-    const map = {a:0,b:1,c:2,d:3};
-    const k = e.key.toLowerCase();
-    if(map[k] !== undefined){
-      e.preventDefault();
-      choose(map[k]);
-    }
-  });
-
-  // ============================================================
-  // TRACK: BIGGER circuit shown (pre-rendered)
+  // Track geometry + themed rendering
   // ============================================================
   let W=0,H=0;
   const track = {
@@ -995,7 +565,6 @@
     nrm: [],
     width: 0,
     startIdx: 0,
-    pitIdx: 0,
     mapCanvas: null,
     mapCtx: null
   };
@@ -1005,19 +574,17 @@
     return {x:x/m,y:y/m};
   }
 
-  function buildTrack(){
+  function buildTrackGeometry(){
     const r = stage.getBoundingClientRect();
     W = r.width; H = r.height;
 
     const cx = W*0.52;
     const cy = H*0.54;
 
-    // BIGGER lap: make it fill most of the stage
     const base = Math.min(W,H);
-    const a = base * 0.46;   // horizontal radius (bigger)
-    const b = base * 0.34;   // vertical radius (bigger)
+    const a = base * 0.46;
+    const b = base * 0.34;
 
-    // reduce wobble to keep it “race circuit”, not snake
     const wobA = 0.06;
     const wobB = 0.05;
 
@@ -1032,7 +599,6 @@
       x += Math.sin(2*t + 0.6) * a * wobA * 0.18;
       y += Math.sin(3*t + 1.1) * b * wobB * 0.18;
 
-      // gentle chicane bump on one side
       const bump = Math.exp(-Math.pow((t - 1.35),2)/(2*0.16*0.16));
       x += bump * 16;
       y -= bump * 10;
@@ -1054,23 +620,27 @@
     track.tang = tang;
     track.nrm = nrm;
 
-    // wider road looks better on big lap
     track.width = base * 0.16;
-
     track.startIdx = Math.floor(N * 0.02);
-    track.pitIdx = (track.startIdx + Math.floor(N*0.03)) % N;
 
-    track.mapCanvas = document.createElement('canvas');
+    if(!track.mapCanvas){
+      track.mapCanvas = document.createElement('canvas');
+      track.mapCtx = track.mapCanvas.getContext('2d');
+    }
     track.mapCanvas.width = Math.floor(W * dpr);
     track.mapCanvas.height = Math.floor(H * dpr);
-    track.mapCtx = track.mapCanvas.getContext('2d');
     track.mapCtx.setTransform(dpr,0,0,dpr,0,0);
-    renderTrackToMap();
   }
 
   function renderTrackToMap(){
     const mctx = track.mapCtx;
     if(!mctx) return;
+
+    const theme = THEMES[Math.min(game.lap, TOTAL_LAPS-1)];
+    const laneTint = theme?.lane || "rgba(90,228,255,0.08)";
+    const haloCol  = theme?.halo || "rgba(90,228,255,0.18)";
+    const kerbA    = theme?.kerbA || "rgba(255,77,109,0.88)";
+    const kerbB    = theme?.kerbB || "rgba(255,255,255,0.78)";
 
     mctx.clearRect(0,0,W,H);
 
@@ -1081,22 +651,22 @@
     mctx.fillStyle = g;
     mctx.fillRect(0,0,W,H);
 
-    // grass speckles
+    // grass speckles (slight theme influence)
     mctx.save();
-    mctx.globalAlpha = 0.12;
+    mctx.globalAlpha = 0.14;
     for(let i=0;i<820;i++){
       const x = Math.random()*W;
       const y = Math.random()*H;
       const r = 1 + Math.random()*2.8;
-      mctx.fillStyle = (Math.random()<0.5) ? "rgba(53,242,140,0.25)" : "rgba(90,228,255,0.18)";
+      mctx.fillStyle = (Math.random()<0.5) ? "rgba(53,242,140,0.23)" : haloCol;
       mctx.beginPath(); mctx.arc(x,y,r,0,Math.PI*2); mctx.fill();
     }
     mctx.restore();
 
     // outer halo
     mctx.save();
-    mctx.globalAlpha = 0.22;
-    mctx.strokeStyle = "rgba(90,228,255,0.25)";
+    mctx.globalAlpha = 0.28;
+    mctx.strokeStyle = haloCol;
     mctx.lineWidth = track.width + 54;
     mctx.lineCap = "round";
     mctx.beginPath();
@@ -1113,6 +683,19 @@
     mctx.lineJoin = "round";
     mctx.strokeStyle = "rgba(10,14,26,0.96)";
     mctx.lineWidth = track.width;
+    mctx.beginPath();
+    mctx.moveTo(track.pts[0].x, track.pts[0].y);
+    for(const p of track.pts) mctx.lineTo(p.x,p.y);
+    mctx.closePath();
+    mctx.stroke();
+    mctx.restore();
+
+    // lane tint (theme)
+    mctx.save();
+    mctx.globalAlpha = 1;
+    mctx.strokeStyle = laneTint;
+    mctx.lineWidth = track.width * 0.86;
+    mctx.lineCap = "round";
     mctx.beginPath();
     mctx.moveTo(track.pts[0].x, track.pts[0].y);
     for(const p of track.pts) mctx.lineTo(p.x,p.y);
@@ -1147,7 +730,7 @@
         const x = p.x + nx * sideSign * (track.width*0.52);
         const y = p.y + ny * sideSign * (track.width*0.52);
         const on = (Math.floor(i/10) % 2) === 0;
-        mctx.strokeStyle = on ? "rgba(255,77,109,0.85)" : "rgba(255,255,255,0.75)";
+        mctx.strokeStyle = on ? kerbA : kerbB;
         mctx.beginPath();
         mctx.moveTo(x, y);
         const p2 = track.pts[(i+8)%track.pts.length];
@@ -1158,8 +741,8 @@
       }
       mctx.restore();
     }
-    drawKerb(+1, 0.88);
-    drawKerb(-1, 0.88);
+    drawKerb(+1, 0.90);
+    drawKerb(-1, 0.90);
 
     // center dashed
     mctx.save();
@@ -1176,11 +759,10 @@
     }
     mctx.restore();
 
-    drawFinishAndPit();
+    drawFinishLine(mctx);
   }
 
-  function drawFinishAndPit(){
-    const mctx = track.mapCtx;
+  function drawFinishLine(mctx){
     const i = track.startIdx;
     const p = track.pts[i];
     const t = track.tang[i];
@@ -1202,30 +784,120 @@
     mctx.lineWidth = 2;
     mctx.strokeRect(-w/2, -h/2, w, h);
     mctx.restore();
-
-    const j = track.pitIdx;
-    const pp = track.pts[j];
-    const tt = track.tang[j];
-
-    mctx.save();
-    mctx.translate(pp.x, pp.y);
-    mctx.rotate(Math.atan2(tt.y, tt.x));
-    mctx.globalAlpha = 0.9;
-    mctx.fillStyle = "rgba(255,209,102,0.25)";
-    mctx.fillRect(-track.width*0.45, -track.width*0.25, track.width*0.9, track.width*0.18);
-    mctx.fillStyle = "rgba(255,209,102,0.85)";
-    mctx.font = "700 11px system-ui, -apple-system, Segoe UI, Roboto, Arial";
-    mctx.textAlign = "center";
-    mctx.textBaseline = "middle";
-    mctx.fillText("PIT", 0, -track.width*0.17);
-    mctx.restore();
   }
+
+  // ============================================================
+  // MCQ preparation (shuffles options; correct index recalculated)
+  // ============================================================
+  function prepareQuestion(base){
+    const opts = base.options.slice();
+    shuffleInPlace(opts);
+    const answerIdx = opts.indexOf(base.correctText);
+    // Safety: if text mismatch happens, fall back to original index
+    const safeAnswer = (answerIdx >= 0) ? answerIdx : base.options.indexOf(base.correctText);
+    return {
+      q: base.q,
+      options: opts,
+      answer: safeAnswer >= 0 ? safeAnswer : 0,
+      hint: base.hint || "Choose the best answer.",
+      fb: base.fb || ""
+    };
+  }
+
+  function buildQuestionOrder(){
+    // Use all 12, but shuffle order
+    const copy = QUESTIONS_BASE.slice();
+    shuffleInPlace(copy);
+    game.qOrder = copy.map(q => prepareQuestion(q));
+  }
+
+  // ============================================================
+  // Overlay
+  // ============================================================
+  function showMCQ(){ overlay.classList.add("show"); }
+  function hideOverlay(){ overlay.classList.remove("show"); }
+
+  function lockOptions(lock){
+    [...optsDiv.querySelectorAll(".opt")].forEach(el => {
+      el.style.pointerEvents = lock ? "none" : "auto";
+      el.style.opacity = lock ? "0.92" : "1";
+    });
+  }
+  function mark(i, cls){
+    const el = optsDiv.querySelector(`.opt[data-idx="${i}"]`);
+    if(el) el.classList.add(cls);
+  }
+
+  function openMCQ(){
+    game.currentQ = game.qOrder[game.lap];
+    game.canAnswer = true;
+
+    qLap.textContent = `Lap ${game.lap+1}/${TOTAL_LAPS}`;
+    qText.textContent = game.currentQ.q;
+
+    hintText.textContent = `Tip: ${game.currentQ.hint || "Choose the best answer."}`;
+    fbText.textContent = "";
+    optsDiv.innerHTML = "";
+
+    const letters = ["A","B","C","D"];
+    game.currentQ.options.forEach((t,i) => {
+      const el = document.createElement("div");
+      el.className = "opt";
+      el.dataset.idx = String(i);
+      el.innerHTML = `<div class="badge">${letters[i]}</div>
+                      <div style="min-width:0"><div style="font-weight:760; font-size:13px; line-height:1.25">${t}</div></div>`;
+      el.addEventListener("click", () => choose(i));
+      optsDiv.appendChild(el);
+    });
+
+    showMCQ();
+    setState(STATE.MCQ);
+    beep(520, 0.06, 'triangle', 0.02);
+  }
+
+  function choose(i){
+    if(game.state !== STATE.MCQ || !game.canAnswer) return;
+    game.canAnswer = false;
+    lockOptions(true);
+
+    const correct = game.currentQ.answer;
+    const ok = (i === correct);
+
+    if(ok){
+      mark(i,"good");
+      fbText.textContent = "Correct. Starting next lap…";
+      game.feedbackNext = "advance";
+      game.glow = 1.0;
+      beep(760, 0.08, 'sine', 0.03);
+      setState(STATE.FEED);
+    } else {
+      mark(i,"bad");
+      mark(correct,"good");
+      fbText.textContent = game.currentQ.fb || "Incorrect. Try again.";
+      game.feedbackNext = "retry";
+      game.shake = 0.35;
+      game.wrongBlink = 0.8;
+      beep(220, 0.10, 'sawtooth', 0.015);
+      setState(STATE.FEED);
+    }
+  }
+
+  window.addEventListener("keydown", (e) => {
+    if(game.state !== STATE.MCQ) return;
+    const map = {a:0,b:1,c:2,d:3};
+    const k = e.key.toLowerCase();
+    if(map[k] !== undefined){
+      e.preventDefault();
+      choose(map[k]);
+    }
+  });
 
   // ============================================================
   // Particles (light)
   // ============================================================
   const particles = [];
   const MAX_PARTICLES = 90;
+
   function spawnParticles(x,y,n,kind){
     for(let i=0;i<n;i++){
       if(particles.length>=MAX_PARTICLES) break;
@@ -1298,12 +970,14 @@
     ctx.translate(x,y);
     ctx.rotate(angle);
 
+    // shadow
     ctx.globalAlpha = 0.28;
     ctx.fillStyle = "rgba(0,0,0,0.85)";
     ctx.beginPath();
     ctx.ellipse(0, 18, 20, 10, 0, 0, Math.PI*2);
     ctx.fill();
 
+    // glow on correct
     if(game.glow>0.02){
       ctx.globalAlpha = 0.55*game.glow;
       let g = ctx.createRadialGradient(0,12,0,0,12,72);
@@ -1358,17 +1032,15 @@
   }
 
   // ============================================================
-  // Render + update
+  // Update + render
   // ============================================================
   let last=0;
-
   function tick(ts){
     if(!last) last = ts;
     const dt = Math.min(0.033, (ts-last)/1000);
     last = ts;
 
     game.tState += dt;
-
     game.shake = Math.max(0, game.shake - dt*0.95);
     game.glow = Math.max(0, game.glow - dt*0.85);
     game.wrongBlink = Math.max(0, game.wrongBlink - dt);
@@ -1379,33 +1051,10 @@
       game.prevS = game.s;
       game.s = (game.s + game.speed*dt) % 1;
 
-      // lap completed when wrap occurs
+      // lap complete = wrap
       if(game.prevS > 0.92 && game.s < 0.08){
-        setState(STATE.PIT);
+        // checkpoint MCQ at end of lap
         game.targetSpeed = 0;
-        game.pitT = 0;
-        showPit();
-        setPitUI(game.lap, "Crew is servicing your car…");
-        beep(480, 0.06, "triangle", 0.02);
-      }
-    }
-
-    if(game.state === STATE.PIT){
-      game.pitT += dt;
-
-      if(game.pitWidgetMode === "bar"){
-        game.pitProgress = clamp(game.pitT / game.pitDuration, 0, 1);
-        const bf = document.getElementById("barFill");
-        if(bf) bf.style.width = `${Math.floor(game.pitProgress*100)}%`;
-      } else if(game.pitWidgetMode === "gauge"){
-        const t = clamp(game.pitT / game.pitDuration, 0, 1);
-        game.pitNeedle = lerp(-55, 5, t);
-        const nd = document.getElementById("needle");
-        if(nd) nd.style.transform = `rotate(${game.pitNeedle}deg)`;
-      }
-
-      if(game.pitT >= game.pitDuration){
-        setPitUI(game.lap, "Service paused — checkpoint question.");
         openMCQ();
       }
     }
@@ -1416,8 +1065,7 @@
         if(game.feedbackNext === "advance"){
           hideOverlay();
           game.lap += 1;
-          updateCrewStars();
-          lapText.textContent = `Lap ${game.lap}/${TOTAL_LAPS}`;
+          updateTopPills();
 
           if(game.lap >= TOTAL_LAPS){
             setState(STATE.DONE);
@@ -1427,6 +1075,9 @@
             spawnParticles(fp.x+22, fp.y-10, 36, "confetti");
             beep(660, 0.10, "sine", 0.03);
           } else {
+            // NEW: change track look each lap
+            renderTrackToMap();
+
             game.s = 0.08;
             game.prevS = game.s;
             setState(STATE.RUN);
@@ -1438,11 +1089,10 @@
             game._boostT = 0.7;
           }
         } else {
-          setState(STATE.PIT);
-          game.pitT = 0;
-          showPit();
-          setPitUI(game.lap, "Issue detected — re-check needed.");
-          game.pitDuration = 1.3;
+          // wrong: retry same lap (same theme)
+          hideOverlay();
+          setState(STATE.RUN);
+          game.targetSpeed = game.cruise;
         }
       }
     }
@@ -1457,7 +1107,6 @@
 
     updateParticles(dt);
     render();
-
     requestAnimationFrame(tick);
   }
 
@@ -1521,7 +1170,7 @@
   // Start / Reset
   // ============================================================
   function resetGame(){
-    hideOverlay();
+    overlay.classList.remove("show");
     particles.length = 0;
 
     game.lap = 0;
@@ -1535,14 +1184,10 @@
     game.shake = 0;
     game.wrongBlink = 0;
 
-    game.streak = 0;
-    updateCrewStars();
+    buildQuestionOrder();
+    updateTopPills();
+    renderTrackToMap();
 
-    game.pitDuration = 2.2;
-
-    game.qOrder = shuffle(QUESTIONS).slice(0, TOTAL_LAPS);
-
-    lapText.textContent = `Lap 0/${TOTAL_LAPS}`;
     setState(STATE.READY);
   }
 
