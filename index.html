@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Cyber Lap Race — 12 Themed Laps + MCQ Pit Stops</title>
+  <title>Cyber Lap Race — 12 Different Laps</title>
   <style>
     :root{
       --bg:#070A12;
@@ -73,7 +73,6 @@
       background: var(--cyan);
       box-shadow: 0 0 12px rgba(90,228,255,0.65);
     }
-
     .btnrow{ display:flex; gap:10px; flex-wrap:wrap; }
     button{
       appearance:none;
@@ -109,12 +108,13 @@
     }
     canvas{ width:100%; height:100%; display:block; }
 
+    /* MCQ overlay */
     .overlay{
       position:absolute; inset:0;
       display:none;
       align-items:center; justify-content:center;
       padding: 16px;
-      background: rgba(0,0,0,0.52);
+      background: rgba(0,0,0,0.55);
       backdrop-filter: blur(8px);
     }
     .overlay.show{ display:flex; }
@@ -196,7 +196,6 @@
       background: rgba(255,255,255,0.05);
       color: rgba(234,240,255,0.86);
     }
-    .hidden{ display:none !important; }
   </style>
 </head>
 
@@ -207,14 +206,14 @@
         <div class="brand">
           <span class="logo"></span>
           <div>
-            <div class="title">Lap Circuit Race</div>
-            <div class="subtitle">1 full lap → pit stop MCQ → next lap (12 laps, 12 different track looks)</div>
+            <div class="title">Car Checkpoint Race</div>
+            <div class="subtitle">1 full lap → 1 MCQ → unlock next lap (12 different tracks)</div>
           </div>
         </div>
 
         <div class="pills">
           <div class="pill"><span class="dot"></span><b id="lapText">Lap 0/12</b></div>
-          <div class="pill"><span class="dot" style="background:var(--green)"></span><b id="themeText">Theme 1/12</b></div>
+          <div class="pill"><span class="dot" style="background:var(--green)"></span><b id="trackText">Track 1/12</b></div>
           <div class="pill"><span class="dot" style="background:var(--amber)"></span><b id="stateText">Ready</b></div>
         </div>
 
@@ -230,28 +229,24 @@
 
         <div class="overlay" id="overlay" aria-modal="true" role="dialog">
           <div class="panel">
-
-            <div id="mcqPanel">
-              <div class="phead">
-                <div style="min-width:0">
-                  <div class="t" id="qTitle">Checkpoint Question</div>
-                  <div class="m" id="qMeta">Correct = next lap. Wrong = retry.</div>
-                </div>
-                <div class="badgeP" id="qLap">Lap 1/12</div>
+            <div class="phead">
+              <div style="min-width:0">
+                <div class="t" id="qTitle">Checkpoint Question</div>
+                <div class="m" id="qMeta">Correct = next lap. Wrong = retry the same lap.</div>
               </div>
-
-              <div class="pbody">
-                <p class="qtext" id="qText">Question…</p>
-                <div class="opts" id="opts"></div>
-              </div>
-
-              <div class="pfoot">
-                <div class="small" id="hintText">Tip…</div>
-                <div class="feedback" id="fbText"></div>
-                <div class="small">Keys: <span class="kbd">A</span> <span class="kbd">B</span> <span class="kbd">C</span> <span class="kbd">D</span></div>
-              </div>
+              <div class="badgeP" id="qLap">Lap 1/12</div>
             </div>
 
+            <div class="pbody">
+              <p class="qtext" id="qText">Question…</p>
+              <div class="opts" id="opts"></div>
+            </div>
+
+            <div class="pfoot">
+              <div class="small" id="hintText">Tip…</div>
+              <div class="feedback" id="fbText"></div>
+              <div class="small">Keys: <span class="kbd">A</span> <span class="kbd">B</span> <span class="kbd">C</span> <span class="kbd">D</span></div>
+            </div>
           </div>
         </div>
       </div><!-- stage -->
@@ -261,170 +256,153 @@
 <script>
 (() => {
   // ============================================================
-  // QUESTIONS (12) — FIXED: correct option is NOT always A
-  // Store correct answer as text, then shuffle options each time.
+  // 12 DIFFERENT TRACK STYLES (GEOMETRY + LOOK)
+  // Each lap uses a different profile. Shapes stay smooth and looped.
   // ============================================================
-  const QUESTIONS_BASE = [
-    {
-      q:"CERT-In is primarily responsible for:",
-      options:[
-        "Responding to cyber incidents, vulnerability reporting, and promoting IT security practices",
-        "Running state police station crime databases",
-        "Issuing passports for cyber professionals",
-        "Maintaining only a national email directory"
-      ],
-      correctText:"Responding to cyber incidents, vulnerability reporting, and promoting IT security practices",
-      hint:"National incident response team.",
-      fb:"CERT-In is India’s national agency for cyber incident response and advisories."
-    },
-    {
-      q:"NCIIPC is associated with protecting:",
-      options:[
-        "Critical Information Infrastructure (CII)",
-        "Only private banking passwords",
-        "Only university LMS portals",
-        "Only social media accounts"
-      ],
-      correctText:"Critical Information Infrastructure (CII)",
-      hint:"Think: CII protection.",
-      fb:"NCIIPC is the nodal body for protection of Critical Information Infrastructure."
-    },
-    {
-      q:"Natgrid (National Intelligence Grid) is best described as:",
-      options:[
-        "An integrated intelligence grid connecting databases of core security agencies",
-        "A cyber awareness course for school students",
-        "A state-wise scholarship scheme",
-        "A VPN service for government staff"
-      ],
-      correctText:"An integrated intelligence grid connecting databases of core security agencies",
-      hint:"Integrated grid + databases.",
-      fb:"Natgrid enables secure access to multiple databases for intelligence/investigation."
-    },
-    {
-      q:"CCTNS aims mainly to:",
-      options:[
-        "Network police stations and enable crime/criminal tracking across locations",
-        "Replace CERT-In operations",
-        "Publish ISO standards for networks",
-        "Provide only cyber posters"
-      ],
-      correctText:"Network police stations and enable crime/criminal tracking across locations",
-      hint:"Police network + tracking.",
-      fb:"CCTNS links police stations and supports nationwide crime and criminal tracking."
-    },
-    {
-      q:"NCCC is intended primarily for:",
-      options:[
-        "Cyber coordination and monitoring with intelligence support",
-        "Only academic curriculum approval",
-        "Only software licensing management",
-        "Only online exam scheduling"
-      ],
-      correctText:"Cyber coordination and monitoring with intelligence support",
-      hint:"Coordination + monitoring.",
-      fb:"NCCC is described as a cyber coordination/monitoring center supporting national security."
-    },
-    {
-      q:"A Botnet Cleaning Center is meant to:",
-      options:[
-        "Detect botnets/malware and help users remove them from infected devices",
-        "Provide email accounts to all citizens",
-        "Replace police investigation systems",
-        "Issue ISO certificates"
-      ],
-      correctText:"Detect botnets/malware and help users remove them from infected devices",
-      hint:"Cleaning infected devices.",
-      fb:"Botnet cleaning initiatives help detect and remove infections from user devices."
-    },
-    {
-      q:"NISAP focuses mainly on:",
-      options:[
-        "Information security awareness and implementation support aligned to ISMS practices",
-        "Border management and disaster response",
-        "Tax intelligence database integration",
-        "Replacing security tools with only open-source tools"
-      ],
-      correctText:"Information security awareness and implementation support aligned to ISMS practices",
-      hint:"ISMS-like awareness.",
-      fb:"NISAP supports strengthening information security practices and awareness."
-    },
-    {
-      q:"NCTC (proposed) was mainly to:",
-      options:[
-        "Coordinate counter-terrorism measures among state and central agencies",
-        "Certify mobile phones for secure use",
-        "Run cyber forensics labs in every district",
-        "Issue email rules for universities"
-      ],
-      correctText:"Coordinate counter-terrorism measures among state and central agencies",
-      hint:"Counter-terror coordination.",
-      fb:"NCTC was proposed as a centralized mechanism for counter-terror coordination."
-    },
-    {
-      q:"Government e-mail policy is mainly about:",
-      options:[
-        "Guidelines and safe practices for official e-mail usage",
-        "Replacing internet with intranet",
-        "Banning passwords in government",
-        "Forcing only one email provider for private sector"
-      ],
-      correctText:"Guidelines and safe practices for official e-mail usage",
-      hint:"Usage guidelines.",
-      fb:"Email policy focuses on secure, appropriate use of official email systems."
-    },
-    {
-      q:"Indo–US Cyber Security Forum (IUSCSF) supports:",
-      options:[
-        "Bilateral cooperation and dialogue on cyber security issues",
-        "Maintaining India’s national crime records",
-        "Operating CCTNS networks",
-        "Issuing ISO certificates"
-      ],
-      correctText:"Bilateral cooperation and dialogue on cyber security issues",
-      hint:"Bilateral forum.",
-      fb:"IUSCSF strengthens cooperation and dialogue between India and the US on cyber security."
-    },
-    {
-      q:"DSCI (Data Security Council of India) is best described as:",
-      options:[
-        "An industry-led body promoting data security and privacy culture in India",
-        "A police station networking project",
-        "A counter-terror intelligence grid",
-        "A malware cleaning tool"
-      ],
-      correctText:"An industry-led body promoting data security and privacy culture in India",
-      hint:"Industry body + data security.",
-      fb:"DSCI works with industry and stakeholders to strengthen data protection practices."
-    },
-    {
-      q:"Which is a typical NCIIPC-related activity?",
-      options:[
-        "Malware analysis and alerts/advisories for critical sectors",
-        "Issuing driving licenses for cyber vehicles",
-        "Only publishing cyber news articles",
-        "Only doing annual university rankings"
-      ],
-      correctText:"Malware analysis and alerts/advisories for critical sectors",
-      hint:"Think: technical operations.",
-      fb:"NCIIPC supports monitoring, analysis, and advisories for critical infrastructure security."
-    }
+  const CIRCUITS = [
+    // a,b: radii; wob1/wob2: gentle shaping; k1/k2: harmonic shaping; chicane: localized bend
+    { name:"Wide Oval",          a:0.48, b:0.33, wob1:0.00, wob2:0.00, k1:0.00, k2:0.00, chicane:0.00, tilt: 0.00 },
+    { name:"Tall Oval",          a:0.42, b:0.39, wob1:0.00, wob2:0.00, k1:0.00, k2:0.00, chicane:0.00, tilt: 0.00 },
+    { name:"Stadium Circuit",    a:0.46, b:0.32, wob1:0.00, wob2:0.00, k1:0.16, k2:0.06, chicane:0.00, tilt: 0.00 },
+    { name:"Double Apex",        a:0.46, b:0.34, wob1:0.06, wob2:0.03, k1:0.00, k2:0.00, chicane:0.10, tilt: 0.00 },
+    { name:"Offset Loop",        a:0.48, b:0.33, wob1:0.05, wob2:0.05, k1:0.06, k2:0.06, chicane:0.00, tilt: 0.00 },
+    { name:"Tri-Oval",           a:0.50, b:0.30, wob1:0.00, wob2:0.00, k1:0.20, k2:0.00, chicane:0.00, tilt: 0.05 },
+    { name:"Peanut (Two Bends)", a:0.44, b:0.38, wob1:0.00, wob2:0.00, k1:0.00, k2:0.22, chicane:0.00, tilt: 0.00 },
+    { name:"Chicane Circuit",    a:0.46, b:0.34, wob1:0.04, wob2:0.03, k1:0.00, k2:0.00, chicane:0.18, tilt: 0.00 },
+    { name:"Long Straight Bias", a:0.52, b:0.30, wob1:0.00, wob2:0.00, k1:0.12, k2:0.04, chicane:0.00, tilt: 0.00 },
+    { name:"Tight Circuit",      a:0.40, b:0.32, wob1:0.06, wob2:0.05, k1:0.06, k2:0.06, chicane:0.14, tilt: 0.00 },
+    { name:"Complex Oval",       a:0.48, b:0.36, wob1:0.06, wob2:0.03, k1:0.10, k2:0.08, chicane:0.16, tilt: 0.03 },
+    { name:"Champion Track",     a:0.50, b:0.38, wob1:0.02, wob2:0.02, k1:0.14, k2:0.10, chicane:0.20, tilt: 0.06 }
   ];
 
-  // 12 lap themes (visual variety)
   const THEMES = [
-    { name:"Neon Blue",   lane:"rgba(90,228,255,0.10)",  kerbA:"rgba(255,77,109,0.90)", kerbB:"rgba(255,255,255,0.80)", halo:"rgba(90,228,255,0.22)" },
-    { name:"Cyber Green", lane:"rgba(53,242,140,0.10)",  kerbA:"rgba(53,242,140,0.88)", kerbB:"rgba(255,255,255,0.78)", halo:"rgba(53,242,140,0.18)" },
-    { name:"Hot Pink",    lane:"rgba(255,77,109,0.09)",  kerbA:"rgba(255,209,102,0.88)", kerbB:"rgba(255,255,255,0.78)", halo:"rgba(255,77,109,0.18)" },
-    { name:"Amber",       lane:"rgba(255,209,102,0.08)", kerbA:"rgba(255,77,109,0.88)", kerbB:"rgba(255,255,255,0.78)", halo:"rgba(255,209,102,0.18)" },
-    { name:"Violet",      lane:"rgba(167,139,250,0.10)", kerbA:"rgba(167,139,250,0.90)", kerbB:"rgba(255,255,255,0.78)", halo:"rgba(167,139,250,0.18)" },
-    { name:"Aqua",        lane:"rgba(90,228,255,0.08)",  kerbA:"rgba(53,242,140,0.88)", kerbB:"rgba(255,255,255,0.78)", halo:"rgba(90,228,255,0.16)" },
-    { name:"Lime",        lane:"rgba(53,242,140,0.08)",  kerbA:"rgba(255,209,102,0.88)", kerbB:"rgba(255,255,255,0.78)", halo:"rgba(53,242,140,0.16)" },
-    { name:"Rose",        lane:"rgba(255,77,109,0.08)",  kerbA:"rgba(90,228,255,0.88)", kerbB:"rgba(255,255,255,0.78)", halo:"rgba(255,77,109,0.16)" },
-    { name:"Ice",         lane:"rgba(234,240,255,0.07)", kerbA:"rgba(90,228,255,0.86)", kerbB:"rgba(255,255,255,0.80)", halo:"rgba(234,240,255,0.14)" },
-    { name:"Gold",        lane:"rgba(255,209,102,0.07)", kerbA:"rgba(255,209,102,0.90)", kerbB:"rgba(255,255,255,0.78)", halo:"rgba(255,209,102,0.16)" },
-    { name:"Spectrum",    lane:"rgba(255,255,255,0.06)", kerbA:"rgba(255,77,109,0.88)", kerbB:"rgba(53,242,140,0.86)",  halo:"rgba(90,228,255,0.16)" },
-    { name:"Finale",      lane:"rgba(90,228,255,0.08)",  kerbA:"rgba(255,209,102,0.90)", kerbB:"rgba(255,255,255,0.80)", halo:"rgba(255,77,109,0.16)" }
+    { lane:"rgba(90,228,255,0.10)",  halo:"rgba(90,228,255,0.22)",  kerbA:"rgba(255,77,109,0.90)", kerbB:"rgba(255,255,255,0.80)" },
+    { lane:"rgba(53,242,140,0.10)",  halo:"rgba(53,242,140,0.18)",  kerbA:"rgba(53,242,140,0.88)", kerbB:"rgba(255,255,255,0.78)" },
+    { lane:"rgba(167,139,250,0.10)", halo:"rgba(167,139,250,0.18)", kerbA:"rgba(255,209,102,0.88)", kerbB:"rgba(255,255,255,0.78)" },
+    { lane:"rgba(255,77,109,0.09)",  halo:"rgba(255,77,109,0.18)",  kerbA:"rgba(90,228,255,0.88)",  kerbB:"rgba(255,255,255,0.78)" },
+    { lane:"rgba(255,209,102,0.08)", halo:"rgba(255,209,102,0.18)", kerbA:"rgba(255,77,109,0.88)", kerbB:"rgba(255,255,255,0.78)" },
+    { lane:"rgba(90,228,255,0.08)",  halo:"rgba(90,228,255,0.16)",  kerbA:"rgba(53,242,140,0.88)", kerbB:"rgba(255,255,255,0.78)" },
+    { lane:"rgba(53,242,140,0.08)",  halo:"rgba(53,242,140,0.16)",  kerbA:"rgba(167,139,250,0.90)", kerbB:"rgba(255,255,255,0.78)" },
+    { lane:"rgba(255,77,109,0.08)",  halo:"rgba(255,77,109,0.16)",  kerbA:"rgba(255,209,102,0.90)", kerbB:"rgba(255,255,255,0.78)" },
+    { lane:"rgba(234,240,255,0.07)", halo:"rgba(234,240,255,0.14)", kerbA:"rgba(90,228,255,0.86)",  kerbB:"rgba(255,255,255,0.80)" },
+    { lane:"rgba(255,209,102,0.07)", halo:"rgba(255,209,102,0.16)", kerbA:"rgba(53,242,140,0.86)", kerbB:"rgba(255,255,255,0.78)" },
+    { lane:"rgba(255,255,255,0.06)", halo:"rgba(90,228,255,0.16)",  kerbA:"rgba(255,77,109,0.88)", kerbB:"rgba(53,242,140,0.86)"  },
+    { lane:"rgba(90,228,255,0.08)",  halo:"rgba(255,77,109,0.16)",  kerbA:"rgba(255,209,102,0.90)", kerbB:"rgba(255,255,255,0.80)" }
+  ];
+
+  // ============================================================
+  // QUESTIONS (example 12) — Correct answer is NOT fixed at A.
+  // We shuffle options per question and recompute correct index.
+  // Replace these with your uploaded chapter MCQs if needed.
+  // ============================================================
+  const QUESTIONS_BASE = [
+    { q:"CERT-In is primarily responsible for:", options:[
+      "Responding to cyber incidents, vulnerability reporting, and promoting IT security practices",
+      "Running state police station crime databases",
+      "Issuing passports for cyber professionals",
+      "Maintaining only a national email directory"
+    ], correct:"Responding to cyber incidents, vulnerability reporting, and promoting IT security practices",
+      hint:"National incident response team.",
+      fb:"CERT-In is India’s national agency for cyber incident response and advisories." },
+
+    { q:"NCIIPC is associated with protecting:", options:[
+      "Critical Information Infrastructure (CII)",
+      "Only private banking passwords",
+      "Only university LMS portals",
+      "Only social media accounts"
+    ], correct:"Critical Information Infrastructure (CII)",
+      hint:"Think: CII protection.",
+      fb:"NCIIPC is the nodal body for protection of Critical Information Infrastructure." },
+
+    { q:"Natgrid (National Intelligence Grid) is best described as:", options:[
+      "An integrated intelligence grid connecting databases of core security agencies",
+      "A cyber awareness course for school students",
+      "A state-wise scholarship scheme",
+      "A VPN service for government staff"
+    ], correct:"An integrated intelligence grid connecting databases of core security agencies",
+      hint:"Integrated grid + databases.",
+      fb:"Natgrid enables secure access to multiple databases for intelligence/investigation." },
+
+    { q:"CCTNS aims mainly to:", options:[
+      "Network police stations and enable crime/criminal tracking across locations",
+      "Replace CERT-In operations",
+      "Publish ISO standards for networks",
+      "Provide only cyber posters"
+    ], correct:"Network police stations and enable crime/criminal tracking across locations",
+      hint:"Police network + tracking.",
+      fb:"CCTNS links police stations and supports nationwide crime and criminal tracking." },
+
+    { q:"NCCC is intended primarily for:", options:[
+      "Cyber coordination and monitoring with intelligence support",
+      "Only academic curriculum approval",
+      "Only software licensing management",
+      "Only online exam scheduling"
+    ], correct:"Cyber coordination and monitoring with intelligence support",
+      hint:"Coordination + monitoring.",
+      fb:"NCCC is described as a cyber coordination/monitoring center supporting national security." },
+
+    { q:"A Botnet Cleaning Center is meant to:", options:[
+      "Detect botnets/malware and help users remove them from infected devices",
+      "Provide email accounts to all citizens",
+      "Replace police investigation systems",
+      "Issue ISO certificates"
+    ], correct:"Detect botnets/malware and help users remove them from infected devices",
+      hint:"Cleaning infected devices.",
+      fb:"Botnet cleaning initiatives help detect and remove infections from user devices." },
+
+    { q:"NISAP focuses mainly on:", options:[
+      "Information security awareness and implementation support aligned to ISMS practices",
+      "Border management and disaster response",
+      "Tax intelligence database integration",
+      "Replacing security tools with only open-source tools"
+    ], correct:"Information security awareness and implementation support aligned to ISMS practices",
+      hint:"ISMS-like awareness.",
+      fb:"NISAP supports strengthening information security practices and awareness." },
+
+    { q:"NCTC (proposed) was mainly to:", options:[
+      "Coordinate counter-terrorism measures among state and central agencies",
+      "Certify mobile phones for secure use",
+      "Run cyber forensics labs in every district",
+      "Issue email rules for universities"
+    ], correct:"Coordinate counter-terrorism measures among state and central agencies",
+      hint:"Counter-terror coordination.",
+      fb:"NCTC was proposed as a centralized mechanism for counter-terror coordination." },
+
+    { q:"Government e-mail policy is mainly about:", options:[
+      "Guidelines and safe practices for official e-mail usage",
+      "Replacing internet with intranet",
+      "Banning passwords in government",
+      "Forcing only one email provider for private sector"
+    ], correct:"Guidelines and safe practices for official e-mail usage",
+      hint:"Usage guidelines.",
+      fb:"Email policy focuses on secure, appropriate use of official email systems." },
+
+    { q:"Indo–US Cyber Security Forum (IUSCSF) supports:", options:[
+      "Bilateral cooperation and dialogue on cyber security issues",
+      "Maintaining India’s national crime records",
+      "Operating CCTNS networks",
+      "Issuing ISO certificates"
+    ], correct:"Bilateral cooperation and dialogue on cyber security issues",
+      hint:"Bilateral forum.",
+      fb:"IUSCSF strengthens cooperation and dialogue between India and the US on cyber security." },
+
+    { q:"DSCI (Data Security Council of India) is best described as:", options:[
+      "An industry-led body promoting data security and privacy culture in India",
+      "A police station networking project",
+      "A counter-terror intelligence grid",
+      "A malware cleaning tool"
+    ], correct:"An industry-led body promoting data security and privacy culture in India",
+      hint:"Industry body + data security.",
+      fb:"DSCI works with industry and stakeholders to strengthen data protection practices." },
+
+    { q:"Which is a typical NCIIPC-related activity?", options:[
+      "Malware analysis and alerts/advisories for critical sectors",
+      "Issuing driving licenses for cyber vehicles",
+      "Only publishing cyber news articles",
+      "Only doing annual university rankings"
+    ], correct:"Malware analysis and alerts/advisories for critical sectors",
+      hint:"Think: technical operations.",
+      fb:"NCIIPC supports monitoring, analysis, and advisories for critical infrastructure security." },
   ];
 
   // ============================================================
@@ -436,7 +414,7 @@
 
   const overlay = document.getElementById('overlay');
   const lapText = document.getElementById('lapText');
-  const themeText = document.getElementById('themeText');
+  const trackText = document.getElementById('trackText');
   const stateText = document.getElementById('stateText');
 
   const qLap  = document.getElementById('qLap');
@@ -466,6 +444,7 @@
       }catch(_){}
     }
   });
+
   function beep(freq=440, dur=0.08, type='sine', gain=0.03){
     if(!soundOn) return;
     if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -485,12 +464,13 @@
   // ============================================================
   function clamp(x,a,b){ return Math.max(a, Math.min(b,x)); }
   function lerp(a,b,t){ return a + (b-a)*t; }
-  function shuffleInPlace(a){
-    for(let i=a.length-1;i>0;i--){
+  function shuffle(a){
+    const x = a.slice();
+    for(let i=x.length-1;i>0;i--){
       const j = Math.floor(Math.random()*(i+1));
-      [a[i], a[j]] = [a[j], a[i]];
+      [x[i], x[j]] = [x[j], x[i]];
     }
-    return a;
+    return x;
   }
 
   // ============================================================
@@ -498,14 +478,16 @@
   // ============================================================
   const DPR_CAP = 1.5;
   let dpr = 1;
+  let W=0,H=0;
+
   function resize(){
     const r = stage.getBoundingClientRect();
     dpr = Math.min(DPR_CAP, window.devicePixelRatio || 1);
     canvas.width = Math.floor(r.width * dpr);
     canvas.height = Math.floor(r.height * dpr);
     ctx.setTransform(dpr,0,0,dpr,0,0);
-    buildTrackGeometry();
-    renderTrackToMap(); // uses current theme
+    W = r.width; H = r.height;
+    buildAllLapCaches(); // rebuild all tracks for new size
   }
   window.addEventListener('resize', resize);
 
@@ -518,8 +500,8 @@
   const game = {
     state: STATE.READY,
     lap: 0,
-    s: 0,
-    prevS: 0,
+    s: 0.10,
+    prevS: 0.10,
     speed: 0,
     targetSpeed: 0,
     cruise: 0.14,
@@ -528,7 +510,7 @@
     shake: 0,
     wrongBlink: 0,
 
-    // questions
+    // question order (prepared with shuffling)
     qOrder: [],
     currentQ: null,
     canAnswer: true,
@@ -548,60 +530,79 @@
       s===STATE.DONE ? "Finished" : s;
   }
 
-  function updateTopPills(){
+  function updateTop(){
     lapText.textContent = `Lap ${Math.min(game.lap, TOTAL_LAPS)}/${TOTAL_LAPS}`;
-    const t = THEMES[Math.min(game.lap, TOTAL_LAPS-1)];
-    themeText.textContent = `Theme ${Math.min(game.lap+1, TOTAL_LAPS)}/${TOTAL_LAPS}`;
-    themeText.title = t ? t.name : "";
+    trackText.textContent = `Track ${Math.min(game.lap+1, TOTAL_LAPS)}/${TOTAL_LAPS}`;
+    trackText.title = CIRCUITS[Math.min(game.lap, TOTAL_LAPS-1)].name;
   }
 
   // ============================================================
-  // Track geometry + themed rendering
+  // TRACK BUILDING (cached per lap)
   // ============================================================
-  let W=0,H=0;
-  const track = {
-    pts: [],
-    tang: [],
-    nrm: [],
-    width: 0,
-    startIdx: 0,
-    mapCanvas: null,
-    mapCtx: null
-  };
+  const lapCache = new Array(TOTAL_LAPS).fill(null); // {pts,tang,nrm,width,startIdx,mapCanvas}
 
   function unit(x,y){
     const m = Math.hypot(x,y) || 1;
-    return {x:x/m,y:y/m};
+    return {x:x/m, y:y/m};
   }
 
-  function buildTrackGeometry(){
-    const r = stage.getBoundingClientRect();
-    W = r.width; H = r.height;
+  function buildTrackForLap(lapIndex){
+    const profile = CIRCUITS[lapIndex];
+    const theme = THEMES[lapIndex];
 
     const cx = W*0.52;
     const cy = H*0.54;
 
     const base = Math.min(W,H);
-    const a = base * 0.46;
-    const b = base * 0.34;
+    const a = base * profile.a;
+    const b = base * profile.b;
 
-    const wobA = 0.06;
-    const wobB = 0.05;
-
+    const width = base * 0.16;
     const N = 980;
+
     const pts = [];
     for(let i=0;i<N;i++){
       const t = (i/N) * Math.PI*2;
 
+      // base ellipse
       let x = cx + a * Math.cos(t);
       let y = cy + b * Math.sin(t);
 
-      x += Math.sin(2*t + 0.6) * a * wobA * 0.18;
-      y += Math.sin(3*t + 1.1) * b * wobB * 0.18;
+      // harmonic shaping to get different circuit personalities
+      // k1: 2nd harmonic, k2: 3rd harmonic
+      if(profile.k1){
+        x += Math.cos(2*t) * a * profile.k1 * 0.12;
+        y += Math.sin(2*t) * b * profile.k1 * 0.10;
+      }
+      if(profile.k2){
+        x += Math.cos(3*t + 0.4) * a * profile.k2 * 0.10;
+        y += Math.sin(3*t + 0.8) * b * profile.k2 * 0.10;
+      }
 
-      const bump = Math.exp(-Math.pow((t - 1.35),2)/(2*0.16*0.16));
-      x += bump * 16;
-      y -= bump * 10;
+      // gentle wobble (controlled)
+      if(profile.wob1){
+        x += Math.sin(2*t + 0.6) * a * profile.wob1 * 0.10;
+        y += Math.sin(3*t + 1.1) * b * profile.wob1 * 0.10;
+      }
+      if(profile.wob2){
+        x += Math.sin(4*t + 0.3) * a * profile.wob2 * 0.06;
+        y += Math.sin(5*t + 0.9) * b * profile.wob2 * 0.06;
+      }
+
+      // localized chicane bump (one sector)
+      if(profile.chicane){
+        const center = 1.28;         // fixed chicane zone
+        const sigma = 0.18;
+        const bump = Math.exp(-Math.pow((t-center),2)/(2*sigma*sigma));
+        x += bump * profile.chicane * 120;
+        y -= bump * profile.chicane * 80;
+      }
+
+      // slight tilt / banking feel (small)
+      if(profile.tilt){
+        x += Math.sin(t) * base * profile.tilt * 0.08;
+        y += Math.cos(t) * base * profile.tilt * 0.05;
+      }
 
       pts.push({x,y});
     }
@@ -616,33 +617,27 @@
       nrm[i] = {x: -u.y, y: u.x};
     }
 
-    track.pts = pts;
-    track.tang = tang;
-    track.nrm = nrm;
+    const startIdx = Math.floor(N * 0.02);
 
-    track.width = base * 0.16;
-    track.startIdx = Math.floor(N * 0.02);
+    // prerender to map canvas for speed
+    const mapCanvas = document.createElement('canvas');
+    mapCanvas.width = Math.floor(W * dpr);
+    mapCanvas.height = Math.floor(H * dpr);
+    const mctx = mapCanvas.getContext('2d');
+    mctx.setTransform(dpr,0,0,dpr,0,0);
 
-    if(!track.mapCanvas){
-      track.mapCanvas = document.createElement('canvas');
-      track.mapCtx = track.mapCanvas.getContext('2d');
-    }
-    track.mapCanvas.width = Math.floor(W * dpr);
-    track.mapCanvas.height = Math.floor(H * dpr);
-    track.mapCtx.setTransform(dpr,0,0,dpr,0,0);
+    renderTrackToCanvas(mctx, pts, nrm, width, startIdx, theme);
+
+    return { pts, tang, nrm, width, startIdx, mapCanvas };
   }
 
-  function renderTrackToMap(){
-    const mctx = track.mapCtx;
-    if(!mctx) return;
-
-    const theme = THEMES[Math.min(game.lap, TOTAL_LAPS-1)];
-    const laneTint = theme?.lane || "rgba(90,228,255,0.08)";
-    const haloCol  = theme?.halo || "rgba(90,228,255,0.18)";
-    const kerbA    = theme?.kerbA || "rgba(255,77,109,0.88)";
-    const kerbB    = theme?.kerbB || "rgba(255,255,255,0.78)";
-
+  function renderTrackToCanvas(mctx, pts, nrm, width, startIdx, theme){
     mctx.clearRect(0,0,W,H);
+
+    const laneTint = theme.lane;
+    const haloCol  = theme.halo;
+    const kerbA    = theme.kerbA;
+    const kerbB    = theme.kerbB;
 
     // background
     const g = mctx.createLinearGradient(0,0,0,H);
@@ -651,7 +646,7 @@
     mctx.fillStyle = g;
     mctx.fillRect(0,0,W,H);
 
-    // grass speckles (slight theme influence)
+    // grass speckles
     mctx.save();
     mctx.globalAlpha = 0.14;
     for(let i=0;i<820;i++){
@@ -663,16 +658,15 @@
     }
     mctx.restore();
 
-    // outer halo
+    // halo
     mctx.save();
     mctx.globalAlpha = 0.28;
     mctx.strokeStyle = haloCol;
-    mctx.lineWidth = track.width + 54;
+    mctx.lineWidth = width + 54;
     mctx.lineCap = "round";
     mctx.beginPath();
-    const p0 = track.pts[0];
-    mctx.moveTo(p0.x,p0.y);
-    for(const p of track.pts) mctx.lineTo(p.x,p.y);
+    mctx.moveTo(pts[0].x, pts[0].y);
+    for(const p of pts) mctx.lineTo(p.x,p.y);
     mctx.closePath();
     mctx.stroke();
     mctx.restore();
@@ -682,23 +676,22 @@
     mctx.lineCap = "round";
     mctx.lineJoin = "round";
     mctx.strokeStyle = "rgba(10,14,26,0.96)";
-    mctx.lineWidth = track.width;
+    mctx.lineWidth = width;
     mctx.beginPath();
-    mctx.moveTo(track.pts[0].x, track.pts[0].y);
-    for(const p of track.pts) mctx.lineTo(p.x,p.y);
+    mctx.moveTo(pts[0].x, pts[0].y);
+    for(const p of pts) mctx.lineTo(p.x,p.y);
     mctx.closePath();
     mctx.stroke();
     mctx.restore();
 
-    // lane tint (theme)
+    // lane tint
     mctx.save();
-    mctx.globalAlpha = 1;
     mctx.strokeStyle = laneTint;
-    mctx.lineWidth = track.width * 0.86;
+    mctx.lineWidth = width * 0.86;
     mctx.lineCap = "round";
     mctx.beginPath();
-    mctx.moveTo(track.pts[0].x, track.pts[0].y);
-    for(const p of track.pts) mctx.lineTo(p.x,p.y);
+    mctx.moveTo(pts[0].x, pts[0].y);
+    for(const p of pts) mctx.lineTo(p.x,p.y);
     mctx.closePath();
     mctx.stroke();
     mctx.restore();
@@ -707,10 +700,10 @@
     mctx.save();
     mctx.globalAlpha = 0.14;
     for(let i=0;i<1400;i++){
-      const idx = Math.floor(Math.random()*track.pts.length);
-      const p = track.pts[idx];
-      const nx = track.nrm[idx].x, ny = track.nrm[idx].y;
-      const off = (Math.random()-0.5) * (track.width*0.88);
+      const idx = Math.floor(Math.random()*pts.length);
+      const p = pts[idx];
+      const nx = nrm[idx].x, ny = nrm[idx].y;
+      const off = (Math.random()-0.5) * (width*0.88);
       const x = p.x + nx*off + (Math.random()-0.5)*2;
       const y = p.y + ny*off + (Math.random()-0.5)*2;
       mctx.fillStyle = (Math.random()<0.5) ? "rgba(255,255,255,0.18)" : "rgba(0,0,0,0.35)";
@@ -719,39 +712,39 @@
     mctx.restore();
 
     // kerbs
-    function drawKerb(sideSign, alpha){
+    function drawKerb(sideSign){
       mctx.save();
-      mctx.globalAlpha = alpha;
+      mctx.globalAlpha = 0.90;
       mctx.lineCap = "butt";
       mctx.lineWidth = 9;
-      for(let i=0;i<track.pts.length;i+=10){
-        const p = track.pts[i];
-        const nx = track.nrm[i].x, ny = track.nrm[i].y;
-        const x = p.x + nx * sideSign * (track.width*0.52);
-        const y = p.y + ny * sideSign * (track.width*0.52);
+      for(let i=0;i<pts.length;i+=10){
+        const p = pts[i];
+        const nx = nrm[i].x, ny = nrm[i].y;
+        const x = p.x + nx * sideSign * (width*0.52);
+        const y = p.y + ny * sideSign * (width*0.52);
         const on = (Math.floor(i/10) % 2) === 0;
         mctx.strokeStyle = on ? kerbA : kerbB;
         mctx.beginPath();
         mctx.moveTo(x, y);
-        const p2 = track.pts[(i+8)%track.pts.length];
-        const x2 = p2.x + track.nrm[(i+8)%track.pts.length].x * sideSign * (track.width*0.52);
-        const y2 = p2.y + track.nrm[(i+8)%track.pts.length].y * sideSign * (track.width*0.52);
+        const p2 = pts[(i+8)%pts.length];
+        const x2 = p2.x + nrm[(i+8)%pts.length].x * sideSign * (width*0.52);
+        const y2 = p2.y + nrm[(i+8)%pts.length].y * sideSign * (width*0.52);
         mctx.lineTo(x2,y2);
         mctx.stroke();
       }
       mctx.restore();
     }
-    drawKerb(+1, 0.90);
-    drawKerb(-1, 0.90);
+    drawKerb(+1);
+    drawKerb(-1);
 
     // center dashed
     mctx.save();
     mctx.globalAlpha = 0.55;
     mctx.lineWidth = 2;
     mctx.strokeStyle = "rgba(255,255,255,0.22)";
-    for(let i=0;i<track.pts.length;i+=16){
-      const p = track.pts[i];
-      const p2 = track.pts[(i+8)%track.pts.length];
+    for(let i=0;i<pts.length;i+=16){
+      const p = pts[i];
+      const p2 = pts[(i+8)%pts.length];
       mctx.beginPath();
       mctx.moveTo(p.x,p.y);
       mctx.lineTo(p2.x,p2.y);
@@ -759,22 +752,18 @@
     }
     mctx.restore();
 
-    drawFinishLine(mctx);
-  }
+    // finish line
+    const i = startIdx;
+    const p = pts[i];
+    const t = unit(pts[(i+1)%pts.length].x - pts[(i-1+pts.length)%pts.length].x,
+                   pts[(i+1)%pts.length].y - pts[(i-1+pts.length)%pts.length].y);
 
-  function drawFinishLine(mctx){
-    const i = track.startIdx;
-    const p = track.pts[i];
-    const t = track.tang[i];
-
-    const w = track.width*0.92;
+    const w = width*0.92;
     const h = 18;
-
     mctx.save();
     mctx.translate(p.x, p.y);
     mctx.rotate(Math.atan2(t.y, t.x));
     mctx.globalAlpha = 0.95;
-
     const cols = 12;
     for(let c=0;c<cols;c++){
       mctx.fillStyle = (c%2===0) ? "rgba(255,255,255,0.85)" : "rgba(0,0,0,0.85)";
@@ -786,36 +775,30 @@
     mctx.restore();
   }
 
-  // ============================================================
-  // MCQ preparation (shuffles options; correct index recalculated)
-  // ============================================================
-  function prepareQuestion(base){
-    const opts = base.options.slice();
-    shuffleInPlace(opts);
-    const answerIdx = opts.indexOf(base.correctText);
-    // Safety: if text mismatch happens, fall back to original index
-    const safeAnswer = (answerIdx >= 0) ? answerIdx : base.options.indexOf(base.correctText);
-    return {
-      q: base.q,
-      options: opts,
-      answer: safeAnswer >= 0 ? safeAnswer : 0,
-      hint: base.hint || "Choose the best answer.",
-      fb: base.fb || ""
-    };
+  function buildAllLapCaches(){
+    for(let i=0;i<TOTAL_LAPS;i++){
+      lapCache[i] = buildTrackForLap(i);
+    }
   }
 
+  // ============================================================
+  // MCQ preparation (shuffle options, recompute correct index)
+  // ============================================================
+  function prepareQuestion(qb){
+    const opts = shuffle(qb.options);
+    const answer = Math.max(0, opts.indexOf(qb.correct));
+    return { q: qb.q, options: opts, answer, hint: qb.hint || "", fb: qb.fb || "" };
+  }
   function buildQuestionOrder(){
-    // Use all 12, but shuffle order
-    const copy = QUESTIONS_BASE.slice();
-    shuffleInPlace(copy);
-    game.qOrder = copy.map(q => prepareQuestion(q));
+    const base = shuffle(QUESTIONS_BASE);
+    game.qOrder = base.slice(0,TOTAL_LAPS).map(prepareQuestion);
   }
 
   // ============================================================
-  // Overlay
+  // Overlay MCQ
   // ============================================================
   function showMCQ(){ overlay.classList.add("show"); }
-  function hideOverlay(){ overlay.classList.remove("show"); }
+  function hideMCQ(){ overlay.classList.remove("show"); }
 
   function lockOptions(lock){
     [...optsDiv.querySelectorAll(".opt")].forEach(el => {
@@ -834,7 +817,6 @@
 
     qLap.textContent = `Lap ${game.lap+1}/${TOTAL_LAPS}`;
     qText.textContent = game.currentQ.q;
-
     hintText.textContent = `Tip: ${game.currentQ.hint || "Choose the best answer."}`;
     fbText.textContent = "";
     optsDiv.innerHTML = "";
@@ -865,7 +847,7 @@
 
     if(ok){
       mark(i,"good");
-      fbText.textContent = "Correct. Starting next lap…";
+      fbText.textContent = "Correct. Next track unlocked…";
       game.feedbackNext = "advance";
       game.glow = 1.0;
       beep(760, 0.08, 'sine', 0.03);
@@ -873,7 +855,7 @@
     } else {
       mark(i,"bad");
       mark(correct,"good");
-      fbText.textContent = game.currentQ.fb || "Incorrect. Try again.";
+      fbText.textContent = game.currentQ.fb || "Incorrect. Retry this lap.";
       game.feedbackNext = "retry";
       game.shake = 0.35;
       game.wrongBlink = 0.8;
@@ -1009,20 +991,24 @@
     roundRectPath(-12,-20,24,26,10);
     ctx.fill();
 
+    // wheels
     ctx.fillStyle = "rgba(0,0,0,0.70)";
     roundRectPath(-21,-28,7,16,4); ctx.fill();
     roundRectPath(14,-28,7,16,4); ctx.fill();
     roundRectPath(-21,12,7,16,4); ctx.fill();
     roundRectPath(14,12,7,16,4); ctx.fill();
 
+    // headlights
     ctx.fillStyle = "rgba(255,209,102,0.68)";
     roundRectPath(-13,-40,9,11,5); ctx.fill();
     roundRectPath(4,-40,9,11,5); ctx.fill();
 
+    // taillights
     ctx.fillStyle = (game.wrongBlink>0) ? "rgba(255,77,109,0.88)" : "rgba(255,77,109,0.32)";
     roundRectPath(-13,29,9,11,5); ctx.fill();
     roundRectPath(4,29,9,11,5); ctx.fill();
 
+    // rear plate
     ctx.globalAlpha = 0.9;
     ctx.fillStyle = "rgba(255,255,255,0.10)";
     roundRectPath(-13,38,26,6,4);
@@ -1032,7 +1018,7 @@
   }
 
   // ============================================================
-  // Update + render
+  // Main loop
   // ============================================================
   let last=0;
   function tick(ts){
@@ -1053,7 +1039,6 @@
 
       // lap complete = wrap
       if(game.prevS > 0.92 && game.s < 0.08){
-        // checkpoint MCQ at end of lap
         game.targetSpeed = 0;
         openMCQ();
       }
@@ -1063,21 +1048,20 @@
       const hold = 0.95;
       if(game.tState >= hold){
         if(game.feedbackNext === "advance"){
-          hideOverlay();
+          hideMCQ();
           game.lap += 1;
-          updateTopPills();
+          updateTop();
 
           if(game.lap >= TOTAL_LAPS){
             setState(STATE.DONE);
             game.targetSpeed = 0;
-            const fp = track.pts[track.startIdx];
-            spawnParticles(fp.x, fp.y, 36, "confetti");
-            spawnParticles(fp.x+22, fp.y-10, 36, "confetti");
+            const tr = lapCache[TOTAL_LAPS-1];
+            const fp = tr.pts[tr.startIdx];
+            spawnParticles(fp.x, fp.y, 40, "confetti");
+            spawnParticles(fp.x+22, fp.y-10, 40, "confetti");
             beep(660, 0.10, "sine", 0.03);
           } else {
-            // NEW: change track look each lap
-            renderTrackToMap();
-
+            // NEW TRACK (different geometry + theme) after correct answer
             game.s = 0.08;
             game.prevS = game.s;
             setState(STATE.RUN);
@@ -1089,8 +1073,8 @@
             game._boostT = 0.7;
           }
         } else {
-          // wrong: retry same lap (same theme)
-          hideOverlay();
+          // wrong: retry same lap, same track
+          hideMCQ();
           setState(STATE.RUN);
           game.targetSpeed = game.cruise;
         }
@@ -1118,7 +1102,8 @@
     ctx.save();
     ctx.translate(sx,sy);
 
-    if(track.mapCanvas) ctx.drawImage(track.mapCanvas, 0, 0, W, H);
+    const tr = lapCache[Math.min(game.lap, TOTAL_LAPS-1)];
+    if(tr && tr.mapCanvas) ctx.drawImage(tr.mapCanvas, 0, 0, W, H);
 
     drawHUD();
 
@@ -1159,10 +1144,12 @@
   }
 
   function sampleTrack(s){
-    const N = track.pts.length;
+    const tr = lapCache[Math.min(game.lap, TOTAL_LAPS-1)];
+    const pts = tr.pts, tang = tr.tang;
+    const N = pts.length;
     const idx = Math.floor(s * N) % N;
-    const p = track.pts[idx];
-    const t = track.tang[idx];
+    const p = pts[idx];
+    const t = tang[idx];
     return {x:p.x, y:p.y, tx:t.x, ty:t.y, idx};
   }
 
@@ -1170,8 +1157,8 @@
   // Start / Reset
   // ============================================================
   function resetGame(){
-    overlay.classList.remove("show");
     particles.length = 0;
+    hideMCQ();
 
     game.lap = 0;
     game.s = 0.10;
@@ -1185,9 +1172,7 @@
     game.wrongBlink = 0;
 
     buildQuestionOrder();
-    updateTopPills();
-    renderTrackToMap();
-
+    updateTop();
     setState(STATE.READY);
   }
 
@@ -1205,7 +1190,9 @@
   // ============================================================
   function init(){
     resize();
-    resetGame();
+    buildQuestionOrder();
+    updateTop();
+    setState(STATE.READY);
     requestAnimationFrame(tick);
   }
   init();
